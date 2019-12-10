@@ -42,4 +42,52 @@ public class LogPanel extends JPanel {
         add(usernameTextField);
         add(loginButton);
     }
+
+    public JLabel getPharmacyName() {
+        return pharmacyName;
+    }
+
+    public void setPharmacyName(JLabel pharmacyName) {
+        this.pharmacyName = pharmacyName;
+    }
+
+    public JLabel getUsernameLabel() {
+        return usernameLabel;
+    }
+
+    public void setUsernameLabel(JLabel usernameLabel) {
+        this.usernameLabel = usernameLabel;
+    }
+
+    public JLabel getPasswordLabel() {
+        return passwordLabel;
+    }
+
+    public void setPasswordLabel(JLabel passwordLabel) {
+        this.passwordLabel = passwordLabel;
+    }
+
+    public JButton getLoginButton() {
+        return loginButton;
+    }
+
+    public void setLoginButton(JButton loginButton) {
+        this.loginButton = loginButton;
+    }
+
+    public JTextField getUsernameTextField() {
+        return usernameTextField;
+    }
+
+    public void setUsernameTextField(JTextField usernameTextField) {
+        this.usernameTextField = usernameTextField;
+    }
+
+    public JTextField getPasswordTextField() {
+        return passwordTextField;
+    }
+
+    public void setPasswordTextField(JTextField passwordTextField) {
+        this.passwordTextField = passwordTextField;
+    }
 }

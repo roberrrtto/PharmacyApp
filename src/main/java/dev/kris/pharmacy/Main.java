@@ -1,19 +1,29 @@
 package dev.kris.pharmacy;
 
-import dev.kris.pharmacy.sqlStaff.DataBaseInit;
-import dev.kris.pharmacy.sqlStaff.UserInitData;
+import dev.kris.pharmacy.log.LogFrame;
+import dev.kris.pharmacy.manager.ManagerFrame;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class Main {
 
+//    static LogFrame logFrame = new LogFrame();
+//    static PharmacistFrame pharmacistFrame = new PharmacistFrame();
+//    static ManagerFrame managerFrame = new ManagerFrame();
+//    static AdminFrame adminFrame = new AdminFrame();
+
     public static void main(String[] args) {
 
-        DataBaseInit dataBaseInit = new DataBaseInit();
+        LogFrame logFrame = new LogFrame();
+//        PharmacistFrame pharmacistFrame = new PharmacistFrame();
+        ManagerFrame managerFrame = new ManagerFrame();
+//        AdminFrame adminFrame = new AdminFrame();
+//        DataBaseInit dataBaseInit = new DataBaseInit();
+
         ///////// get initial data (logon process) /////////
 
-        UserInitData userInitData = dataBaseInit.getUserData("frawas", "frawas2019");
+//        UserInitData userInitData = dataBaseInit.getUserData("frawas", "frawas2019");
 //        if (userInitData.isCorrect()) {
 //            System.out.println(userInitData.toString());
 //        } else {
@@ -42,22 +52,17 @@ public class Main {
 
 //        dataBaseInit.updateStorageQuantity(25,2,2);
 
-        ///////// Testing GUI /////////
-//        EventQueue.invokeLater(() ->{
-//            logFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//            logFrame.setVisible(true);
+        /////// Testing GUI /////////
+        EventQueue.invokeLater(() ->{
+            logFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            logFrame.setVisible(true);
 //            pharmacistFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //            pharmacistFrame.setVisible(false);
-//            managerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//            managerFrame.setVisible(false);
+            managerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            managerFrame.setVisible(true);
 //            adminFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//            adminFrame.setVisible(true);
-//        });
+//            adminFrame.setVisible(false);
+        });
 
-//        EventQueue.invokeLater(() -> {
-//            UIFrame uiFrame = new UIFrame();
-//            uiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//            uiFrame.setVisible(true);
-//        });
     }
 }
