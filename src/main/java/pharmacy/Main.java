@@ -68,9 +68,9 @@ public class Main {
             pharmacistFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             pharmacistFrame.setVisible(true);
             managerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            managerFrame.setVisible(false);
+            managerFrame.setVisible(true);
             adminFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            adminFrame.setVisible(false);
+            adminFrame.setVisible(true);
         });
 
     }
