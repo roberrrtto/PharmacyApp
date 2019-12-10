@@ -1,8 +1,8 @@
-package dev.kris.pharmacy.log;
+package pharmacy.log;
+
+import pharmacy.Main;
 
 import javax.swing.*;
-
-import static dev.kris.pharmacy.Main.pharmacyApp;
 
 public class LogPanel extends JPanel {
 
@@ -10,34 +10,34 @@ public class LogPanel extends JPanel {
     private JButton loginButton;
     private JTextField usernameTextField, passwordTextField;
 
-    public LogPanel() {
+    public LogPanel(){
         setLayout(null);
 
         pharmacyName = new JLabel("PHARMACY");
-        pharmacyName.setBounds(220, 200, 800,80);
-        pharmacyName.setFont(pharmacyName.getFont().deriveFont(100f));
+        pharmacyName.setBounds(200, 150, 300,50);
+        pharmacyName.setFont(pharmacyName.getFont().deriveFont(50f));
 
         usernameLabel = new JLabel("username: ");
-        usernameLabel.setBounds(220, 420, 180, 50);
-        usernameLabel.setFont(usernameLabel.getFont().deriveFont(30f));
+        usernameLabel.setBounds(150, 300, 150, 50);
+        usernameLabel.setFont(usernameLabel.getFont().deriveFont(20f));
 
         passwordLabel = new JLabel("password: ");
-        passwordLabel.setBounds(220, 520, 180, 50);
-        passwordLabel.setFont(passwordLabel.getFont().deriveFont(30f));
+        passwordLabel.setBounds(150, 380, 150, 50);
+        passwordLabel.setFont(passwordLabel.getFont().deriveFont(20f));
 
         usernameTextField = new JTextField();
-        usernameTextField.setBounds(400, 420, 400, 50);
-        usernameTextField.setFont(usernameTextField.getFont().deriveFont(30f));
+        usernameTextField.setBounds(300, 300, 250, 40);
+        usernameTextField.setFont(usernameTextField.getFont().deriveFont(15f));
 
         passwordTextField = new JTextField();
-        passwordTextField.setBounds(400, 520, 400, 50);
-        passwordTextField.setFont(passwordTextField.getFont().deriveFont(30f));
+        passwordTextField.setBounds(300, 380, 250, 40);
+        passwordTextField.setFont(passwordTextField.getFont().deriveFont(15f));
 
         loginButton = new JButton("Log in");
-        loginButton.setBounds(400, 650, 200, 50);
-        loginButton.setFont(loginButton.getFont().deriveFont(30f));
+        loginButton.setBounds(275, 500, 150, 50);
+        loginButton.setFont(loginButton.getFont().deriveFont(20f));
         loginButton.addActionListener(e -> {
-            if (!pharmacyApp.logging(usernameTextField.getText(), passwordTextField.getText())) {
+            if (!Main.pharmacyApp.logging(usernameTextField.getText(), passwordTextField.getText())) {
                 JOptionPane.showMessageDialog(null,"Incorrect credentials","Incorrect credentials", 2);
             }
         });

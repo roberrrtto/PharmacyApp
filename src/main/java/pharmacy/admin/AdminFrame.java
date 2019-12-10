@@ -1,13 +1,13 @@
-package dev.kris.pharmacy.admin;
+package pharmacy.admin;
 
 import javax.swing.*;
 
 public class AdminFrame extends JFrame {
 
     public AdminFrame(){
-        setSize(1000,1000);
+        setSize(700,700);
         setResizable(false);
-        setTitle("Pharmacy");
+        setTitle("Admin");
         setLocationRelativeTo(null);
 
         AdminPanel adminPanel = new AdminPanel();

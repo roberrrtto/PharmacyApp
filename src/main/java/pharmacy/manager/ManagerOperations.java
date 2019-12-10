@@ -1,13 +1,12 @@
-package dev.kris.pharmacy.manager;
+package pharmacy.manager;
 
-import dev.kris.pharmacy.sqlStaff.DataBaseInit;
-import dev.kris.pharmacy.sqlStaff.StorageData;
-import dev.kris.pharmacy.sqlStaff.UserInfoDataManger;
-import dev.kris.pharmacy.sqlStaff.UserInitData;
+import pharmacy.sqlStaff.DataBaseInit;
+import pharmacy.sqlStaff.StorageData;
+import pharmacy.sqlStaff.UserInfoDataManger;
+import pharmacy.sqlStaff.UserInitData;
+import pharmacy.Main;
 
 import java.util.List;
-
-import static dev.kris.pharmacy.Main.pharmacyApp;
 
 public class ManagerOperations {
 
@@ -29,7 +28,7 @@ public class ManagerOperations {
     }
 
     void userNameInfoDataManager() {
-        for (UserInfoDataManger uidm : pharmacyApp.userInfoDataMangerList) {
+        for (UserInfoDataManger uidm : Main.pharmacyApp.userInfoDataMangerList) {
             for (int i = 0; i < size; i++) {
                 names[i] = uidm.getName();
             }

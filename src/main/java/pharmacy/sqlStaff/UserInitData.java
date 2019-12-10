@@ -1,4 +1,4 @@
-package dev.kris.pharmacy.sqlStaff;
+package pharmacy.sqlStaff;
 
 public class UserInitData {
 

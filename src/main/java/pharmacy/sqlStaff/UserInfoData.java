@@ -1,13 +1,14 @@
-package dev.kris.pharmacy.sqlStaff;
+package pharmacy.sqlStaff;
 
-public class UserInfoDataManger {
+import java.util.Arrays;
+
+public class UserInfoData {
 
     private int userId;
     private String name;
     private String firstName;
     private String lastName;
-    private String jobTitle;
-    private int salary;
+    private String address;
     private String email;
     private String phoneNumber;
 
@@ -27,36 +28,12 @@ public class UserInfoDataManger {
         this.name = name;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getAddress() {
+        return address;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getJobTitle() {
-        return jobTitle;
-    }
-
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
-    }
-
-    public int getSalary() {
-        return salary;
-    }
-
-    public void setSalary(int salary) {
-        this.salary = salary;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getEmail() {
@@ -75,14 +52,28 @@ public class UserInfoDataManger {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     @Override
     public String toString() {
-        return "UserInfoDataManger{" +
+        return "UserInfoData{" +
                 "userId=" + userId +
                 ", name='" + name + '\'' +
-                ", jobTitle='" + jobTitle + '\'' +
-                ", salary=" + salary +
+                ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 "}\n";

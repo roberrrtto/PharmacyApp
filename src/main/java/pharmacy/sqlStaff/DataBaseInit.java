@@ -1,4 +1,4 @@
-package dev.kris.pharmacy.sqlStaff;
+package pharmacy.sqlStaff;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -1,12 +1,12 @@
-package dev.kris.pharmacy;
+package pharmacy;
 
-import dev.kris.pharmacy.admin.AdminFrame;
-import dev.kris.pharmacy.admin.AdminPanel;
-import dev.kris.pharmacy.log.LogFrame;
-import dev.kris.pharmacy.log.LogPanel;
-import dev.kris.pharmacy.manager.ManagerFrame;
-import dev.kris.pharmacy.pharmacist.PharmacistFrame;
-import dev.kris.pharmacy.pharmacist.PharmacistPanel;
+import pharmacy.admin.AdminFrame;
+import pharmacy.admin.AdminPanel;
+import pharmacy.log.LogFrame;
+import pharmacy.log.LogPanel;
+import pharmacy.manager.ManagerFrame;
+import pharmacy.pharmacist.PharmacistFrame;
+import pharmacy.pharmacist.PharmacistPanel;
 
 import javax.swing.*;
 import java.awt.*;

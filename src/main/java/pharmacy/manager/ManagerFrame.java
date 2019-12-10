@@ -1,4 +1,4 @@
-package dev.kris.pharmacy.manager;
+package pharmacy.manager;
 
 import javax.swing.*;
 
@@ -6,9 +6,9 @@ public class ManagerFrame extends JFrame {
 
     public ManagerFrame(){
 
-        setSize(1000,1100);
+        setSize(700,700);
         setResizable(false);
-        setTitle("Pharmacy");
+        setTitle("Manager");
         setLocationRelativeTo(null);
 
 //        ManagerPanel managerPanel = new ManagerPanel();

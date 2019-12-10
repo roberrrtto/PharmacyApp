@@ -1,4 +1,4 @@
-package dev.kris.pharmacy.guiTest;
+package pharmacy.guiTest;
 
 import javax.swing.*;
 
