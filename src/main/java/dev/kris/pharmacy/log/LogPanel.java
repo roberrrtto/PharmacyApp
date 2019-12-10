@@ -2,13 +2,15 @@ package dev.kris.pharmacy.log;
 
 import javax.swing.*;
 
+import static dev.kris.pharmacy.Main.pharmacyApp;
+
 public class LogPanel extends JPanel {
 
     private JLabel pharmacyName, usernameLabel, passwordLabel;
     private JButton loginButton;
     private JTextField usernameTextField, passwordTextField;
 
-    public LogPanel(){
+    public LogPanel() {
         setLayout(null);
 
         pharmacyName = new JLabel("PHARMACY");
@@ -34,6 +36,11 @@ public class LogPanel extends JPanel {
         loginButton = new JButton("Log in");
         loginButton.setBounds(400, 650, 200, 50);
         loginButton.setFont(loginButton.getFont().deriveFont(30f));
+        loginButton.addActionListener(e -> {
+            if (!pharmacyApp.logging(usernameTextField.getText(), passwordTextField.getText())) {
+                JOptionPane.showMessageDialog(null,"Incorrect credentials","Incorrect credentials", 2);
+            }
+        });
 
         add(pharmacyName);
         add(usernameLabel);

@@ -11,8 +11,8 @@ public class ManagerFrame extends JFrame {
         setTitle("Pharmacy");
         setLocationRelativeTo(null);
 
-        ManagerPanel managerPanel = new ManagerPanel();
-        add(managerPanel);
+//        ManagerPanel managerPanel = new ManagerPanel();
+//        add(managerPanel);
     }
 }
 

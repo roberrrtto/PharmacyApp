@@ -1,25 +1,34 @@
 package dev.kris.pharmacy;
 
+import dev.kris.pharmacy.admin.AdminFrame;
+import dev.kris.pharmacy.admin.AdminPanel;
 import dev.kris.pharmacy.log.LogFrame;
+import dev.kris.pharmacy.log.LogPanel;
 import dev.kris.pharmacy.manager.ManagerFrame;
+import dev.kris.pharmacy.pharmacist.PharmacistFrame;
+import dev.kris.pharmacy.pharmacist.PharmacistPanel;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class Main {
 
-//    static LogFrame logFrame = new LogFrame();
-//    static PharmacistFrame pharmacistFrame = new PharmacistFrame();
-//    static ManagerFrame managerFrame = new ManagerFrame();
-//    static AdminFrame adminFrame = new AdminFrame();
+    public static LogFrame logFrame = new LogFrame();
+    public static PharmacistFrame pharmacistFrame = new PharmacistFrame();
+    public static ManagerFrame managerFrame = new ManagerFrame();
+    public static AdminFrame adminFrame = new AdminFrame();
+    public static PharmacyApp pharmacyApp = new PharmacyApp();
 
     public static void main(String[] args) {
 
-        LogFrame logFrame = new LogFrame();
-//        PharmacistFrame pharmacistFrame = new PharmacistFrame();
-        ManagerFrame managerFrame = new ManagerFrame();
-//        AdminFrame adminFrame = new AdminFrame();
-//        DataBaseInit dataBaseInit = new DataBaseInit();
+        LogPanel logPanel = new LogPanel();
+        logFrame.add(logPanel);
+
+        AdminPanel adminPanel = new AdminPanel();
+        adminFrame.add(adminPanel);
+
+        PharmacistPanel pharmacistPanel = new PharmacistPanel();
+        pharmacistFrame.add(pharmacistPanel);
 
         ///////// get initial data (logon process) /////////
 
@@ -56,12 +65,12 @@ public class Main {
         EventQueue.invokeLater(() ->{
             logFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             logFrame.setVisible(true);
-//            pharmacistFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//            pharmacistFrame.setVisible(false);
+            pharmacistFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            pharmacistFrame.setVisible(true);
             managerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            managerFrame.setVisible(true);
-//            adminFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//            adminFrame.setVisible(false);
+            managerFrame.setVisible(false);
+            adminFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            adminFrame.setVisible(false);
         });
 
     }

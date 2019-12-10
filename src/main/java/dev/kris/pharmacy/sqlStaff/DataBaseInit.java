@@ -52,7 +52,7 @@ public class DataBaseInit {
                 "                    ON user_credentials.user_id = ps.user_id\n" +
                 "         INNER JOIN users\n" +
                 "                    ON user_credentials.user_id = users.user_id\n" +
-                "        WHERE login = '" + userLogin + "' AND password = '" + userPassword + "';";
+                "        WHERE login =? AND password =?;";
 
 
         Connection connection = initializeDataBaseConnection();
@@ -62,7 +62,8 @@ public class DataBaseInit {
 
         try {
             preparedStatement = connection.prepareStatement(sqlGetData);
-
+            preparedStatement.setString(1,userLogin);
+            preparedStatement.setString(2,userPassword);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -87,7 +88,7 @@ public class DataBaseInit {
                 return userInitData;
             }
         } catch (NullPointerException ex) {
-            System.out.println("Login or password are incorrect");
+            System.out.println("Login or password is incorrect");
         }
         userInitData.setCorrect(false);
         return userInitData;
@@ -139,7 +140,7 @@ public class DataBaseInit {
                 "job_title, salary, email, phone_number FROM users\n" +
                 "    INNER JOIN pharmacy_staff ps\n" +
                 "    ON users.user_id = ps.user_id\n" +
-                "WHERE pharmacy_id=" + pharmacyId + " AND job_title = 'Pharmacist';";
+                "WHERE pharmacy_id=? AND job_title = 'Pharmacist';";
 
 
         Connection connection = initializeDataBaseConnection();
@@ -149,6 +150,7 @@ public class DataBaseInit {
 
         try {
             preparedStatement = connection.prepareStatement(sqlGetData);
+            preparedStatement.setInt(1,pharmacyId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {

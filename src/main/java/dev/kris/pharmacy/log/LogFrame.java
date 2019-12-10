@@ -10,9 +10,9 @@ public class LogFrame extends JFrame {
         setTitle("Log in");
         setLocationRelativeTo(null);
 
-        LogPanel logPanel = new LogPanel();
-
-        add(logPanel);
+//        LogPanel logPanel = new LogPanel();
+//
+//        add(logPanel);
     }
 
 }

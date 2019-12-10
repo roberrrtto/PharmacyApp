@@ -2,22 +2,33 @@ package dev.kris.pharmacy.manager;
 
 import javax.swing.*;
 
+import static dev.kris.pharmacy.Main.*;
+
 public class ManagerPanel extends JPanel {
 
     private JLabel loggedNameLabel, dateLabel, employeeLabel, availableMedicineLabel, saleLabel, medicineEditLabel;
     private JButton logOutButton, deleteButton, addButton;
-    private JTextField employeeList, medicineList, dateTextField, saleTextField, medicineEditTextField;
+    private JTextField medicineList, dateTextField, saleTextField, medicineEditTextField;
+    private JList<String> employeeList;
+    private ManagerOperations managerOperations;
 
-    public ManagerPanel(){
+    public ManagerPanel(ManagerOperations managerOperations){
+        this.managerOperations = managerOperations;
+
         setLayout(null);
 
-        loggedNameLabel = new JLabel("Imię zalogowanego");
+        loggedNameLabel = new JLabel(managerOperations.getUserInitData().getFirstName());
+//        loggedNameLabel = new JLabel(pharmacyApp.userInitData.getFirstName());
         loggedNameLabel.setBounds(750, 25, 150, 50);
         loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
 
         logOutButton = new JButton("Log out");
         logOutButton.setBounds(750, 75, 100, 30);
         logOutButton.setFont(logOutButton.getFont().deriveFont(15f));
+        logOutButton.addActionListener(e -> {
+            logFrame.setVisible(true);
+            managerFrame.setVisible(false);
+        });
 
         dateLabel = new JLabel("Data");
         dateLabel.setBounds(100, 25, 50,50);
@@ -27,7 +38,7 @@ public class ManagerPanel extends JPanel {
         employeeLabel.setBounds(200, 100, 600, 50);
         employeeLabel.setFont(employeeLabel.getFont().deriveFont(20f));
 
-        employeeList = new JTextField();
+        employeeList = new JList();
         employeeList.setBounds(200, 175, 600, 200);
         employeeList.setFont(employeeList.getFont().deriveFont(15f));
 
