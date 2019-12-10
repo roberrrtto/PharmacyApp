@@ -76,15 +76,21 @@ public class UserInfoDataManger {
     }
 
 
+//    @Override
+//    public String toString() {
+//        return "UserInfoDataManger{" +
+//                "userId=" + userId +
+//                ", name='" + name + '\'' +
+//                ", jobTitle='" + jobTitle + '\'' +
+//                ", salary=" + salary +
+//                ", email='" + email + '\'' +
+//                ", phoneNumber='" + phoneNumber + '\'' +
+//                "}\n";
+//    }
+
+
     @Override
     public String toString() {
-        return "UserInfoDataManger{" +
-                "userId=" + userId +
-                ", name='" + name + '\'' +
-                ", jobTitle='" + jobTitle + '\'' +
-                ", salary=" + salary +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                "}\n";
+        return name + " " + jobTitle + " " + salary + " " + email + " " + phoneNumber;
     }
 }

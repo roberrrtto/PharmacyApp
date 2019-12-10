@@ -66,7 +66,7 @@ public class Main {
             logFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             logFrame.setVisible(true);
             pharmacistFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            pharmacistFrame.setVisible(true);
+            pharmacistFrame.setVisible(false);
             managerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             managerFrame.setVisible(false);
             adminFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
