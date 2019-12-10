@@ -10,9 +10,6 @@ public class ManagerFrame extends JFrame {
         setResizable(false);
         setTitle("Manager");
         setLocationRelativeTo(null);
-
-//        ManagerPanel managerPanel = new ManagerPanel();
-//        add(managerPanel);
     }
 }
 

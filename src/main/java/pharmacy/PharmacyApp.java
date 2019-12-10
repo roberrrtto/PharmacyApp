@@ -8,17 +8,20 @@ import pharmacy.sqlStaff.UserInitData;
 
 import java.util.List;
 
+import static pharmacy.Main.managerFrame;
+
 public class PharmacyApp {
 
     private static final String Pharmacist = "Pharmacist";
     private static final String UnitManager = "Unit Manager";
     private static final String Admin = "Admin";
 
-    public UserInitData userInitData;
-    public List<UserInfoDataManger> userInfoDataMangerList;
+    private UserInitData userInitData;
+    private List<UserInfoDataManger> userInfoDataMangerList;
     private DataBaseInit dataBaseInit = new DataBaseInit();
-    public ManagerOperations managerOperations;
-    public ManagerPanel managerPanel;
+    private ManagerOperations managerOperations;
+    private ManagerPanel managerPanel;
+    private boolean isFirstManagerLogin = true;
 
     public boolean logging(String userLogin, String userPassword) {
         userInitData = dataBaseInit.getUserData(userLogin, userPassword);
@@ -26,10 +29,19 @@ public class PharmacyApp {
             if (userInitData.getRole().equals(Pharmacist)) {
                 Main.pharmacistFrame.setVisible(true);
             } else if (userInitData.getRole().equals(UnitManager)) {
+                if (!isFirstManagerLogin) {
+                    managerFrame.remove(managerPanel);
+                    managerFrame.revalidate();
+                }
+                isFirstManagerLogin = false;
                 managerOperations = new ManagerOperations(userInitData, dataBaseInit);
+                System.out.println(managerOperations.getUserInitData().getFirstName()); // test
                 managerPanel = new ManagerPanel(managerOperations);
-                Main.managerFrame.add(managerPanel);
-                Main.managerFrame.setVisible(true);
+                System.out.println(managerPanel.getLoggedNameLabel()); // test
+                managerFrame.add(managerPanel);
+                managerFrame.revalidate();
+                managerFrame.repaint();
+                managerFrame.setVisible(true);
             } else if (userInitData.getRole().equals(Admin)) {
                 Main.adminFrame.setVisible(true);
             }

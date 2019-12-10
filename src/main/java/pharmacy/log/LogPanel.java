@@ -8,7 +8,9 @@ public class LogPanel extends JPanel {
 
     private JLabel pharmacyName, usernameLabel, passwordLabel;
     private JButton loginButton;
-    private JTextField usernameTextField, passwordTextField;
+    private JCheckBox checkPasswordBox;
+    private JTextField usernameTextField;
+    private JPasswordField passwordTextField;
 
     public LogPanel(){
         setLayout(null);
@@ -29,19 +31,33 @@ public class LogPanel extends JPanel {
         usernameTextField.setBounds(300, 300, 250, 40);
         usernameTextField.setFont(usernameTextField.getFont().deriveFont(15f));
 
-        passwordTextField = new JTextField();
-        passwordTextField.setBounds(300, 380, 250, 40);
+        checkPasswordBox = new JCheckBox("check password");
+        checkPasswordBox.setBounds(555,380,150,40);
+        checkPasswordBox.addActionListener(e -> {
+            if (checkPasswordBox.isSelected()) {
+                passwordTextField.setEchoChar('\u0000');
+            } else {
+                passwordTextField.setEchoChar('*');
+            }
+        });
+
+        passwordTextField = new JPasswordField();
         passwordTextField.setFont(passwordTextField.getFont().deriveFont(15f));
+        passwordTextField.setBounds(300, 380, 250, 40);
 
         loginButton = new JButton("Log in");
         loginButton.setBounds(275, 500, 150, 50);
         loginButton.setFont(loginButton.getFont().deriveFont(20f));
         loginButton.addActionListener(e -> {
-            if (!Main.pharmacyApp.logging(usernameTextField.getText(), passwordTextField.getText())) {
+            if (!Main.pharmacyApp.logging(usernameTextField.getText(), String.valueOf(passwordTextField.getPassword()))) {
                 JOptionPane.showMessageDialog(null,"Incorrect credentials","Incorrect credentials", 2);
             }
+            System.out.println(String.valueOf(passwordTextField.getPassword()));
+            usernameTextField.setText("");
+            passwordTextField.setText("");
         });
 
+        add(checkPasswordBox);
         add(pharmacyName);
         add(usernameLabel);
         add(passwordLabel);
@@ -94,7 +110,7 @@ public class LogPanel extends JPanel {
         return passwordTextField;
     }
 
-    public void setPasswordTextField(JTextField passwordTextField) {
+    public void setPasswordTextField(JPasswordField passwordTextField) {
         this.passwordTextField = passwordTextField;
     }
 }

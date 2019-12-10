@@ -4,7 +4,6 @@ import pharmacy.sqlStaff.DataBaseInit;
 import pharmacy.sqlStaff.StorageData;
 import pharmacy.sqlStaff.UserInfoDataManger;
 import pharmacy.sqlStaff.UserInitData;
-import pharmacy.Main;
 
 import java.util.List;
 
@@ -12,6 +11,8 @@ public class ManagerOperations {
 
     private int size;
     private String[] names;
+    private String[] userDetails;
+    private String[] storageDetails;
 
     private UserInitData userInitData;
     private DataBaseInit dataBaseInit;
@@ -25,15 +26,10 @@ public class ManagerOperations {
         setStorageDataList();
         setSize();
         setNames();
+        setUserDetails();
+        setStorageDetails();
     }
 
-    void userNameInfoDataManager() {
-        for (UserInfoDataManger uidm : Main.pharmacyApp.userInfoDataMangerList) {
-            for (int i = 0; i < size; i++) {
-                names[i] = uidm.getName();
-            }
-        }
-    }
 
     public UserInitData getUserInitData() {
         return userInitData;
@@ -75,18 +71,42 @@ public class ManagerOperations {
         this.size = getUserInfoDataMangerList().size();
     }
 
+    public String[] getUserDetails() {
+        return userDetails;
+    }
+
+    public void setUserDetails() {
+        this.userDetails = new String[size];
+        int i = 0;
+        for (UserInfoDataManger uidm : getUserInfoDataMangerList()) {
+            userDetails[i] = uidm.toString();
+            i++;
+        }
+    }
+
+    public String[] getStorageDetails() {
+        return storageDetails;
+    }
+
+    public void setStorageDetails() {
+        this.storageDetails = new String[getStorageDataList().size()];
+        int i = 0;
+        for (StorageData sd : getStorageDataList()) {
+            storageDetails[i] = sd.toString();
+            i++;
+        }
+    }
+
     public String[] getNames() {
         return names;
     }
 
     public void setNames() {
         this.names = new String[size];
+        int i = 0;
         for (UserInfoDataManger uidm : getUserInfoDataMangerList()) {
-            for (int i = 0; i < getSize(); i++) {
-                names[i] = uidm.getName();
-            }
+            names[i] = uidm.getName() + ", phone no. " + uidm.getPhoneNumber();
+            i++;
         }
     }
 }
-
-//    List<UserInfoDataManger> userInfoDataMangerList

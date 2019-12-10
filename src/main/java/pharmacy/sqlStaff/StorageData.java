@@ -41,11 +41,6 @@ public class StorageData {
 
     @Override
     public String toString() {
-        return "StorageData{" +
-                "medicineId=" + medicineId +
-                ", medicineName='" + medicineName + '\'' +
-                ", price=" + price +
-                ", quantity=" + quantity +
-                '}';
+        return  medicineId + ". " + medicineName + ", price: " + price + "$, qty: " + quantity;
     }
 }
