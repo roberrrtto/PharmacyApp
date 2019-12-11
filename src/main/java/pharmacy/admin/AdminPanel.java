@@ -81,6 +81,12 @@ public class AdminPanel extends JPanel {
         deleteMedButton = new JButton("DELETE");
         deleteMedButton.setBounds(410, 550, 90, 40);
         deleteMedButton.setFont(deleteMedButton.getFont().deriveFont(13f));
+        deleteEmpButton.addActionListener(e -> {
+            adminOperations.removeUser(employeeList.getSelectedIndex());
+            employeeList = new JList(adminOperations.getNames());
+            employeeList.setFont(employeeList.getFont().deriveFont(15f));
+            employeeListScroller.setViewportView(employeeList);
+        });
 
         editMedButton = new JButton("EDIT");
         editMedButton.setBounds(305, 550, 90, 40);

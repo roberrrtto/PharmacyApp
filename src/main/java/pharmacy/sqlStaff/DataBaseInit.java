@@ -321,6 +321,46 @@ public class DataBaseInit {
             throw new RuntimeException("Error during invoke SQL query");
         } finally {
             closeDataBaseResources(connection, preparedStatement);
+            closeDataBaseResources(connection, preparedStatementI);
+            closeDataBaseResources(connection, preparedStatementII);
+        }
+    }
+
+    //////////// ------------------ delete the user------------------ \\\\\\\\\\\\\\
+    public void removeUser(int userId) {
+
+        final String sqlRemoveUserI = "DELETE FROM public.users\n" +
+                "WHERE user_id =?;";
+        final String sqlRemoveUserII = "DELETE FROM public.user_credentials\n" +
+                "WHERE user_id =?;";
+        final String sqlRemoveUserIII = "DELETE FROM public.pharmacy_staff\n" +
+                "WHERE user_id =?;";
+
+        Connection connection = initializeDataBaseConnection();
+        PreparedStatement preparedStatementI = null;
+        PreparedStatement preparedStatementII = null;
+        PreparedStatement preparedStatementIII = null;
+
+        try {
+            preparedStatementI = connection.prepareStatement(sqlRemoveUserI);
+            preparedStatementII = connection.prepareStatement(sqlRemoveUserII);
+            preparedStatementIII = connection.prepareStatement(sqlRemoveUserIII);
+
+            preparedStatementI.setInt(1,userId);
+            preparedStatementII.setInt(1,userId);
+            preparedStatementIII.setInt(1,userId);
+
+            preparedStatementI.executeUpdate();
+            preparedStatementII.executeUpdate();
+            preparedStatementIII.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Error during invoke SQL query: \n" + e.getMessage());
+            throw new RuntimeException("Error during invoke SQL query");
+        } finally {
+            closeDataBaseResources(connection, preparedStatementI);
+            closeDataBaseResources(connection, preparedStatementII);
+            closeDataBaseResources(connection, preparedStatementIII);
         }
     }
 }

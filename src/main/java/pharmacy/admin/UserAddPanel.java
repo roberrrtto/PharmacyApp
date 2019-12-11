@@ -121,6 +121,7 @@ public class UserAddPanel extends JPanel {
                     loginTextField.getText(), passwordTextField.getText(), jobTitleTextField.getText(),
                     Integer.parseInt(salaryTextField.getText()), Integer.parseInt(pharmacyIdTextField.getText()));
             resetFields();
+            adminOperations.updateEmployeePanel();
         });
 
         goBackButton = new JButton("Go Back");
@@ -128,6 +129,7 @@ public class UserAddPanel extends JPanel {
         goBackButton.setFont(goBackButton.getFont().deriveFont(13f));
         goBackButton.addActionListener(e -> {
             adminFrame.setVisible(true);
+            resetFields();
             userAddFrame.setVisible(false);
         });
 

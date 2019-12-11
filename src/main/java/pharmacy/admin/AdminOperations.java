@@ -26,8 +26,15 @@ public class AdminOperations {
         getDataBaseInit().createNewUser(createUserForm);
     }
 
-    public void removeUser() {
-        
+    public void removeUser(int index) {
+        int uid = userInfoDataList.get(index).getUserId();
+        getDataBaseInit().removeUser(uid);
+        updateEmployeePanel();
+    }
+
+    public void updateEmployeePanel() {
+        setUserInfoDataList();
+        setNames();
     }
 
     public void setNames() {
