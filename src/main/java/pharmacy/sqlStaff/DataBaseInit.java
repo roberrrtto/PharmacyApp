@@ -272,4 +272,95 @@ public class DataBaseInit {
 
         return saleChecker;
     }
+
+    //////////// ------------------ create new user ------------------ \\\\\\\\\\\\\\
+    public void createNewUser(CreateUserForm createUserForm) {
+
+        final String sqlCreateNewUser = "INSERT INTO public.users(\n" +
+                "    first_name, last_name, address, email, phone_number)\n" +
+                "VALUES (?, ?, ?, ?, ?);";
+
+        final String sqlCreateNewUserI = "INSERT INTO public.user_credentials(\n" +
+                "    login, password, user_id)\n" +
+                "VALUES (?, ?, (SELECT MAX(users.user_id) FROM public.users));";
+
+        final String sqlCreateNewUserII = "INSERT INTO public.pharmacy_staff(\n" +
+                "    user_id, job_title, salary, pharmacy_id)\n" +
+                "VALUES ((SELECT MAX(users.user_id) FROM public.users), ?, ?, ?);";
+
+        Connection connection = initializeDataBaseConnection();
+
+        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatementI = null;
+        PreparedStatement preparedStatementII = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(sqlCreateNewUser);
+            preparedStatementI = connection.prepareStatement(sqlCreateNewUserI);
+            preparedStatementII = connection.prepareStatement(sqlCreateNewUserII);
+
+            preparedStatement.setString(1,createUserForm.getFirstName());
+            preparedStatement.setString(2,createUserForm.getLastName());
+            preparedStatement.setString(3,createUserForm.getAddress());
+            preparedStatement.setString(4,createUserForm.getEmail());
+            preparedStatement.setString(5,createUserForm.getPhoneNumber());
+
+            preparedStatementI.setString(1,createUserForm.getLogin());
+            preparedStatementI.setString(2,createUserForm.getPassword());
+
+            preparedStatementII.setString(1,createUserForm.getJobTitle());
+            preparedStatementII.setInt(2,createUserForm.getSalary());
+            preparedStatementII.setInt(3,createUserForm.getPharmacyId());
+
+            preparedStatement.executeUpdate();
+            preparedStatementI.executeUpdate();
+            preparedStatementII.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Error during invoke SQL query: \n" + e.getMessage());
+            throw new RuntimeException("Error during invoke SQL query");
+        } finally {
+            closeDataBaseResources(connection, preparedStatement);
+            closeDataBaseResources(connection, preparedStatementI);
+            closeDataBaseResources(connection, preparedStatementII);
+        }
+    }
+
+    //////////// ------------------ delete the user------------------ \\\\\\\\\\\\\\
+    public void removeUser(int userId) {
+
+        final String sqlRemoveUserI = "DELETE FROM public.users\n" +
+                "WHERE user_id =?;";
+        final String sqlRemoveUserII = "DELETE FROM public.user_credentials\n" +
+                "WHERE user_id =?;";
+        final String sqlRemoveUserIII = "DELETE FROM public.pharmacy_staff\n" +
+                "WHERE user_id =?;";
+
+        Connection connection = initializeDataBaseConnection();
+        PreparedStatement preparedStatementI = null;
+        PreparedStatement preparedStatementII = null;
+        PreparedStatement preparedStatementIII = null;
+
+        try {
+            preparedStatementI = connection.prepareStatement(sqlRemoveUserI);
+            preparedStatementII = connection.prepareStatement(sqlRemoveUserII);
+            preparedStatementIII = connection.prepareStatement(sqlRemoveUserIII);
+
+            preparedStatementI.setInt(1,userId);
+            preparedStatementII.setInt(1,userId);
+            preparedStatementIII.setInt(1,userId);
+
+            preparedStatementI.executeUpdate();
+            preparedStatementII.executeUpdate();
+            preparedStatementIII.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Error during invoke SQL query: \n" + e.getMessage());
+            throw new RuntimeException("Error during invoke SQL query");
+        } finally {
+            closeDataBaseResources(connection, preparedStatementI);
+            closeDataBaseResources(connection, preparedStatementII);
+            closeDataBaseResources(connection, preparedStatementIII);
+        }
+    }
 }

@@ -8,7 +8,7 @@ public class UserDetailsFrame extends JFrame {
 
         setSize(700,700);
         setResizable(false);
-        setTitle("Emloyees' Details");
+        setTitle("Emloyee Details");
         setLocationRelativeTo(null);
     }
 }

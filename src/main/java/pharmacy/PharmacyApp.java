@@ -28,6 +28,7 @@ public class PharmacyApp {
     private ManagerOperations managerOperations;
     private ManagerPanel managerPanel;
     private boolean isFirstManagerLogin = true;
+    private boolean isFirstPharmacistLogin = true;
     private PharmacistOperations pharmacistOperations;
     private PharmacistPanel pharmacistPanel;
     private AdminOperations adminOperations;
@@ -37,6 +38,11 @@ public class PharmacyApp {
         userInitData = dataBaseInit.getUserData(userLogin, userPassword);
         if (userInitData.isCorrect()) {
             if (userInitData.getRole().equals(Pharmacist)) {
+                if (!isFirstPharmacistLogin) {
+                    pharmacistFrame.remove(pharmacistPanel);
+                    pharmacistFrame.revalidate();
+                }
+                isFirstManagerLogin = false;
                 pharmacistOperations = new PharmacistOperations(userInitData, dataBaseInit);
                 pharmacistPanel = new PharmacistPanel(pharmacistOperations);
                 pharmacistFrame.add(pharmacistPanel);

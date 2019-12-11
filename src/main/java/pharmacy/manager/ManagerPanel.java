@@ -1,7 +1,6 @@
 package pharmacy.manager;
 
 import pharmacy.GetCurrentDate;
-import pharmacy.Main;
 
 import javax.swing.*;
 
@@ -39,7 +38,7 @@ public class ManagerPanel extends JPanel {
             userDetailsFrame.remove(userDetailsPanel);
             userDetailsFrame.revalidate();
             isFirstUserInfoCheck = true;
-            Main.logFrame.setVisible(true);
+            logFrame.setVisible(true);
             managerFrame.setVisible(false);
         });
 
@@ -123,7 +122,7 @@ public class ManagerPanel extends JPanel {
             double sale = managerOperations.getDataBaseInit().getTotalSale(dateTextField.getText()).getTotalSale();
             saleTextField.setText("Total sale for " + dateTextField.getText() + ": " + sale + "$");
         });
-
+//220 width
         add(loggedNameLabel);
         add(dateLabel);
         add(employeeLabel);

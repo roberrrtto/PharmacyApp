@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static pharmacy.Main.*;
+
 public class PharmacistPanel extends JPanel {
 
     private JLabel loggedNameLabel, dateLabel, medicineLabel;
@@ -23,7 +25,7 @@ public class PharmacistPanel extends JPanel {
 
         setLayout(null);
 
-        loggedNameLabel = new JLabel("Imię");
+        loggedNameLabel = new JLabel(pharmacistOperations.getUserInitData().getFirstName(), SwingConstants.CENTER);
         loggedNameLabel.setBounds(580, 15, 70, 50);
         loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
 
@@ -34,6 +36,10 @@ public class PharmacistPanel extends JPanel {
         logOutButton = new JButton("Log out");
         logOutButton.setBounds(555, 65, 80, 30);
         logOutButton.setFont(logOutButton.getFont().deriveFont(12f));
+        logOutButton.addActionListener(e -> {
+            logFrame.setVisible(true);
+            pharmacistFrame.setVisible(false);
+        });
 
         medicineLabel = new JLabel("Medicines: " );
         medicineLabel.setBounds(100, 115, 500, 50 );
