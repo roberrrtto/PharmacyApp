@@ -43,7 +43,7 @@ public class ManagerPanel extends JPanel {
             managerFrame.setVisible(false);
         });
 
-        switchToSaleButton = new JButton("Sale");
+        switchToSaleButton = new JButton("SALE");
         switchToSaleButton.setBounds(555, 95, 80, 30);
         switchToSaleButton.setFont(dateLabel.getFont().deriveFont(13f));
         switchToSaleButton.addActionListener(e -> {
@@ -59,22 +59,22 @@ public class ManagerPanel extends JPanel {
         employeeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         employeeList.setFont(employeeList.getFont().deriveFont(15f));
 
-        userDetailsButton = new JButton("Details");
+        userDetailsButton = new JButton("DETAILS");
         userDetailsButton.setBounds(555, 175, 80, 50 );
         userDetailsButton.setFont(userDetailsButton.getFont().deriveFont(15f));
         userDetailsButton.addActionListener(e -> {
-            managerOperations.setUserDetails(employeeList.getSelectedIndex());
-            if (!isFirstUserInfoCheck) {
-                userDetailsFrame.remove(userDetailsPanel);
-                userDetailsFrame.revalidate();
+            if (employeeList.isSelectionEmpty()) {
+                JOptionPane.showMessageDialog(null,"Pick the user!","Information", 1);
+            } else {
+                managerOperations.setUserDetails(employeeList.getSelectedIndex());
+                if (!isFirstUserInfoCheck) {
+                    userDetailsFrame.remove(userDetailsPanel);
+                    userDetailsFrame.revalidate();
+                }
+                isFirstUserInfoCheck = false;
+                userDetailsPanel = new UserDetailsPanel(managerOperations);
+                showUserDetailsPanel();
             }
-            isFirstUserInfoCheck = false;
-            userDetailsPanel = new UserDetailsPanel(managerOperations);
-            userDetailsFrame.add(userDetailsPanel);
-            userDetailsFrame.revalidate();
-            userDetailsFrame.repaint();
-            userDetailsFrame.setVisible(true);
-            managerFrame.setVisible(false);
         });
 
         availableMedicineLabel = new JLabel("Available medicines: ", SwingConstants.CENTER);
@@ -101,14 +101,10 @@ public class ManagerPanel extends JPanel {
         addButton.setBounds(410, 430, 90, 40);
         addButton.setFont(addButton.getFont().deriveFont(13f));
         addButton.addActionListener(e -> {
-            int quantity = Integer.parseInt(medicineQtyUpdateField.getText());
-            managerOperations.storageUpdateForJPanel(quantity, medicineList.getSelectedIndex()+1);
-            medicineList = new JList(managerOperations.getStorageDetails());
-            medicineList.setFont(medicineList.getFont().deriveFont(15f));
-            listScroller.setViewportView(medicineList);
+            revalidateStorageQty();
         });
 
-        saleLabel = new JLabel("Sale of day: ");
+        saleLabel = new JLabel("Total sale for: ");
         saleLabel.setBounds(100, 490, 150, 40);
         saleLabel.setFont(saleLabel.getFont().deriveFont(15f));
 
@@ -120,12 +116,12 @@ public class ManagerPanel extends JPanel {
         saleTextField.setBounds(100, 550, 500, 60);
         saleTextField.setFont(saleTextField.getFont().deriveFont(15f));
 
-        searchButton = new JButton("SEARCH");
+        searchButton = new JButton("GET");
         searchButton.setBounds(410, 490, 90, 40);
         searchButton.setFont(searchButton.getFont().deriveFont(13f));
         searchButton.addActionListener(e -> {
             double sale = managerOperations.getDataBaseInit().getTotalSale(dateTextField.getText()).getTotalSale();
-            saleTextField.setText("Total sale: " + sale);
+            saleTextField.setText("Total sale for " + dateTextField.getText() + ": " + sale + "$");
         });
 
         add(loggedNameLabel);
@@ -147,7 +143,26 @@ public class ManagerPanel extends JPanel {
 
     }
 
-    public String getLoggedNameLabel() {
-        return loggedNameLabel.getText();
+    private void showUserDetailsPanel() {
+        userDetailsFrame.add(userDetailsPanel);
+        userDetailsFrame.revalidate();
+        userDetailsFrame.repaint();
+        userDetailsFrame.setVisible(true);
+        managerFrame.setVisible(false);
+    }
+
+    private void revalidateStorageQty() {
+        try {
+            int quantity = Integer.parseInt(medicineQtyUpdateField.getText());
+            if (quantity < 0) {
+                JOptionPane.showMessageDialog(null,"The value cannot be less than 0","Warning", 2);
+            } else
+            managerOperations.storageUpdateForJPanel(quantity, medicineList.getSelectedIndex()+1);
+            medicineList = new JList(managerOperations.getStorageDetails());
+            medicineList.setFont(medicineList.getFont().deriveFont(15f));
+            listScroller.setViewportView(medicineList);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(null,"Invalid data","Error", 0);
+        }
     }
 }

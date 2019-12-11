@@ -1,5 +1,7 @@
 package pharmacy.sqlStaff;
 
+import pharmacy.manager.SaleChecker;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ public class DataBaseInit {
 
     public Connection initializeDataBaseConnection() {
         try {
-            System.out.println("Establishing Connection");
+            System.out.println("Establishing databse connection");
             return DriverManager.getConnection(POSTGRES_JDBC_URL, POSTGRES_USER_NAME, POSTGRES_USER_PASS);
         } catch (SQLException e) {
             System.err.println("Server can't initialize databse connection: \n" + e);
@@ -42,7 +44,7 @@ public class DataBaseInit {
         }
     }
 
-    ////////////// ------------------ check credentials and get initial data ------------------ \\\\\\\\\\\\\\
+    ////////////// ------------------ check credentials and get initial user-data ------------------ \\\\\\\\\\\\\\
     public UserInitData getUserData(String userLogin, String userPassword) {
 
         final String sqlGetData = "SELECT user_credentials.user_id AS userid, login, password, job_title AS role, " +
@@ -133,7 +135,7 @@ public class DataBaseInit {
         return userInfoDataList;
     }
 
-    ////////////// ------------------ get all users info for a Manager------------------ \\\\\\\\\\\\\\
+    ////////////// ------------------ get unit users info for a Manager------------------ \\\\\\\\\\\\\\
     public List<UserInfoDataManger> getUnitUsersData(int pharmacyId) {
 
         final String sqlGetData = "SELECT users.user_id, concat(first_name,' ', last_name) as name, first_name, last_name, " +
@@ -178,7 +180,7 @@ public class DataBaseInit {
         return userInfoDataMangerList;
     }
 
-    ////////////// ------------------ get storage data ------------------ \\\\\\\\\\\\\\
+    ////////////// ------------------ get unit storage data ------------------ \\\\\\\\\\\\\\
     public List<StorageData> getStorageData(int pharmacyId) {
 
         final String sqlGetData = "SELECT m.medicine_id, medicine_name, price, quantity FROM pharmacy_storage\n" +
@@ -217,7 +219,7 @@ public class DataBaseInit {
         return storageDataList;
     }
 
-    //////////// ------------------ storage update ------------------ \\\\\\\\\\\\\\
+    //////////// ------------------ unit storage update ------------------ \\\\\\\\\\\\\\
     public void updateStorageQuantity(int quantity, int medicineId, int pharmacyId) {
 
         final String sqlUpdateStorageQuantity = "UPDATE pharmacy_storage\n" +

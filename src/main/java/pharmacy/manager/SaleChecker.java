@@ -1,4 +1,4 @@
-package pharmacy.sqlStaff;
+package pharmacy.manager;
 
 public class SaleChecker {
 

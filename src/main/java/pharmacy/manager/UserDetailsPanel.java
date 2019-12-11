@@ -15,10 +15,7 @@ public class UserDetailsPanel extends JPanel {
     private JList<String> employeeList;
     private GetCurrentDate getCurrentDate = new GetCurrentDate();
 
-    private ManagerOperations managerOperations;
-
     public UserDetailsPanel(ManagerOperations managerOperations){
-        this.managerOperations = managerOperations;
 
         setLayout(null);
 
@@ -30,12 +27,12 @@ public class UserDetailsPanel extends JPanel {
         dateLabel.setBounds(50, 15, 100,50);
         dateLabel.setFont(dateLabel.getFont().deriveFont(15f));
 
-        employeeLabel = new JLabel("Employees", SwingConstants.CENTER);
-        employeeLabel.setBounds(100, 85, 500, 50 );
+        employeeLabel = new JLabel("Employee", SwingConstants.CENTER);
+        employeeLabel.setBounds(100, 50, 500, 50 );
         employeeLabel.setFont(employeeLabel.getFont().deriveFont(15f));
 
         employeeList = new JList(managerOperations.getUserDetails());
-        employeeList.setBounds(170, 100, 360, 450);
+        employeeList.setBounds(130, 100, 440, 450);
         employeeList.setFont(employeeList.getFont().deriveFont(15f));
 
         dateTextField = new JTextField();
@@ -57,9 +54,5 @@ public class UserDetailsPanel extends JPanel {
         add(dateTextField);
         add(searchButton);
 
-    }
-
-    public String getLoggedNameLabel() {
-        return loggedNameLabel.getText();
     }
 }
