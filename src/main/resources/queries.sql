@@ -143,3 +143,13 @@ WHERE pharmacy_id=3;
 UPDATE pharmacy_storage
     SET quantity=?
     WHERE medicine_id=? AND pharmacy_id=?;
+
+INSERT INTO public.users(
+    first_name, last_name, address, email, phone_number)
+VALUES ('testName', 'testLastName', 'testAddress', 'testEmail', '123456789');
+INSERT INTO public.user_credentials(
+    login, password, user_id)
+VALUES ('testlogin', 'testPassw', (SELECT MAX(users.user_id) FROM public.users));
+INSERT INTO public.pharmacy_staff(
+    user_id, job_title, salary, pharmacy_id)
+VALUES ((SELECT MAX(users.user_id) FROM public.users), 'Pharmacist', 2000, 2);

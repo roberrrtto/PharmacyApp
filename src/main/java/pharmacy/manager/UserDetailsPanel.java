@@ -10,7 +10,7 @@ import static pharmacy.Main.userDetailsFrame;
 public class UserDetailsPanel extends JPanel {
 
     private JLabel loggedNameLabel, dateLabel, employeeLabel;
-    private JButton searchButton;
+    private JButton goBackButton;
     private JTextField dateTextField;
     private JList<String> employeeList;
     private GetCurrentDate getCurrentDate = new GetCurrentDate();
@@ -39,10 +39,10 @@ public class UserDetailsPanel extends JPanel {
         dateTextField.setBounds(250, 490, 150, 40);
         dateTextField.setFont(dateTextField.getFont().deriveFont(15f));
 
-        searchButton = new JButton("Go Back");
-        searchButton.setBounds(300, 600, 100, 40);
-        searchButton.setFont(searchButton.getFont().deriveFont(13f));
-        searchButton.addActionListener(e -> {
+        goBackButton = new JButton("Go Back");
+        goBackButton.setBounds(300, 600, 100, 40);
+        goBackButton.setFont(goBackButton.getFont().deriveFont(13f));
+        goBackButton.addActionListener(e -> {
             managerFrame.setVisible(true);
             userDetailsFrame.setVisible(false);
         });
@@ -52,7 +52,7 @@ public class UserDetailsPanel extends JPanel {
         add(employeeLabel);
         add(employeeList);
         add(dateTextField);
-        add(searchButton);
+        add(goBackButton);
 
     }
 }
