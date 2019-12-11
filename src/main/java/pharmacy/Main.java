@@ -27,18 +27,6 @@ public class Main {
         LogPanel logPanel = new LogPanel();
         logFrame.add(logPanel);
 
-<<<<<<< HEAD
-        ///////// get initial data (logon process) /////////
-=======
-        AdminPanel adminPanel = new AdminPanel();
-        adminFrame.add(adminPanel);
-
-        PharmacistPanel pharmacistPanel = new PharmacistPanel();
-        pharmacistFrame.add(pharmacistPanel);
-
->>>>>>> 475a05f3a2266c8514e96e03838be77d2b81f219
-
-
         /////// Testing GUI /////////
 
         EventQueue.invokeLater(() ->{
@@ -49,13 +37,9 @@ public class Main {
             managerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             managerFrame.setVisible(true);
             adminFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-<<<<<<< HEAD
             adminFrame.setVisible(true);
-=======
-            adminFrame.setVisible(false);
             userDetailsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             userDetailsFrame.setVisible(false);
->>>>>>> 475a05f3a2266c8514e96e03838be77d2b81f219
         });
 
     }
