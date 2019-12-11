@@ -10,6 +10,7 @@ public class UserInfoDataManger {
     private int salary;
     private String email;
     private String phoneNumber;
+    private String address;
 
     public int getUserId() {
         return userId;
@@ -75,22 +76,28 @@ public class UserInfoDataManger {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getAddress() {
+        return address;
+    }
 
-//    @Override
-//    public String toString() {
-//        return "UserInfoDataManger{" +
-//                "userId=" + userId +
-//                ", name='" + name + '\'' +
-//                ", jobTitle='" + jobTitle + '\'' +
-//                ", salary=" + salary +
-//                ", email='" + email + '\'' +
-//                ", phoneNumber='" + phoneNumber + '\'' +
-//                "}\n";
-//    }
-
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     @Override
     public String toString() {
-        return name + " " + jobTitle + " " + salary + " " + email + " " + phoneNumber;
+        return  "Employee detailed information:\n" +
+                "first name: " + firstName + '\n' +
+                "last name: " + lastName + '\n' +
+                "jobTitle: " + jobTitle + '\n' +
+                "salary: " + salary + "$\n" +
+                "email: " + email + '\n' +
+                "phone number: " + phoneNumber + '\n' +
+                "address: " + address + '\n';
     }
+
+    //    @Override
+//    public String toString() {
+//        return name + " " + jobTitle + " " + salary + " " + email + " " + phoneNumber;
+//    }
 }

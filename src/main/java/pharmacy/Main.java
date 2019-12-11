@@ -5,6 +5,7 @@ import pharmacy.admin.AdminPanel;
 import pharmacy.log.LogFrame;
 import pharmacy.log.LogPanel;
 import pharmacy.manager.ManagerFrame;
+import pharmacy.manager.UserDetailsFrame;
 import pharmacy.pharmacist.PharmacistFrame;
 import pharmacy.pharmacist.PharmacistPanel;
 
@@ -17,6 +18,7 @@ public class Main {
     public static PharmacistFrame pharmacistFrame = new PharmacistFrame();
     public static ManagerFrame managerFrame = new ManagerFrame();
     public static AdminFrame adminFrame = new AdminFrame();
+    public static UserDetailsFrame userDetailsFrame = new UserDetailsFrame();
     public static PharmacyApp pharmacyApp = new PharmacyApp();
 
     public static void main(String[] args) {
@@ -42,6 +44,7 @@ public class Main {
 //        int phId = userInitData.getPharmacyId();
 //        System.out.println(phId);
 
+
         ///////// get all users data (list all info when requested by the Unit Manager /////////
 //        List<UserInfoData> userInfoDataList = dataBaseInit.getAllUsers();
 //
@@ -62,6 +65,7 @@ public class Main {
 //        dataBaseInit.updateStorageQuantity(25,2,2);
 
         /////// Testing GUI /////////
+
         EventQueue.invokeLater(() ->{
             logFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             logFrame.setVisible(true);
@@ -71,6 +75,8 @@ public class Main {
             managerFrame.setVisible(false);
             adminFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             adminFrame.setVisible(false);
+            userDetailsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            userDetailsFrame.setVisible(false);
         });
 
     }

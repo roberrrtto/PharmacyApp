@@ -35,9 +35,7 @@ public class PharmacyApp {
                 }
                 isFirstManagerLogin = false;
                 managerOperations = new ManagerOperations(userInitData, dataBaseInit);
-                System.out.println(managerOperations.getUserInitData().getFirstName()); // test
                 managerPanel = new ManagerPanel(managerOperations);
-                System.out.println(managerPanel.getLoggedNameLabel()); // test
                 managerFrame.add(managerPanel);
                 managerFrame.revalidate();
                 managerFrame.repaint();

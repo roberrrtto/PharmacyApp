@@ -137,7 +137,7 @@ public class DataBaseInit {
     public List<UserInfoDataManger> getUnitUsersData(int pharmacyId) {
 
         final String sqlGetData = "SELECT users.user_id, concat(first_name,' ', last_name) as name, first_name, last_name, " +
-                "job_title, salary, email, phone_number FROM users\n" +
+                "job_title, salary, email, phone_number, address FROM users\n" +
                 "    INNER JOIN pharmacy_staff ps\n" +
                 "    ON users.user_id = ps.user_id\n" +
                 "WHERE pharmacy_id=? AND job_title = 'Pharmacist';";
@@ -164,6 +164,7 @@ public class DataBaseInit {
                 userInfoDataManger.setSalary(resultSet.getInt("salary"));
                 userInfoDataManger.setEmail(resultSet.getString("email"));
                 userInfoDataManger.setPhoneNumber(resultSet.getString("phone_number"));
+                userInfoDataManger.setAddress(resultSet.getString("address"));
 
                 userInfoDataMangerList.add(userInfoDataManger);
             }
@@ -239,5 +240,34 @@ public class DataBaseInit {
         } finally {
             closeDataBaseResources(connection, preparedStatement);
         }
+    }
+
+    ////////////// ------------------ get total sale on the date ------------------ \\\\\\\\\\\\\\
+    public SaleChecker getTotalSale(String date) {
+
+        final String sqlGetAllUsersInfo = "SELECT sum(total) FROM receipts WHERE date ='" + date + "';";
+
+        Connection connection = initializeDataBaseConnection();
+        PreparedStatement preparedStatement = null;
+
+        SaleChecker saleChecker = new SaleChecker();
+
+        try {
+            preparedStatement = connection.prepareStatement(sqlGetAllUsersInfo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+
+                saleChecker.setTotalSale(resultSet.getDouble(1));
+
+            }
+        } catch (SQLException e) {
+            System.err.println("Error during invoke SQL query: \n" + e.getMessage());
+            throw new RuntimeException("Error during invoke SQL query");
+        } finally {
+            closeDataBaseResources(connection, preparedStatement);
+        }
+
+        return saleChecker;
     }
 }

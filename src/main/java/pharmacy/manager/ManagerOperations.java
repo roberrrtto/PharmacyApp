@@ -26,10 +26,15 @@ public class ManagerOperations {
         setStorageDataList();
         setSize();
         setNames();
-        setUserDetails();
+//        setUserDetails();
         setStorageDetails();
     }
 
+    public void storageUpdateForJPanel(int quantity, int medicineId) {
+        getDataBaseInit().updateStorageQuantity(quantity,medicineId,userInitData.getPharmacyId());
+        setStorageDataList();
+        setStorageDetails();
+    }
 
     public UserInitData getUserInitData() {
         return userInitData;
@@ -75,13 +80,15 @@ public class ManagerOperations {
         return userDetails;
     }
 
-    public void setUserDetails() {
-        this.userDetails = new String[size];
-        int i = 0;
-        for (UserInfoDataManger uidm : getUserInfoDataMangerList()) {
-            userDetails[i] = uidm.toString();
-            i++;
-        }
+    public void setUserDetails(int index) { // po nazwisku? dodać atrybut i porównać z uidm.getlastName
+        this.userDetails = new String[7];
+        userDetails[0] = getUserInfoDataMangerList().get(index).getFirstName();
+        userDetails[1] = getUserInfoDataMangerList().get(index).getLastName();
+        userDetails[2] = getUserInfoDataMangerList().get(index).getJobTitle();
+        userDetails[3] = "" + getUserInfoDataMangerList().get(index).getSalary();
+        userDetails[4] = getUserInfoDataMangerList().get(index).getEmail();
+        userDetails[5] = getUserInfoDataMangerList().get(index).getPhoneNumber();
+        userDetails[6] = getUserInfoDataMangerList().get(index).getAddress();
     }
 
     public String[] getStorageDetails() {
