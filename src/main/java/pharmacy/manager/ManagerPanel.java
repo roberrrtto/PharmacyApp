@@ -10,7 +10,7 @@ import static pharmacy.Main.*;
 public class ManagerPanel extends JPanel {
 
     private JLabel loggedNameLabel, dateLabel, employeeLabel, availableMedicineLabel, saleLabel, medicineQtyUpdateLabel;
-    private JButton logOutButton, switchToSaleButton, addButton, searchButton, userDetailsButton;
+    private JButton logOutButton, switchToSaleButton, updatButton, getButton, userDetailsButton;
     private JTextField dateTextField, saleTextField, medicineQtyUpdateField;
     private JList<String> employeeList, medicineList;
     private JScrollPane listScroller;
@@ -60,8 +60,8 @@ public class ManagerPanel extends JPanel {
         employeeList.setFont(employeeList.getFont().deriveFont(15f));
 
         userDetailsButton = new JButton("DETAILS");
-        userDetailsButton.setBounds(555, 175, 80, 50 );
-        userDetailsButton.setFont(userDetailsButton.getFont().deriveFont(15f));
+        userDetailsButton.setBounds(555, 175, 80, 40 );
+        userDetailsButton.setFont(userDetailsButton.getFont().deriveFont(11f));
         userDetailsButton.addActionListener(e -> {
             if (employeeList.isSelectionEmpty()) {
                 JOptionPane.showMessageDialog(null,"Pick the user!","Information", 1);
@@ -97,10 +97,10 @@ public class ManagerPanel extends JPanel {
         medicineQtyUpdateField.setBounds(350, 430, 50, 40);
         medicineQtyUpdateField.setFont(medicineQtyUpdateField.getFont().deriveFont(15f));
 
-        addButton = new JButton("UPDATE");
-        addButton.setBounds(410, 430, 90, 40);
-        addButton.setFont(addButton.getFont().deriveFont(13f));
-        addButton.addActionListener(e -> {
+        updatButton = new JButton("UPDATE");
+        updatButton.setBounds(410, 430, 90, 40);
+        updatButton.setFont(updatButton.getFont().deriveFont(13f));
+        updatButton.addActionListener(e -> {
             revalidateStorageQty();
         });
 
@@ -116,10 +116,10 @@ public class ManagerPanel extends JPanel {
         saleTextField.setBounds(100, 550, 500, 60);
         saleTextField.setFont(saleTextField.getFont().deriveFont(15f));
 
-        searchButton = new JButton("GET");
-        searchButton.setBounds(410, 490, 90, 40);
-        searchButton.setFont(searchButton.getFont().deriveFont(13f));
-        searchButton.addActionListener(e -> {
+        getButton = new JButton("GET");
+        getButton.setBounds(410, 490, 90, 40);
+        getButton.setFont(getButton.getFont().deriveFont(13f));
+        getButton.addActionListener(e -> {
             double sale = managerOperations.getDataBaseInit().getTotalSale(dateTextField.getText()).getTotalSale();
             saleTextField.setText("Total sale for " + dateTextField.getText() + ": " + sale + "$");
         });
@@ -131,7 +131,7 @@ public class ManagerPanel extends JPanel {
         add(saleLabel);
         add(logOutButton);
         add(switchToSaleButton);
-        add(addButton);
+        add(updatButton);
         add(userDetailsButton);
         add(employeeList);
         add(listScroller);
@@ -139,7 +139,7 @@ public class ManagerPanel extends JPanel {
         add(saleTextField);
         add(medicineQtyUpdateLabel);
         add(medicineQtyUpdateField);
-        add(searchButton);
+        add(getButton);
 
     }
 

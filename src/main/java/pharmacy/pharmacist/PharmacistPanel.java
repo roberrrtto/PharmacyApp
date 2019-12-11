@@ -3,18 +3,18 @@ package pharmacy.pharmacist;
 import pharmacy.GetCurrentDate;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PharmacistPanel extends JPanel {
 
     private JLabel loggedNameLabel, dateLabel, medicineLabel;
-    private JButton logOutButton, submitButton, nextSaleButton;
-    private JTextField summaryList;
+    private JButton logOutButton, addMedicineButton, sellButton;
     private JList medicineList;
-    private JScrollPane listScroller;
-    static List<String> klientList = new ArrayList<>();
+    private JTextArea basketTextField;
+    private JScrollPane medicineListScroller, basketListScroller;
     private GetCurrentDate getCurrentDate = new GetCurrentDate();
+    private double toPay = 0;
 
     private PharmacistOperations pharmacistOperations;
 
@@ -41,32 +41,62 @@ public class PharmacistPanel extends JPanel {
 
         medicineList = new JList(pharmacistOperations.getStorageDetails());
         medicineList.setBounds(100, 160, 500, 180);
+        medicineList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         medicineList.setFont(medicineList.getFont().deriveFont(15f));
 
-        listScroller = new JScrollPane();
-        listScroller.setViewportView(medicineList);
-        listScroller.setBounds(100, 160, 500, 180);
+        medicineListScroller = new JScrollPane();
+        medicineListScroller.setViewportView(medicineList);
+        medicineListScroller.setBounds(100, 160, 500, 180);
 
-        submitButton = new JButton("Submit");
-        submitButton.setBounds(300, 360, 100, 40);
-        submitButton.setFont(submitButton.getFont().deriveFont(15f));
+        basketTextField = new JTextArea();
+        basketTextField.setBounds(100, 420, 500, 140);
+        basketTextField.setFont(basketTextField.getFont().deriveFont(15f));
 
-        summaryList = new JTextField();
-        summaryList.setBounds(100, 420, 500, 140);
-        summaryList.setFont(summaryList.getFont().deriveFont(15f));
+        basketListScroller = new JScrollPane();
+        basketListScroller.setViewportView(basketTextField);
+        basketTextField.setBounds(100, 420, 500, 140);
 
-        nextSaleButton = new JButton("Next");
-        nextSaleButton.setBounds(555, 615, 80, 30);
-        nextSaleButton.setFont(nextSaleButton.getFont().deriveFont(12f));
+        addMedicineButton = new JButton("Add to the basket");
+        addMedicineButton.setBounds(250, 360, 200, 40);
+        addMedicineButton.setFont(addMedicineButton.getFont().deriveFont(15f));
+        addMedicineButton.addActionListener(e -> {
+            if(medicineList.isSelectionEmpty()){
+                JOptionPane.showMessageDialog(null, "Pick the medicine.");
+            } else {
+                String str = medicineList.getSelectedValue().toString();
+                Matcher m = Pattern.compile("(?!=\\d\\.\\d\\.)([\\d.]+)").matcher(str);
+                if (m.find())
+                    toPay += Double.parseDouble(m.group(1));
+                basketTextField.setText(basketTextField.getText() + medicineList.getSelectedValue() + "\r\n");
+            }
+        });
+
+        sellButton = new JButton("Sell");
+        sellButton.setBounds(555, 615, 80, 30);
+        sellButton.setFont(sellButton.getFont().deriveFont(12f));
+        sellButton.addActionListener(e -> {
+            String str = "To pay: " + Double.toString(toPay);
+            JOptionPane.showMessageDialog(null, str);
+
+        });
+
 
         add(loggedNameLabel);
         add(dateLabel);
         add(logOutButton);
         add(medicineLabel);
-        add(listScroller);
-//        add(medicineList);
-        add(nextSaleButton);
-        add(submitButton);
-        add(summaryList);
+        add(basketTextField);
+        add(medicineListScroller);
+        add(basketListScroller);
+        add(sellButton);
+        add(addMedicineButton);
     }
+
+//    private void updateStorageQuantity(){
+//        try{
+//            int qty = 1;
+//
+//        }
+//    }
+
 }
