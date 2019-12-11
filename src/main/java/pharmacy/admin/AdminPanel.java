@@ -1,5 +1,7 @@
 package pharmacy.admin;
 
+import pharmacy.GetCurrentDate;
+
 import javax.swing.*;
 
 public class AdminPanel extends JPanel {
@@ -8,15 +10,17 @@ public class AdminPanel extends JPanel {
     private JButton logOutButton, deleteEmpButton, addEmpButton, deleteMedButton, addMedButton, searchDateButton;
     private JTextField employeeList, medicineList, dateTextField, saleTextField, medicineEditTextField, employeeEditTextField;
 
-    public AdminPanel() {
+    private GetCurrentDate getCurrentDate = new GetCurrentDate();
+
+    public AdminPanel(AdminOperations adminOperations) {
         setLayout(null);
 
         loggedNameLabel = new JLabel("Imię");
         loggedNameLabel.setBounds(580, 15, 70, 30);
         loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
 
-        dateLabel = new JLabel("Data");
-        dateLabel.setBounds(50, 15, 50, 30);
+        dateLabel = new JLabel(getCurrentDate.getCurrentDate());
+        dateLabel.setBounds(50, 15, 100, 30);
         dateLabel.setFont(dateLabel.getFont().deriveFont(15f));
 
         logOutButton = new JButton("Log out");

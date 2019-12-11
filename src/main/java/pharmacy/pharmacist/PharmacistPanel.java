@@ -1,5 +1,7 @@
 package pharmacy.pharmacist;
 
+import pharmacy.GetCurrentDate;
+
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,20 +10,25 @@ public class PharmacistPanel extends JPanel {
 
     private JLabel loggedNameLabel, dateLabel, medicineLabel;
     private JButton logOutButton, submitButton, nextSaleButton;
-    private JTextField medicineList, summaryList;
-    private JList list;
+    private JTextField summaryList;
+    private JList medicineList;
     private JScrollPane listScroller;
     static List<String> klientList = new ArrayList<>();
+    private GetCurrentDate getCurrentDate = new GetCurrentDate();
 
-    public PharmacistPanel(){
+    private PharmacistOperations pharmacistOperations;
+
+    public PharmacistPanel(PharmacistOperations pharmacistOperations){
+        this.pharmacistOperations = pharmacistOperations;
+
         setLayout(null);
 
         loggedNameLabel = new JLabel("Imię");
         loggedNameLabel.setBounds(580, 15, 70, 50);
         loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
 
-        dateLabel = new JLabel("Data");
-        dateLabel.setBounds(50, 15, 50,50);
+        dateLabel = new JLabel(getCurrentDate.getCurrentDate());
+        dateLabel.setBounds(50, 15, 100,50);
         dateLabel.setFont(dateLabel.getFont().deriveFont(15f));
 
         logOutButton = new JButton("Log out");
@@ -32,17 +39,13 @@ public class PharmacistPanel extends JPanel {
         medicineLabel.setBounds(100, 115, 500, 50 );
         medicineLabel.setFont(medicineLabel.getFont().deriveFont(15f));
 
-        list = new JList<>(klientList.toArray(new String[klientList.size()]));
-        list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        list.setLayoutOrientation(JList.VERTICAL);
-        list.setVisibleRowCount(7);
-        listScroller = new JScrollPane();
-        listScroller.setViewportView(list);
-        listScroller.setBounds(100, 160, 500, 180);
+        medicineList = new JList(pharmacistOperations.getStorageDetails());
+        medicineList.setBounds(100, 160, 500, 180);
+        medicineList.setFont(medicineList.getFont().deriveFont(15f));
 
-//        medicineList = new JTextField();
-//        medicineList.setBounds(100, 160, 500, 180);
-//        medicineList.setFont(medicineList.getFont().deriveFont(15f));
+        listScroller = new JScrollPane();
+        listScroller.setViewportView(medicineList);
+        listScroller.setBounds(100, 160, 500, 180);
 
         submitButton = new JButton("Submit");
         submitButton.setBounds(300, 360, 100, 40);

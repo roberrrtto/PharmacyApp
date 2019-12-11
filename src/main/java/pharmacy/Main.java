@@ -6,6 +6,7 @@ import pharmacy.log.LogFrame;
 import pharmacy.log.LogPanel;
 import pharmacy.manager.ManagerFrame;
 import pharmacy.pharmacist.PharmacistFrame;
+import pharmacy.pharmacist.PharmacistOperations;
 import pharmacy.pharmacist.PharmacistPanel;
 
 import javax.swing.*;
@@ -23,12 +24,6 @@ public class Main {
 
         LogPanel logPanel = new LogPanel();
         logFrame.add(logPanel);
-
-        AdminPanel adminPanel = new AdminPanel();
-        adminFrame.add(adminPanel);
-
-        PharmacistPanel pharmacistPanel = new PharmacistPanel();
-        pharmacistFrame.add(pharmacistPanel);
 
         ///////// get initial data (logon process) /////////
 
@@ -66,7 +61,7 @@ public class Main {
             logFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             logFrame.setVisible(true);
             pharmacistFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            pharmacistFrame.setVisible(false);
+            pharmacistFrame.setVisible(true);
             managerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             managerFrame.setVisible(true);
             adminFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

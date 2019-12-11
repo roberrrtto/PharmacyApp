@@ -9,9 +9,5 @@ public class AdminFrame extends JFrame {
         setResizable(false);
         setTitle("Admin");
         setLocationRelativeTo(null);
-
-        AdminPanel adminPanel = new AdminPanel();
-
-        add(adminPanel);
     }
 }

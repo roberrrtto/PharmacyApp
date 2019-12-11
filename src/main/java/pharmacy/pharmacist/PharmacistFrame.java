@@ -9,8 +9,5 @@ public class PharmacistFrame extends JFrame {
         setResizable(false);
         setTitle("Pharmacist");
         setLocationRelativeTo(null);
-
-        PharmacistPanel pharmacistPanel = new PharmacistPanel();
-        add(pharmacistPanel);
     }
 }

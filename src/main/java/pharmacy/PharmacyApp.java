@@ -2,6 +2,10 @@ package pharmacy;
 
 import pharmacy.manager.ManagerOperations;
 import pharmacy.manager.ManagerPanel;
+import pharmacy.pharmacist.PharmacistOperations;
+import pharmacy.pharmacist.PharmacistPanel;
+import pharmacy.admin.AdminPanel;
+import pharmacy.admin.AdminOperations;
 import pharmacy.sqlStaff.DataBaseInit;
 import pharmacy.sqlStaff.UserInfoDataManger;
 import pharmacy.sqlStaff.UserInitData;
@@ -9,6 +13,8 @@ import pharmacy.sqlStaff.UserInitData;
 import java.util.List;
 
 import static pharmacy.Main.managerFrame;
+import static pharmacy.Main.pharmacistFrame;
+import static pharmacy.Main.adminFrame;
 
 public class PharmacyApp {
 
@@ -22,12 +28,21 @@ public class PharmacyApp {
     private ManagerOperations managerOperations;
     private ManagerPanel managerPanel;
     private boolean isFirstManagerLogin = true;
+    private PharmacistOperations pharmacistOperations;
+    private PharmacistPanel pharmacistPanel;
+    private AdminOperations adminOperations;
+    private AdminPanel adminPanel;
 
     public boolean logging(String userLogin, String userPassword) {
         userInitData = dataBaseInit.getUserData(userLogin, userPassword);
         if (userInitData.isCorrect()) {
             if (userInitData.getRole().equals(Pharmacist)) {
-                Main.pharmacistFrame.setVisible(true);
+                pharmacistOperations = new PharmacistOperations(userInitData, dataBaseInit);
+                pharmacistPanel = new PharmacistPanel(pharmacistOperations);
+                pharmacistFrame.add(pharmacistPanel);
+                pharmacistFrame.revalidate();
+                pharmacistFrame.repaint();
+                pharmacistFrame.setVisible(true);
             } else if (userInitData.getRole().equals(UnitManager)) {
                 if (!isFirstManagerLogin) {
                     managerFrame.remove(managerPanel);
@@ -43,7 +58,12 @@ public class PharmacyApp {
                 managerFrame.repaint();
                 managerFrame.setVisible(true);
             } else if (userInitData.getRole().equals(Admin)) {
-                Main.adminFrame.setVisible(true);
+                adminOperations = new AdminOperations(userInitData, dataBaseInit);
+                adminPanel = new AdminPanel(adminOperations);
+                adminFrame.add(adminPanel);
+                adminFrame.revalidate();
+                adminFrame.repaint();
+                adminFrame.setVisible(true);
             }
             Main.logFrame.setVisible(false);
             return true;
