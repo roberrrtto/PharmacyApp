@@ -1,5 +1,7 @@
 package pharmacy.sqlStaff;
 
+import pharmacy.manager.SaleChecker;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ public class DataBaseInit {
 
     public Connection initializeDataBaseConnection() {
         try {
-            System.out.println("Establishing Connection");
+            System.out.println("Establishing databse connection");
             return DriverManager.getConnection(POSTGRES_JDBC_URL, POSTGRES_USER_NAME, POSTGRES_USER_PASS);
         } catch (SQLException e) {
             System.err.println("Server can't initialize databse connection: \n" + e);
@@ -42,7 +44,7 @@ public class DataBaseInit {
         }
     }
 
-    ////////////// ------------------ check credentials and get initial data ------------------ \\\\\\\\\\\\\\
+    ////////////// ------------------ check credentials and get initial user-data ------------------ \\\\\\\\\\\\\\
     public UserInitData getUserData(String userLogin, String userPassword) {
 
         final String sqlGetData = "SELECT user_credentials.user_id AS userid, login, password, job_title AS role, " +
@@ -133,11 +135,11 @@ public class DataBaseInit {
         return userInfoDataList;
     }
 
-    ////////////// ------------------ get all users info for a Manager------------------ \\\\\\\\\\\\\\
+    ////////////// ------------------ get unit users info for a Manager------------------ \\\\\\\\\\\\\\
     public List<UserInfoDataManger> getUnitUsersData(int pharmacyId) {
 
         final String sqlGetData = "SELECT users.user_id, concat(first_name,' ', last_name) as name, first_name, last_name, " +
-                "job_title, salary, email, phone_number FROM users\n" +
+                "job_title, salary, email, phone_number, address FROM users\n" +
                 "    INNER JOIN pharmacy_staff ps\n" +
                 "    ON users.user_id = ps.user_id\n" +
                 "WHERE pharmacy_id=? AND job_title = 'Pharmacist';";
@@ -164,6 +166,7 @@ public class DataBaseInit {
                 userInfoDataManger.setSalary(resultSet.getInt("salary"));
                 userInfoDataManger.setEmail(resultSet.getString("email"));
                 userInfoDataManger.setPhoneNumber(resultSet.getString("phone_number"));
+                userInfoDataManger.setAddress(resultSet.getString("address"));
 
                 userInfoDataMangerList.add(userInfoDataManger);
             }
@@ -177,7 +180,7 @@ public class DataBaseInit {
         return userInfoDataMangerList;
     }
 
-    ////////////// ------------------ get storage data ------------------ \\\\\\\\\\\\\\
+    ////////////// ------------------ get unit storage data ------------------ \\\\\\\\\\\\\\
     public List<StorageData> getStorageData(int pharmacyId) {
 
         final String sqlGetData = "SELECT m.medicine_id, medicine_name, price, quantity FROM pharmacy_storage\n" +
@@ -216,7 +219,7 @@ public class DataBaseInit {
         return storageDataList;
     }
 
-    //////////// ------------------ storage update ------------------ \\\\\\\\\\\\\\
+    //////////// ------------------ unit storage update ------------------ \\\\\\\\\\\\\\
     public void updateStorageQuantity(int quantity, int medicineId, int pharmacyId) {
 
         final String sqlUpdateStorageQuantity = "UPDATE pharmacy_storage\n" +
@@ -239,5 +242,34 @@ public class DataBaseInit {
         } finally {
             closeDataBaseResources(connection, preparedStatement);
         }
+    }
+
+    ////////////// ------------------ get total sale on the date ------------------ \\\\\\\\\\\\\\
+    public SaleChecker getTotalSale(String date) {
+
+        final String sqlGetAllUsersInfo = "SELECT sum(total) FROM receipts WHERE date ='" + date + "';";
+
+        Connection connection = initializeDataBaseConnection();
+        PreparedStatement preparedStatement = null;
+
+        SaleChecker saleChecker = new SaleChecker();
+
+        try {
+            preparedStatement = connection.prepareStatement(sqlGetAllUsersInfo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+
+                saleChecker.setTotalSale(resultSet.getDouble(1));
+
+            }
+        } catch (SQLException e) {
+            System.err.println("Error during invoke SQL query: \n" + e.getMessage());
+            throw new RuntimeException("Error during invoke SQL query");
+        } finally {
+            closeDataBaseResources(connection, preparedStatement);
+        }
+
+        return saleChecker;
     }
 }

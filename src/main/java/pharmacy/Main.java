@@ -5,6 +5,7 @@ import pharmacy.admin.AdminPanel;
 import pharmacy.log.LogFrame;
 import pharmacy.log.LogPanel;
 import pharmacy.manager.ManagerFrame;
+import pharmacy.manager.UserDetailsFrame;
 import pharmacy.pharmacist.PharmacistFrame;
 import pharmacy.pharmacist.PharmacistOperations;
 import pharmacy.pharmacist.PharmacistPanel;
@@ -18,6 +19,7 @@ public class Main {
     public static PharmacistFrame pharmacistFrame = new PharmacistFrame();
     public static ManagerFrame managerFrame = new ManagerFrame();
     public static AdminFrame adminFrame = new AdminFrame();
+    public static UserDetailsFrame userDetailsFrame = new UserDetailsFrame();
     public static PharmacyApp pharmacyApp = new PharmacyApp();
 
     public static void main(String[] args) {
@@ -25,38 +27,20 @@ public class Main {
         LogPanel logPanel = new LogPanel();
         logFrame.add(logPanel);
 
+<<<<<<< HEAD
         ///////// get initial data (logon process) /////////
+=======
+        AdminPanel adminPanel = new AdminPanel();
+        adminFrame.add(adminPanel);
 
-//        UserInitData userInitData = dataBaseInit.getUserData("frawas", "frawas2019");
-//        if (userInitData.isCorrect()) {
-//            System.out.println(userInitData.toString());
-//        } else {
-//            System.out.println("WRONG! but it's working ;)");
-//        }
-//
-//        int phId = userInitData.getPharmacyId();
-//        System.out.println(phId);
+        PharmacistPanel pharmacistPanel = new PharmacistPanel();
+        pharmacistFrame.add(pharmacistPanel);
 
-        ///////// get all users data (list all info when requested by the Unit Manager /////////
-//        List<UserInfoData> userInfoDataList = dataBaseInit.getAllUsers();
-//
-//        for (UserInfoData uid : userInfoDataList) {
-//            System.out.println(uid);
-//        }
+>>>>>>> 475a05f3a2266c8514e96e03838be77d2b81f219
 
-//        List<UserInfoDataManger> userInfoDataMangerList = dataBaseInit.getUnitUsersData(userInitData.getUserId());
-//        for (UserInfoDataManger uidm : userInfoDataMangerList) {
-//            System.out.println(uidm);
-//        }
-
-//        List<StorageData> storageDataList = dataBaseInit.getStorageData(1);
-//        for (StorageData sd : storageDataList) {
-//            System.out.println(sd);
-//        }
-
-//        dataBaseInit.updateStorageQuantity(25,2,2);
 
         /////// Testing GUI /////////
+
         EventQueue.invokeLater(() ->{
             logFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             logFrame.setVisible(true);
@@ -65,7 +49,13 @@ public class Main {
             managerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             managerFrame.setVisible(true);
             adminFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+<<<<<<< HEAD
             adminFrame.setVisible(true);
+=======
+            adminFrame.setVisible(false);
+            userDetailsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            userDetailsFrame.setVisible(false);
+>>>>>>> 475a05f3a2266c8514e96e03838be77d2b81f219
         });
 
     }

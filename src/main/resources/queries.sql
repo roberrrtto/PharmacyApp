@@ -91,12 +91,12 @@ INSERT INTO public.users(
 ------- // imie, nazwisko, job_title
 SELECT first_name AS firstname, last_name AS lastname, job_title AS role FROM users
 INNER JOIN pharmacy_staff ps
-    ON users.user_id = ps.user_id
+    ON users.user_id = ps.user_id;
 
 ------- // aktualizacja uzytkownika
 UPDATE public.users
     SET first_name='', last_name='', address='', email='', phone_number=''
-    WHERE user_id = 1
+    WHERE user_id = 1;
 
 
 DELETE FROM public.users;
@@ -117,7 +117,7 @@ FROM user_credentials
                     ON user_credentials.user_id = ps.user_id
          INNER JOIN users
                     ON user_credentials.user_id = users.user_id
-        WHERE login = 'hownav' AND password = 'howvan2019'
+        WHERE login = 'hownav' AND password = 'howvan2019';
 
 ------------------/////// Pobranie info dla kierownika nie znając i znając PharmacyId \\\\\\\------------------
 SELECT users.user_id, concat(first_name,' ', last_name) as name, first_name, last_name, job_title,

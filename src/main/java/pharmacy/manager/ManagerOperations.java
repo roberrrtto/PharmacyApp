@@ -26,10 +26,55 @@ public class ManagerOperations {
         setStorageDataList();
         setSize();
         setNames();
-        setUserDetails();
         setStorageDetails();
     }
 
+    public void storageUpdateForJPanel(int quantity, int medicineId) {
+        getDataBaseInit().updateStorageQuantity(quantity,medicineId,userInitData.getPharmacyId());
+        setStorageDataList();
+        setStorageDetails();
+    }
+
+    public void setUserDetails(int index) {
+        this.userDetails = new String[7];
+        userDetails[0] = "first name: " + getUserInfoDataMangerList().get(index).getFirstName();
+        userDetails[1] = "last name: " + getUserInfoDataMangerList().get(index).getLastName();
+        userDetails[2] = "job title: " + getUserInfoDataMangerList().get(index).getJobTitle();
+        userDetails[3] = "salary: " + getUserInfoDataMangerList().get(index).getSalary() + "$";
+        userDetails[4] = "email: " + getUserInfoDataMangerList().get(index).getEmail();
+        userDetails[5] = "tel. no.: " + getUserInfoDataMangerList().get(index).getPhoneNumber();
+        userDetails[6] = "home address: " + getUserInfoDataMangerList().get(index).getAddress();
+    }
+
+    public void setStorageDetails() {
+        this.storageDetails = new String[getStorageDataList().size()];
+        int i = 0;
+        for (StorageData sd : getStorageDataList()) {
+            storageDetails[i] = sd.toString();
+            i++;
+        }
+    }
+
+    public void setNames() {
+        this.names = new String[size];
+        int i = 0;
+        for (UserInfoDataManger uidm : getUserInfoDataMangerList()) {
+            names[i] = uidm.getName() + ", tel. no. " + uidm.getPhoneNumber();
+            i++;
+        }
+    }
+
+    public void setSize() {
+        this.size = getUserInfoDataMangerList().size();
+    }
+
+    public void setUserInfoDataMangerList() {
+        this.userInfoDataMangerList = getDataBaseInit().getUnitUsersData(getUserInitData().getPharmacyId());
+    }
+
+    public void setStorageDataList() {
+        this.storageDataList = getDataBaseInit().getStorageData(getUserInitData().getPharmacyId());
+    }
 
     public UserInitData getUserInitData() {
         return userInitData;
@@ -51,62 +96,23 @@ public class ManagerOperations {
         return userInfoDataMangerList;
     }
 
-    public void setUserInfoDataMangerList() {
-        this.userInfoDataMangerList = getDataBaseInit().getUnitUsersData(getUserInitData().getPharmacyId());
-    }
-
     public List<StorageData> getStorageDataList() {
         return storageDataList;
-    }
-
-    public void setStorageDataList() {
-        this.storageDataList = getDataBaseInit().getStorageData(getUserInitData().getPharmacyId());
     }
 
     public int getSize() {
         return size;
     }
 
-    public void setSize() {
-        this.size = getUserInfoDataMangerList().size();
-    }
-
     public String[] getUserDetails() {
         return userDetails;
-    }
-
-    public void setUserDetails() {
-        this.userDetails = new String[size];
-        int i = 0;
-        for (UserInfoDataManger uidm : getUserInfoDataMangerList()) {
-            userDetails[i] = uidm.toString();
-            i++;
-        }
     }
 
     public String[] getStorageDetails() {
         return storageDetails;
     }
 
-    public void setStorageDetails() {
-        this.storageDetails = new String[getStorageDataList().size()];
-        int i = 0;
-        for (StorageData sd : getStorageDataList()) {
-            storageDetails[i] = sd.toString();
-            i++;
-        }
-    }
-
     public String[] getNames() {
         return names;
-    }
-
-    public void setNames() {
-        this.names = new String[size];
-        int i = 0;
-        for (UserInfoDataManger uidm : getUserInfoDataMangerList()) {
-            names[i] = uidm.getName() + ", phone no. " + uidm.getPhoneNumber();
-            i++;
-        }
     }
 }

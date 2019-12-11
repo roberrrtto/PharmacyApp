@@ -52,7 +52,6 @@ public class LogPanel extends JPanel {
             if (!Main.pharmacyApp.logging(usernameTextField.getText(), String.valueOf(passwordTextField.getPassword()))) {
                 JOptionPane.showMessageDialog(null,"Incorrect credentials","Incorrect credentials", 2);
             }
-            System.out.println(String.valueOf(passwordTextField.getPassword()));
             usernameTextField.setText("");
             passwordTextField.setText("");
         });
