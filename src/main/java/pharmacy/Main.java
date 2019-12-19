@@ -1,6 +1,6 @@
 package pharmacy;
 
-import pharmacy.admin.AdminFrame;
+import pharmacy.admin.AdminMenuFrame;
 import pharmacy.admin.UserAddFrame;
 import pharmacy.log.LogFrame;
 import pharmacy.log.LogPanel;
@@ -16,10 +16,11 @@ public class Main {
     public static LogFrame logFrame = new LogFrame();
     public static PharmacistFrame pharmacistFrame = new PharmacistFrame();
     public static ManagerFrame managerFrame = new ManagerFrame();
-    public static AdminFrame adminFrame = new AdminFrame();
+//    public static AdminFrame adminFrame = new AdminFrame();
     public static UserDetailsFrame userDetailsFrame = new UserDetailsFrame();
     public static PharmacyApp pharmacyApp = new PharmacyApp();
     public static UserAddFrame userAddFrame = new UserAddFrame();
+    public static AdminMenuFrame adminMenuFrame = new AdminMenuFrame();
 
     public static void main(String[] args) {
 
@@ -40,12 +41,14 @@ public class Main {
             pharmacistFrame.setVisible(false);
             managerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             managerFrame.setVisible(false);
-            adminFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            adminFrame.setVisible(false);
+//            adminFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//            adminFrame.setVisible(false);
             userDetailsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             userDetailsFrame.setVisible(false);
             userAddFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             userAddFrame.setVisible(false);
+            adminMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            adminMenuFrame.setVisible(false);
         });
 
     }

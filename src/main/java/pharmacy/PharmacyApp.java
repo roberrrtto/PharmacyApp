@@ -1,26 +1,24 @@
 package pharmacy;
 
+import pharmacy.admin.AdminMenuPanel;
+import pharmacy.admin.AdminOperations;
 import pharmacy.manager.ManagerOperations;
 import pharmacy.manager.ManagerPanel;
 import pharmacy.pharmacist.PharmacistOperations;
 import pharmacy.pharmacist.PharmacistPanel;
-import pharmacy.admin.AdminPanel;
-import pharmacy.admin.AdminOperations;
 import pharmacy.sqlStaff.DataBaseInit;
 import pharmacy.sqlStaff.UserInfoDataManger;
 import pharmacy.sqlStaff.UserInitData;
 
 import java.util.List;
 
-import static pharmacy.Main.managerFrame;
-import static pharmacy.Main.pharmacistFrame;
-import static pharmacy.Main.adminFrame;
+import static pharmacy.Main.*;
 
 public class PharmacyApp {
 
-    private static final String Pharmacist = "Pharmacist";
-    private static final String UnitManager = "Unit Manager";
-    private static final String Admin = "Admin";
+    private static final String PHARMACIST = "Pharmacist";
+    private static final String UNIT_MANAGER = "Unit Manager";
+    private static final String ADMIN = "Admin";
 
     private UserInitData userInitData;
     private List<UserInfoDataManger> userInfoDataMangerList;
@@ -32,12 +30,12 @@ public class PharmacyApp {
     private PharmacistOperations pharmacistOperations;
     private PharmacistPanel pharmacistPanel;
     private AdminOperations adminOperations;
-    private AdminPanel adminPanel;
+    private AdminMenuPanel adminMenuPanel;
 
     public boolean logging(String userLogin, String userPassword) {
         userInitData = dataBaseInit.getUserData(userLogin, userPassword);
         if (userInitData.isCorrect()) {
-            if (userInitData.getRole().equals(Pharmacist)) {
+            if (userInitData.getRole().equals(PHARMACIST)) {
                 if (!isFirstPharmacistLogin) {
                     pharmacistFrame.remove(pharmacistPanel);
                     pharmacistFrame.revalidate();
@@ -49,7 +47,7 @@ public class PharmacyApp {
                 pharmacistFrame.revalidate();
                 pharmacistFrame.repaint();
                 pharmacistFrame.setVisible(true);
-            } else if (userInitData.getRole().equals(UnitManager)) {
+            } else if (userInitData.getRole().equals(UNIT_MANAGER)) {
                 if (!isFirstManagerLogin) {
                     managerFrame.remove(managerPanel);
                     managerFrame.revalidate();
@@ -61,13 +59,13 @@ public class PharmacyApp {
                 managerFrame.revalidate();
                 managerFrame.repaint();
                 managerFrame.setVisible(true);
-            } else if (userInitData.getRole().equals(Admin)) {
-                adminOperations = new AdminOperations(userInitData, dataBaseInit);
-                adminPanel = new AdminPanel(adminOperations);
-                adminFrame.add(adminPanel);
-                adminFrame.revalidate();
-                adminFrame.repaint();
-                adminFrame.setVisible(true);
+            } else if (userInitData.getRole().equals(ADMIN)) {
+//                adminOperations = new AdminOperations(userInitData, dataBaseInit);
+                adminMenuPanel = new AdminMenuPanel(userInitData, dataBaseInit);
+                adminMenuFrame.add(adminMenuPanel);
+                adminMenuFrame.revalidate();
+                adminMenuFrame.repaint();
+                adminMenuFrame.setVisible(true);
             }
             Main.logFrame.setVisible(false);
             return true;

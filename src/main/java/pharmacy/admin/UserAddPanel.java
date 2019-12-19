@@ -4,7 +4,7 @@ import pharmacy.GetCurrentDate;
 
 import javax.swing.*;
 
-import static pharmacy.Main.adminFrame;
+import static pharmacy.admin.AdminMenuPanel.adminFrame;
 import static pharmacy.Main.userAddFrame;
 
 public class UserAddPanel extends JPanel {

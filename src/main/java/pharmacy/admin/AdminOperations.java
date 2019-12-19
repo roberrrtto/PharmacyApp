@@ -6,7 +6,7 @@ import java.util.List;
 
 public class AdminOperations {
 
-    private UserInitData userInitData;
+    private static UserInitData userInitData;
     private DataBaseInit dataBaseInit;
     private CreateUserForm createUserForm;
     private List<UserInfoData> userInfoDataList;
@@ -50,7 +50,7 @@ public class AdminOperations {
         return names;
     }
 
-    public UserInitData getUserInitData() { return userInitData; }
+    public static UserInitData getUserInitData() { return userInitData; }
 
     public void setUserInitData(UserInitData userInitData) { this.userInitData = userInitData; }
 

@@ -15,7 +15,7 @@ public class LogPanel extends JPanel {
     public LogPanel(){
         setLayout(null);
 
-        pharmacyName = new JLabel("PHARMACY");
+        pharmacyName = new JLabel("PHARMACY", SwingConstants.CENTER);
         pharmacyName.setBounds(200, 150, 300,50);
         pharmacyName.setFont(pharmacyName.getFont().deriveFont(50f));
 

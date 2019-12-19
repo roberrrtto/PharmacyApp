@@ -22,11 +22,11 @@ public class DataBaseInit {
 
     public Connection initializeDataBaseConnection() {
         try {
-            System.out.println("Establishing databse connection");
+            System.out.println("Establishing database connection");
             return DriverManager.getConnection(POSTGRES_JDBC_URL, POSTGRES_USER_NAME, POSTGRES_USER_PASS);
         } catch (SQLException e) {
-            System.err.println("Server can't initialize databse connection: \n" + e);
-            throw new RuntimeException("Server can't initialize databse connection");
+            System.err.println("Server can't initialize database connection: \n" + e);
+            throw new RuntimeException("Server can't initialize database connection");
         }
     }
 
