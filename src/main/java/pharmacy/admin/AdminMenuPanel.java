@@ -3,7 +3,12 @@ package pharmacy.admin;
 import pharmacy.sqlStaff.DataBaseInit;
 import pharmacy.sqlStaff.UserInitData;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 import static pharmacy.Main.*;
 
@@ -12,9 +17,16 @@ public class AdminMenuPanel extends JPanel {
     private JLabel menuLabel;
     private JButton logOutButton, usersButton, pharmaciesButton, medicinesButton;
 
+    private BufferedImage img;
 
     public AdminMenuPanel(UserInitData userInitData, DataBaseInit dataBaseInit) {
         setLayout(null);
+        try {
+            img = ImageIO.read(getClass().getResource("/background.png")
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         menuLabel = new JLabel("MENU", SwingConstants.CENTER);
         menuLabel.setBounds(300, 130, 100,50);
@@ -49,6 +61,10 @@ public class AdminMenuPanel extends JPanel {
         add(pharmaciesButton);
         add(medicinesButton);
         add(logOutButton);
-
+    }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
     }
 }

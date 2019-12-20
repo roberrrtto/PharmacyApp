@@ -2,7 +2,12 @@ package pharmacy.admin;
 
 import pharmacy.GetCurrentDate;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 import static pharmacy.Main.mainFrame;
 
@@ -16,8 +21,16 @@ public class AdminPanel extends JPanel {
 
     private GetCurrentDate getCurrentDate = new GetCurrentDate();
 
+    private BufferedImage img;
+
     public AdminPanel(AdminOperations adminOperations) {
         setLayout(null);
+        try {
+            img = ImageIO.read(getClass().getResource("/background.png")
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         loggedNameLabel = new JLabel(adminOperations.getUserInitData().getFirstName(), SwingConstants.CENTER);
         loggedNameLabel.setBounds(555, 15, 80, 50);
@@ -102,5 +115,10 @@ public class AdminPanel extends JPanel {
         add(editMedButton);
         add(addMedButton);
         add(deleteMedButton);
+    }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
     }
 }

@@ -20,8 +20,12 @@ public class MainFrame extends JFrame {
         int posY = height / 2 - getHeight() / 2;
         setLocation(posX, posY);
 
+//        BackgroundPanel backgroundPanel = new BackgroundPanel();
+//        add(backgroundPanel);
+
         LogPanel logPanel = new LogPanel();
         add(logPanel);
+
     }
 
     public void logout() {
