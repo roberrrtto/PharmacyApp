@@ -9,7 +9,6 @@ import static pharmacy.Main.*;
 
 public class AdminMenuPanel extends JPanel {
 
-    public static AdminFrame adminFrame = new AdminFrame();
     private JLabel menuLabel;
     private JButton logOutButton, usersButton, pharmaciesButton, medicinesButton;
 
@@ -27,9 +26,7 @@ public class AdminMenuPanel extends JPanel {
         usersButton.addActionListener(e -> {
             AdminOperations adminOperations = new AdminOperations(userInitData, dataBaseInit);
             AdminPanel adminPanel = new AdminPanel(adminOperations);
-            adminFrame.add(adminPanel);
-            adminFrame.setVisible(true);
-            adminMenuFrame.setVisible(false);
+            mainFrame.panelSwitchOver(adminPanel);
         });
 
         pharmaciesButton = new JButton("PHARMACIES");
@@ -44,11 +41,8 @@ public class AdminMenuPanel extends JPanel {
         logOutButton.setBounds(225, 355, 250, 50);
         logOutButton.setFont(logOutButton.getFont().deriveFont(20f));
         logOutButton.addActionListener(e -> {
-            logFrame.setVisible(true);
-            adminMenuFrame.setVisible(false);
+            mainFrame.logout();
         });
-
-
 
         add(menuLabel);
         add(usersButton);

@@ -4,16 +4,14 @@ import pharmacy.GetCurrentDate;
 
 import javax.swing.*;
 
-import static pharmacy.Main.logFrame;
-import static pharmacy.Main.userAddFrame;
-import static pharmacy.admin.AdminMenuPanel.adminFrame;
+import static pharmacy.Main.mainFrame;
 
 public class AdminPanel extends JPanel {
 
     private JLabel loggedNameLabel, dateLabel, allEmployeesLabel, allMedicinesLabel;
     private JButton logOutButton, deleteEmpButton, addEmpButton, editEmpButton, deleteMedButton, addMedButton, editMedButton;
     private JList<String> employeeList, medicineList;
-    private UserAddPanel userAddPanel;
+    private AdminAddUserPanel adminAddUserPanel;
     private JScrollPane employeeListScroller, medicineListScroller;
 
     private GetCurrentDate getCurrentDate = new GetCurrentDate();
@@ -33,8 +31,7 @@ public class AdminPanel extends JPanel {
         logOutButton.setBounds(555, 55, 80, 30);
         logOutButton.setFont(logOutButton.getFont().deriveFont(12f));
         logOutButton.addActionListener(e -> {
-            logFrame.setVisible(true);
-            adminFrame.setVisible(false);
+            mainFrame.logout();
         });
 
         allEmployeesLabel = new JLabel("All employees: ");
@@ -53,10 +50,8 @@ public class AdminPanel extends JPanel {
         addEmpButton.setBounds(200, 240, 90, 40);
         addEmpButton.setFont(addEmpButton.getFont().deriveFont(13f));
         addEmpButton.addActionListener(e -> {
-            userAddPanel = new UserAddPanel(adminOperations);
-            userAddFrame.add(userAddPanel);
-            userAddFrame.setVisible(true);
-            adminFrame.setVisible(false);
+            adminAddUserPanel = new AdminAddUserPanel(adminOperations);
+            mainFrame.panelSwitchOver(adminAddUserPanel);
         });
 
         deleteEmpButton = new JButton("DELETE");

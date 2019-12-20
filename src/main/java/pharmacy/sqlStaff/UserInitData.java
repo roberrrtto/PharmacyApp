@@ -79,7 +79,7 @@ public class UserInitData {
     public String toString() {
         return "UserInitData{" +
                 "userId=" + userId +
-                ", login='" + login + '\'' +
+                ", panelSwitchOver='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
                 ", pharmacyId=" + pharmacyId +

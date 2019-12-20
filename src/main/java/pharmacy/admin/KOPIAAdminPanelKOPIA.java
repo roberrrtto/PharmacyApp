@@ -4,8 +4,6 @@ import pharmacy.GetCurrentDate;
 
 import javax.swing.*;
 
-import static pharmacy.Main.logFrame;
-
 public class KOPIAAdminPanelKOPIA extends JPanel {
 
     private JLabel loggedNameLabel, dateLabel, allEmployeesLabel, allMedicinesLabel, allSalesOfTheDayLabel, medicineEditLabel, employeeEditLabel;
@@ -29,7 +27,7 @@ public class KOPIAAdminPanelKOPIA extends JPanel {
         logOutButton.setBounds(555, 45, 80, 30);
         logOutButton.setFont(logOutButton.getFont().deriveFont(12f));
         logOutButton.addActionListener(e -> {
-            logFrame.setVisible(true);
+//            logFrame.setVisible(true);
 //            adminFrame.setVisible(false);
         });
 

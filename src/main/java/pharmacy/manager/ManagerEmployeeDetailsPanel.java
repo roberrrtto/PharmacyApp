@@ -4,10 +4,9 @@ import pharmacy.GetCurrentDate;
 
 import javax.swing.*;
 
-import static pharmacy.Main.managerFrame;
-import static pharmacy.Main.userDetailsFrame;
+import static pharmacy.Main.mainFrame;
 
-public class UserDetailsPanel extends JPanel {
+public class ManagerEmployeeDetailsPanel extends JPanel {
 
     private JLabel loggedNameLabel, dateLabel, employeeLabel;
     private JButton goBackButton;
@@ -15,7 +14,7 @@ public class UserDetailsPanel extends JPanel {
     private JList<String> employeeList;
     private GetCurrentDate getCurrentDate = new GetCurrentDate();
 
-    public UserDetailsPanel(ManagerOperations managerOperations){
+    public ManagerEmployeeDetailsPanel(ManagerOperations managerOperations){
 
         setLayout(null);
 
@@ -43,8 +42,7 @@ public class UserDetailsPanel extends JPanel {
         goBackButton.setBounds(300, 600, 100, 40);
         goBackButton.setFont(goBackButton.getFont().deriveFont(13f));
         goBackButton.addActionListener(e -> {
-            managerFrame.setVisible(true);
-            userDetailsFrame.setVisible(false);
+            mainFrame.panelSwitchOver(new ManagerPanel(managerOperations));
         });
 
         add(loggedNameLabel);

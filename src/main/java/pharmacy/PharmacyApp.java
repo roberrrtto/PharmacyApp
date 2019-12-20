@@ -12,21 +12,19 @@ import pharmacy.sqlStaff.UserInitData;
 
 import java.util.List;
 
-import static pharmacy.Main.*;
+import static pharmacy.Main.mainFrame;
 
 public class PharmacyApp {
 
-    private static final String PHARMACIST = "Pharmacist";
-    private static final String UNIT_MANAGER = "Unit Manager";
-    private static final String ADMIN = "Admin";
+    private final String PHARMACIST = "Pharmacist";
+    private final String UNIT_MANAGER = "Unit Manager";
+    private final String ADMIN = "Admin";
 
     private UserInitData userInitData;
     private List<UserInfoDataManger> userInfoDataMangerList;
     private DataBaseInit dataBaseInit = new DataBaseInit();
     private ManagerOperations managerOperations;
     private ManagerPanel managerPanel;
-    private boolean isFirstManagerLogin = true;
-    private boolean isFirstPharmacistLogin = true;
     private PharmacistOperations pharmacistOperations;
     private PharmacistPanel pharmacistPanel;
     private AdminOperations adminOperations;
@@ -36,38 +34,18 @@ public class PharmacyApp {
         userInitData = dataBaseInit.getUserData(userLogin, userPassword);
         if (userInitData.isCorrect()) {
             if (userInitData.getRole().equals(PHARMACIST)) {
-                if (!isFirstPharmacistLogin) {
-                    pharmacistFrame.remove(pharmacistPanel);
-                    pharmacistFrame.revalidate();
-                }
-                isFirstManagerLogin = false;
                 pharmacistOperations = new PharmacistOperations(userInitData, dataBaseInit);
                 pharmacistPanel = new PharmacistPanel(pharmacistOperations);
-                pharmacistFrame.add(pharmacistPanel);
-                pharmacistFrame.revalidate();
-                pharmacistFrame.repaint();
-                pharmacistFrame.setVisible(true);
+                mainFrame.panelSwitchOver(pharmacistPanel);
             } else if (userInitData.getRole().equals(UNIT_MANAGER)) {
-                if (!isFirstManagerLogin) {
-                    managerFrame.remove(managerPanel);
-                    managerFrame.revalidate();
-                }
-                isFirstManagerLogin = false;
                 managerOperations = new ManagerOperations(userInitData, dataBaseInit);
                 managerPanel = new ManagerPanel(managerOperations);
-                managerFrame.add(managerPanel);
-                managerFrame.revalidate();
-                managerFrame.repaint();
-                managerFrame.setVisible(true);
+                mainFrame.panelSwitchOver(managerPanel);
             } else if (userInitData.getRole().equals(ADMIN)) {
 //                adminOperations = new AdminOperations(userInitData, dataBaseInit);
                 adminMenuPanel = new AdminMenuPanel(userInitData, dataBaseInit);
-                adminMenuFrame.add(adminMenuPanel);
-                adminMenuFrame.revalidate();
-                adminMenuFrame.repaint();
-                adminMenuFrame.setVisible(true);
+                mainFrame.panelSwitchOver(adminMenuPanel);
             }
-            Main.logFrame.setVisible(false);
             return true;
         } else {
             return false;

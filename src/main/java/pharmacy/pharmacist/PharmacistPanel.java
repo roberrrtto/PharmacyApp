@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static pharmacy.Main.*;
+import static pharmacy.Main.mainFrame;
 
 public class PharmacistPanel extends JPanel {
 
@@ -37,8 +37,7 @@ public class PharmacistPanel extends JPanel {
         logOutButton.setBounds(555, 65, 80, 30);
         logOutButton.setFont(logOutButton.getFont().deriveFont(12f));
         logOutButton.addActionListener(e -> {
-            logFrame.setVisible(true);
-            pharmacistFrame.setVisible(false);
+            mainFrame.logout();
         });
 
         medicineLabel = new JLabel("Medicines: " );

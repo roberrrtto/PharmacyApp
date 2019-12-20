@@ -4,10 +4,9 @@ import pharmacy.GetCurrentDate;
 
 import javax.swing.*;
 
-import static pharmacy.admin.AdminMenuPanel.adminFrame;
-import static pharmacy.Main.userAddFrame;
+import static pharmacy.Main.mainFrame;
 
-public class UserAddPanel extends JPanel {
+public class AdminAddUserPanel extends JPanel {
 
     private JLabel loggedNameLabel, dateLabel, employeeLabel, firstNameLabel, lastNameLabel, addressLabel,
             emailLabel, phoneNoLabel, loginLabel, passwordLabel, jobTitleLabel, salaryLabel, pharmacyIdLabel;
@@ -16,7 +15,7 @@ public class UserAddPanel extends JPanel {
             loginTextField, passwordTextField, jobTitleTextField, salaryTextField, pharmacyIdTextField;
     private GetCurrentDate getCurrentDate = new GetCurrentDate();
 
-    public UserAddPanel(AdminOperations adminOperations){
+    public AdminAddUserPanel(AdminOperations adminOperations){
 
         setLayout(null);
 
@@ -128,9 +127,7 @@ public class UserAddPanel extends JPanel {
         goBackButton.setBounds(250, 600, 100, 40);
         goBackButton.setFont(goBackButton.getFont().deriveFont(13f));
         goBackButton.addActionListener(e -> {
-            adminFrame.setVisible(true);
-            resetFields();
-            userAddFrame.setVisible(false);
+            mainFrame.panelSwitchOver(new AdminPanel(adminOperations));
         });
 
         add(loggedNameLabel);

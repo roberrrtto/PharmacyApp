@@ -114,7 +114,7 @@ public class CreateUserForm {
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", login='" + login + '\'' +
+                ", panelSwitchOver='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", jobTitle='" + jobTitle + '\'' +
                 ", salary=" + salary +

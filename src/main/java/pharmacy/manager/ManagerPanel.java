@@ -13,9 +13,8 @@ public class ManagerPanel extends JPanel {
     private JTextField dateTextField, saleTextField, medicineQtyUpdateField;
     private JList<String> employeeList, medicineList;
     private JScrollPane listScroller;
-    private boolean isFirstUserInfoCheck = true;
     private GetCurrentDate getCurrentDate = new GetCurrentDate();
-    private UserDetailsPanel userDetailsPanel;
+    private ManagerEmployeeDetailsPanel managerEmployeeDetailsPanel;
     private ManagerOperations managerOperations;
 
     public ManagerPanel(ManagerOperations managerOperations){
@@ -35,18 +34,14 @@ public class ManagerPanel extends JPanel {
         logOutButton.setBounds(555, 55, 80, 30);
         logOutButton.setFont(logOutButton.getFont().deriveFont(12f));
         logOutButton.addActionListener(e -> {
-            userDetailsFrame.remove(userDetailsPanel);
-            userDetailsFrame.revalidate();
-            isFirstUserInfoCheck = true;
-            logFrame.setVisible(true);
-            managerFrame.setVisible(false);
+            mainFrame.logout();
         });
 
         switchToSaleButton = new JButton("SALE");
         switchToSaleButton.setBounds(555, 95, 80, 30);
         switchToSaleButton.setFont(dateLabel.getFont().deriveFont(13f));
         switchToSaleButton.addActionListener(e -> {
-            pharmacistFrame.setVisible(true);
+            // >>>> switch to SALE (Pharmacist Panel)
         });
 
         employeeLabel = new JLabel("Employees", SwingConstants.CENTER);
@@ -66,13 +61,8 @@ public class ManagerPanel extends JPanel {
                 JOptionPane.showMessageDialog(null,"Pick the user!","Information", 1);
             } else {
                 managerOperations.setUserDetails(employeeList.getSelectedIndex());
-                if (!isFirstUserInfoCheck) {
-                    userDetailsFrame.remove(userDetailsPanel);
-                    userDetailsFrame.revalidate();
-                }
-                isFirstUserInfoCheck = false;
-                userDetailsPanel = new UserDetailsPanel(managerOperations);
-                showUserDetailsPanel();
+                managerEmployeeDetailsPanel = new ManagerEmployeeDetailsPanel(managerOperations);
+                mainFrame.panelSwitchOver(managerEmployeeDetailsPanel);
             }
         });
 
@@ -140,14 +130,6 @@ public class ManagerPanel extends JPanel {
         add(medicineQtyUpdateField);
         add(getButton);
 
-    }
-
-    private void showUserDetailsPanel() {
-        userDetailsFrame.add(userDetailsPanel);
-        userDetailsFrame.revalidate();
-        userDetailsFrame.repaint();
-        userDetailsFrame.setVisible(true);
-        managerFrame.setVisible(false);
     }
 
     private void revalidateStorageQty() {
