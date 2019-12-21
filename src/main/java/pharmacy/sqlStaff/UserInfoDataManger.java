@@ -95,9 +95,4 @@ public class UserInfoDataManger {
                 "phone number: " + phoneNumber + '\n' +
                 "address: " + address + '\n';
     }
-
-    //    @Override
-//    public String toString() {
-//        return name + " " + jobTitle + " " + salary + " " + email + " " + phoneNumber;
-//    }
 }

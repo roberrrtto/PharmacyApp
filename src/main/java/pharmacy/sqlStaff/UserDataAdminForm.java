@@ -1,6 +1,6 @@
 package pharmacy.sqlStaff;
 
-public class CreateUserForm {
+public class UserDataAdminForm {
 
     private String firstName;
     private String lastName;
@@ -12,8 +12,12 @@ public class CreateUserForm {
     private String jobTitle;
     private int salary;
     private int pharmacyId;
+    private int userId;
 
-    public CreateUserForm(String firstName, String lastName, String address, String email, String phoneNumber, String login, String password, String jobTitle, int salary, int pharmacyId) {
+    public UserDataAdminForm(){ }
+
+    public UserDataAdminForm(String firstName, String lastName, String address, String email, String phoneNumber,
+                             String login, String password, String jobTitle, int salary, int pharmacyId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -106,19 +110,28 @@ public class CreateUserForm {
         this.pharmacyId = pharmacyId;
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
-        return "CreateUserForm{" +
+        return "UserDataAdminForm{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", panelSwitchOver='" + login + '\'' +
+                ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", jobTitle='" + jobTitle + '\'' +
                 ", salary=" + salary +
                 ", pharmacyId=" + pharmacyId +
+                ", userId=" + userId +
                 '}';
     }
 }

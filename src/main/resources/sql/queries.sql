@@ -11,8 +11,8 @@ DELETE FROM public.basket;
 ------- // metoda do dorzucania wybranych leków do basket
 INSERT INTO public.basket(
     medicine_id, quantity, receipt_id)
-SELECT medicine_id, ?,
-    receipt_id FROM receipts WHERE receipt_id IN (SELECT MAX(receipt_id) FROM public.receipts);
+-- SELECT basket.medicine_id,
+--     receipt_id FROM receipts WHERE receipt_id IN (SELECT MAX(receipt_id) FROM public.receipts);
 
 --->> uzupelnic medicine_id mając już co podstawić:
 SELECT medicine_id FROM public.medicines WHERE medicine_name = '${odczyt wartosci z listy}';
@@ -153,3 +153,13 @@ VALUES (?, ?, (SELECT MAX(users.user_id) FROM public.users));
 INSERT INTO public.pharmacy_staff(
     user_id, job_title, salary, pharmacy_id)
 VALUES ((SELECT MAX(users.user_id) FROM public.users), ?, ?, ?);
+
+------------------/////// CRUD User \\\\\\\------------------
+
+SELECT users.user_id, first_name, last_name, address, email,
+       phone_number, login, password, job_title, salary, pharmacy_id FROM users
+INNER JOIN pharmacy_staff ps
+    ON users.user_id = ps.user_id
+INNER JOIN user_credentials uc
+    ON users.user_id = uc.user_id
+WHERE users.user_id=?;

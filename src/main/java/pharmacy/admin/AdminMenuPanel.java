@@ -37,8 +37,8 @@ public class AdminMenuPanel extends JPanel {
         usersButton.setFont(usersButton.getFont().deriveFont(20f));
         usersButton.addActionListener(e -> {
             AdminOperations adminOperations = new AdminOperations(userInitData, dataBaseInit);
-            AdminPanel adminPanel = new AdminPanel(adminOperations);
-            mainFrame.panelSwitchOver(adminPanel);
+            AdminReadUsersPanel adminReadUsersPanel = new AdminReadUsersPanel(adminOperations);
+            mainFrame.panelSwitchOver(adminReadUsersPanel);
         });
 
         pharmaciesButton = new JButton("PHARMACIES");

@@ -4,14 +4,13 @@ import pharmacy.GetCurrentDate;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import static pharmacy.Main.mainFrame;
 
-public class AdminAddUserPanel extends JPanel {
+public class AdminUpdateUserPanel extends JPanel {
 
     private JLabel loggedNameLabel, dateLabel, employeeLabel, firstNameLabel, lastNameLabel, addressLabel,
             emailLabel, phoneNoLabel, loginLabel, passwordLabel, jobTitleLabel, salaryLabel, pharmacyIdLabel;
@@ -19,10 +18,10 @@ public class AdminAddUserPanel extends JPanel {
     private JTextField firstNameTextField, lastNameTextField, addressTextField, emailTextField, phoneNoTextField,
             loginTextField, passwordTextField, jobTitleTextField, salaryTextField, pharmacyIdTextField;
     private GetCurrentDate getCurrentDate = new GetCurrentDate();
-
+    private AdminOperations adminOperations;
     private BufferedImage img;
 
-    public AdminAddUserPanel(AdminOperations adminOperations){
+    public AdminUpdateUserPanel(AdminOperations adminOperations){
         setLayout(null);
         try {
             img = ImageIO.read(getClass().getResource("/background.png")
@@ -30,6 +29,7 @@ public class AdminAddUserPanel extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        this.adminOperations = adminOperations;
 
         loggedNameLabel = new JLabel(adminOperations.getUserInitData().getFirstName(), SwingConstants.CENTER);
         loggedNameLabel.setBounds(555, 15, 80, 50);
@@ -127,20 +127,33 @@ public class AdminAddUserPanel extends JPanel {
         submitButton.setBounds(400, 600, 100, 40);
         submitButton.setFont(submitButton.getFont().deriveFont(13f));
         submitButton.addActionListener(e -> {
-            adminOperations.createNewUser(firstNameTextField.getText(), lastNameTextField.getText(),
+            adminOperations.setUserInfoForUpdate(firstNameTextField.getText(), lastNameTextField.getText(),
                     addressTextField.getText(), emailTextField.getText(), phoneNoTextField.getText(),
                     loginTextField.getText(), passwordTextField.getText(), jobTitleTextField.getText(),
                     Integer.parseInt(salaryTextField.getText()), Integer.parseInt(pharmacyIdTextField.getText()));
-            resetFields();
-            adminOperations.updateEmployeePanel();
         });
+
+//        submitButton = new JButton("Submit");
+//        submitButton.setBounds(400, 600, 100, 40);
+//        submitButton.setFont(submitButton.getFont().deriveFont(13f));
+//        submitButton.addActionListener(e -> {
+//            adminOperations.createNewUser(firstNameTextField.getText(), lastNameTextField.getText(),
+//                    addressTextField.getText(), emailTextField.getText(), phoneNoTextField.getText(),
+//                    loginTextField.getText(), passwordTextField.getText(), jobTitleTextField.getText(),
+//                    Integer.parseInt(salaryTextField.getText()), Integer.parseInt(pharmacyIdTextField.getText()));
+//            resetFields();
+//            adminOperations.updateEmployeePanel();
+//        });
 
         goBackButton = new JButton("Go Back");
         goBackButton.setBounds(250, 600, 100, 40);
         goBackButton.setFont(goBackButton.getFont().deriveFont(13f));
         goBackButton.addActionListener(e -> {
+            adminOperations.updateEmployeePanel();
             mainFrame.panelSwitchOver(new AdminReadUsersPanel(adminOperations));
         });
+
+        setFields();
 
         add(loggedNameLabel);
         add(dateLabel);
@@ -175,16 +188,29 @@ public class AdminAddUserPanel extends JPanel {
         g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
     }
 
-    public void resetFields() {
-        firstNameTextField.setText("");
-        lastNameTextField.setText("");
-        addressTextField.setText("");
-        emailTextField.setText("");
-        phoneNoTextField.setText("");
-        loginTextField.setText("");
-        passwordTextField.setText("");
-        jobTitleTextField.setText("");
-        salaryTextField.setText("");
-        pharmacyIdTextField.setText("");
+//    public void resetFields() {
+//        firstNameTextField.setText("");
+//        lastNameTextField.setText("");
+//        addressTextField.setText("");
+//        emailTextField.setText("");
+//        phoneNoTextField.setText("");
+//        loginTextField.setText("");
+//        passwordTextField.setText("");
+//        jobTitleTextField.setText("");
+//        salaryTextField.setText("");
+//        pharmacyIdTextField.setText("");
+//    }
+
+    public void setFields() {
+        firstNameTextField.setText(adminOperations.getUserInfoForUpdate().getFirstName()+"");
+        lastNameTextField.setText(adminOperations.getUserInfoForUpdate().getLastName());
+        addressTextField.setText(adminOperations.getUserInfoForUpdate().getAddress());
+        emailTextField.setText(adminOperations.getUserInfoForUpdate().getEmail());
+        phoneNoTextField.setText(adminOperations.getUserInfoForUpdate().getPhoneNumber());
+        loginTextField.setText(adminOperations.getUserInfoForUpdate().getLogin());
+        passwordTextField.setText(adminOperations.getUserInfoForUpdate().getPassword());
+        jobTitleTextField.setText(adminOperations.getUserInfoForUpdate().getJobTitle());
+        salaryTextField.setText(adminOperations.getUserInfoForUpdate().getSalary()+"");
+        pharmacyIdTextField.setText(adminOperations.getUserInfoForUpdate().getPharmacyId()+"");
     }
 }

@@ -8,22 +8,49 @@ public class AdminOperations {
 
     private static UserInitData userInitData;
     private DataBaseInit dataBaseInit;
-    private CreateUserForm createUserForm;
+    private UserDataAdminForm newUser;
+    private UserDataAdminForm updateUser;
     private List<UserInfoData> userInfoDataList;
-    private String[] names;
+    private String[] employeePanel;
 
     public AdminOperations(UserInitData userInitData, DataBaseInit dataBaseInit) {
         this.userInitData = userInitData;
         this.dataBaseInit = dataBaseInit;
         setUserInfoDataList();
-        setNames();
+        setEmployeePanel();
+    }
+
+    public void setUserInfoDataList() {
+        this.userInfoDataList = getDataBaseInit().getAllUsers();
+    }
+
+    public void setEmployeePanel() {
+        this.employeePanel = new String[getUserInfoDataList().size()];
+        int i = 0;
+        for (UserInfoData uid : getUserInfoDataList()) {
+            employeePanel[i] = uid.getName();
+            i++;
+        }
     }
 
     public void createNewUser(String firstName, String lastName, String address, String email, String phoneNumber,
                               String login, String password, String jobTitle, int salary, int pharmacyId) {
-        this.createUserForm = new CreateUserForm(firstName, lastName, address, email, phoneNumber, login,
+        this.newUser = new UserDataAdminForm(firstName, lastName, address, email, phoneNumber, login,
                 password, jobTitle, salary, pharmacyId);
-        getDataBaseInit().createNewUser(createUserForm);
+        getDataBaseInit().createNewUser(newUser);
+    }
+
+    public void setUserInfoForUpdate(String firstName, String lastName, String address, String email, String phoneNumber,
+                              String login, String password, String jobTitle, int salary, int pharmacyId) {
+        int userID = updateUser.getUserId();
+        this.updateUser = new UserDataAdminForm(firstName, lastName, address, email, phoneNumber, login,
+                password, jobTitle, salary, pharmacyId);
+        updateUser.setUserId(userID);
+        getDataBaseInit().updateUser(updateUser);
+    }
+
+    public UserDataAdminForm getUserInfoForUpdate() {
+        return updateUser;
     }
 
     public void removeUser(int index) {
@@ -34,35 +61,24 @@ public class AdminOperations {
 
     public void updateEmployeePanel() {
         setUserInfoDataList();
-        setNames();
+        setEmployeePanel();
     }
 
-    public void setNames() {
-        this.names = new String[getUserInfoDataList().size()];
-        int i = 0;
-        for (UserInfoData uid : getUserInfoDataList()) {
-            names[i] = uid.getName();
-            i++;
-        }
-    }
-
-    public String[] getNames() {
-        return names;
+    public String[] getEmployeePanel() {
+        return employeePanel;
     }
 
     public static UserInitData getUserInitData() { return userInitData; }
 
-    public void setUserInitData(UserInitData userInitData) { this.userInitData = userInitData; }
-
     public DataBaseInit getDataBaseInit() { return dataBaseInit; }
 
-    public void setDataBaseInit(DataBaseInit dataBaseInit) { this.dataBaseInit = dataBaseInit; }
+    public void setUpdateUser(int index) {
+        int userId = userInfoDataList.get(index).getUserId();
+        this.updateUser = getDataBaseInit().getUserDataForAdminForm(userId);
+    }
 
     public List<UserInfoData> getUserInfoDataList() {
         return userInfoDataList;
     }
 
-    public void setUserInfoDataList() {
-        this.userInfoDataList = getDataBaseInit().getAllUsers();
-    }
 }
