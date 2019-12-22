@@ -1,6 +1,6 @@
-package pharmacy.sqlStaff;
+package pharmacy.utils;
 
-import pharmacy.manager.SaleChecker;
+import pharmacy.domain.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class DataBaseInit {
 //        }
 //    }
 
-    public Connection initializeDataBaseConnection() {
+    public static Connection initializeDataBaseConnection() {
         try {
             System.out.println("Establishing database connection");
             return DriverManager.getConnection(POSTGRES_JDBC_URL, POSTGRES_USER_NAME, POSTGRES_USER_PASS);
@@ -30,7 +30,7 @@ public class DataBaseInit {
         }
     }
 
-    public void closeDataBaseResources(Connection connection, Statement statement) {
+    public static void closeDataBaseResources(Connection connection, Statement statement) {
         try {
             if (statement != null) {
                 statement.close();

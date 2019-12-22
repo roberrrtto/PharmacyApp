@@ -1,6 +1,7 @@
-package pharmacy.admin;
+package pharmacy.gui.admin;
 
-import pharmacy.GetCurrentDate;
+import pharmacy.utils.GetCurrentDate;
+import pharmacy.service.AdminOperations;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -142,15 +143,15 @@ public class AdminUpdateUserPanel extends JPanel {
 //                    loginTextField.getText(), passwordTextField.getText(), jobTitleTextField.getText(),
 //                    Integer.parseInt(salaryTextField.getText()), Integer.parseInt(pharmacyIdTextField.getText()));
 //            resetFields();
-//            adminOperations.updateEmployeePanel();
+//            adminOperations.updateEmployeeList();
 //        });
 
         goBackButton = new JButton("Go Back");
         goBackButton.setBounds(250, 600, 100, 40);
         goBackButton.setFont(goBackButton.getFont().deriveFont(13f));
         goBackButton.addActionListener(e -> {
-            adminOperations.updateEmployeePanel();
-            mainFrame.panelSwitchOver(new AdminReadUsersPanel(adminOperations));
+            adminOperations.updateEmployeeList();
+            mainFrame.panelSwitchOver(new AdminShowUsersPanel(adminOperations));
         });
 
         setFields();

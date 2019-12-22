@@ -1,4 +1,4 @@
-package pharmacy.sqlStaff;
+package pharmacy.domain;
 
 public class UserInfoDataManger {
 

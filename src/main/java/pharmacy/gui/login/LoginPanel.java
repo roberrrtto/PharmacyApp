@@ -1,4 +1,4 @@
-package pharmacy.log;
+package pharmacy.gui.login;
 
 import pharmacy.Main;
 
@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class LogPanel extends JPanel {
+public class LoginPanel extends JPanel {
 
     private JLabel pharmacyName, usernameLabel, passwordLabel;
     private JButton loginButton;
@@ -18,7 +18,7 @@ public class LogPanel extends JPanel {
 
     private BufferedImage img;
 
-    public LogPanel(){
+    public LoginPanel(){
         setLayout(null);
         try {
             img = ImageIO.read(getClass().getResource("/LogoAndBackground.png")

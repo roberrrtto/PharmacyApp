@@ -1,6 +1,7 @@
-package pharmacy.manager;
+package pharmacy.gui.manager;
 
-import pharmacy.GetCurrentDate;
+import pharmacy.utils.GetCurrentDate;
+import pharmacy.service.ManagerOperations;
 
 import javax.swing.*;
 

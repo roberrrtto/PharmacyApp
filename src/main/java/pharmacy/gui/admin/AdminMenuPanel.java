@@ -1,7 +1,8 @@
-package pharmacy.admin;
+package pharmacy.gui.admin;
 
-import pharmacy.sqlStaff.DataBaseInit;
-import pharmacy.sqlStaff.UserInitData;
+import pharmacy.service.AdminOperations;
+import pharmacy.utils.DataBaseInit;
+import pharmacy.domain.UserInitData;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -37,17 +38,22 @@ public class AdminMenuPanel extends JPanel {
         usersButton.setFont(usersButton.getFont().deriveFont(20f));
         usersButton.addActionListener(e -> {
             AdminOperations adminOperations = new AdminOperations(userInitData, dataBaseInit);
-            AdminReadUsersPanel adminReadUsersPanel = new AdminReadUsersPanel(adminOperations);
-            mainFrame.panelSwitchOver(adminReadUsersPanel);
+            AdminShowUsersPanel adminShowUsersPanel = new AdminShowUsersPanel(adminOperations);
+            mainFrame.panelSwitchOver(adminShowUsersPanel);
+        });
+
+        medicinesButton = new JButton("MEDICINES");
+        medicinesButton.setBounds(225, 300, 250, 50);
+        medicinesButton.setFont(medicinesButton.getFont().deriveFont(20f));
+        medicinesButton.addActionListener(e -> {
+            AdminOperations adminOperations = new AdminOperations(userInitData, dataBaseInit);
+            AdminShowMedicinesPanel adminShowMedicinesPanel = new AdminShowMedicinesPanel(adminOperations);
+            mainFrame.panelSwitchOver(adminShowMedicinesPanel);
         });
 
         pharmaciesButton = new JButton("PHARMACIES");
         pharmaciesButton.setBounds(225, 245, 250, 50);
         pharmaciesButton.setFont(pharmaciesButton.getFont().deriveFont(20f));
-
-        medicinesButton = new JButton("MEDICINES");
-        medicinesButton.setBounds(225, 300, 250, 50);
-        medicinesButton.setFont(medicinesButton.getFont().deriveFont(20f));
 
         logOutButton = new JButton("LOG OUT");
         logOutButton.setBounds(225, 355, 250, 50);

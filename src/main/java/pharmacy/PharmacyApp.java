@@ -1,14 +1,14 @@
 package pharmacy;
 
-import pharmacy.admin.AdminMenuPanel;
-import pharmacy.admin.AdminOperations;
-import pharmacy.manager.ManagerOperations;
-import pharmacy.manager.ManagerPanel;
-import pharmacy.pharmacist.PharmacistOperations;
-import pharmacy.pharmacist.PharmacistPanel;
-import pharmacy.sqlStaff.DataBaseInit;
-import pharmacy.sqlStaff.UserInfoDataManger;
-import pharmacy.sqlStaff.UserInitData;
+import pharmacy.gui.admin.AdminMenuPanel;
+import pharmacy.service.AdminOperations;
+import pharmacy.service.ManagerOperations;
+import pharmacy.gui.manager.ManagerPanel;
+import pharmacy.service.PharmacistOperations;
+import pharmacy.gui.pharmacist.PharmacistPanel;
+import pharmacy.utils.DataBaseInit;
+import pharmacy.domain.UserInfoDataManger;
+import pharmacy.domain.UserInitData;
 
 import java.util.List;
 

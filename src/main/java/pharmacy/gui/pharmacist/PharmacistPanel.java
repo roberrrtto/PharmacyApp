@@ -1,6 +1,7 @@
-package pharmacy.pharmacist;
+package pharmacy.gui.pharmacist;
 
-import pharmacy.GetCurrentDate;
+import pharmacy.service.PharmacistOperations;
+import pharmacy.utils.GetCurrentDate;
 
 import javax.swing.*;
 import java.util.regex.Matcher;

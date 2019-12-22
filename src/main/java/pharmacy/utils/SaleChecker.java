@@ -1,4 +1,4 @@
-package pharmacy.manager;
+package pharmacy.utils;
 
 public class SaleChecker {
 

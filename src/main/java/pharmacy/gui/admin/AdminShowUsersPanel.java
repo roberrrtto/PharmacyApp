@@ -1,6 +1,7 @@
-package pharmacy.admin;
+package pharmacy.gui.admin;
 
-import pharmacy.GetCurrentDate;
+import pharmacy.utils.GetCurrentDate;
+import pharmacy.service.AdminOperations;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -11,18 +12,19 @@ import java.io.IOException;
 
 import static pharmacy.Main.mainFrame;
 
-public class AdminReadUsersPanel extends JPanel {
+public class AdminShowUsersPanel extends JPanel {
 
     private JLabel loggedNameLabel, dateLabel, allEmployeesLabel;
-    private JButton logOutButton, deleteEmpButton, addEmpButton, editEmpButton;
+    private JButton logOutButton, deleteEmpButton, addEmpButton, editEmpButton, readEmpButton;
     private JList<String> employeeList;
     private JScrollPane employeeListScroller;
     private AdminAddUserPanel adminAddUserPanel;
+    private AdminReadUserPanel adminReadUserPanel;
     private AdminUpdateUserPanel adminUpdateUserPanel;
     private GetCurrentDate getCurrentDate = new GetCurrentDate();
     private BufferedImage img;
 
-    public AdminReadUsersPanel(AdminOperations adminOperations) {
+    public AdminShowUsersPanel(AdminOperations adminOperations) {
         setLayout(null);
         try {
             img = ImageIO.read(getClass().getResource("/background.png")
@@ -50,7 +52,7 @@ public class AdminReadUsersPanel extends JPanel {
         allEmployeesLabel.setBounds(100, 50, 500, 50);
         allEmployeesLabel.setFont(allEmployeesLabel.getFont().deriveFont(15f));
 
-        employeeList = new JList(adminOperations.getEmployeePanel());
+        employeeList = new JList(adminOperations.getEmployeeList());
         employeeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         employeeList.setFont(employeeList.getFont().deriveFont(15f));
 
@@ -59,30 +61,39 @@ public class AdminReadUsersPanel extends JPanel {
         employeeListScroller.setBounds(225, 100, 250, 250);
 
         addEmpButton = new JButton("ADD");
-        addEmpButton.setBounds(200, 360, 90, 40);
+        addEmpButton.setBounds(155, 370, 90, 40);
         addEmpButton.setFont(addEmpButton.getFont().deriveFont(13f));
         addEmpButton.addActionListener(e -> {
             adminAddUserPanel = new AdminAddUserPanel(adminOperations);
             mainFrame.panelSwitchOver(adminAddUserPanel);
         });
 
-        deleteEmpButton = new JButton("DELETE");
-        deleteEmpButton.setBounds(410, 360, 90, 40);
-        deleteEmpButton.setFont(dateLabel.getFont().deriveFont(13f));
-        deleteEmpButton.addActionListener(e -> {
-            adminOperations.removeUser(employeeList.getSelectedIndex());
-            employeeList = new JList(adminOperations.getEmployeePanel());
-            employeeList.setFont(employeeList.getFont().deriveFont(15f));
-            employeeListScroller.setViewportView(employeeList);
+        readEmpButton = new JButton("DETAILS");
+        readEmpButton.setBounds(255, 370, 90, 40);
+        readEmpButton.setFont(dateLabel.getFont().deriveFont(13f));
+        readEmpButton.addActionListener(e -> {
+            adminOperations.setUpdateUser(employeeList.getSelectedIndex());
+            adminReadUserPanel = new AdminReadUserPanel(adminOperations);
+            mainFrame.panelSwitchOver(adminReadUserPanel);
         });
 
         editEmpButton = new JButton("EDIT");
-        editEmpButton.setBounds(305, 360, 90, 40);
+        editEmpButton.setBounds(355, 370, 90, 40);
         editEmpButton.setFont(dateLabel.getFont().deriveFont(13f));
         editEmpButton.addActionListener(e -> {
             adminOperations.setUpdateUser(employeeList.getSelectedIndex());
             adminUpdateUserPanel = new AdminUpdateUserPanel(adminOperations);
             mainFrame.panelSwitchOver(adminUpdateUserPanel);
+        });
+
+        deleteEmpButton = new JButton("DELETE");
+        deleteEmpButton.setBounds(455, 370, 90, 40);
+        deleteEmpButton.setFont(dateLabel.getFont().deriveFont(13f));
+        deleteEmpButton.addActionListener(e -> {
+            adminOperations.removeUser(employeeList.getSelectedIndex());
+            employeeList = new JList(adminOperations.getEmployeeList());
+            employeeList.setFont(employeeList.getFont().deriveFont(15f));
+            employeeListScroller.setViewportView(employeeList);
         });
 
         add(loggedNameLabel);
@@ -92,6 +103,7 @@ public class AdminReadUsersPanel extends JPanel {
         add(deleteEmpButton);
         add(editEmpButton);
         add(addEmpButton);
+        add(readEmpButton);
         add(employeeListScroller);
 
     }

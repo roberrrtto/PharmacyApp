@@ -1,4 +1,4 @@
-package pharmacy;
+package pharmacy.utils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

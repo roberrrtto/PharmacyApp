@@ -1,9 +1,9 @@
-package pharmacy.manager;
+package pharmacy.service;
 
-import pharmacy.sqlStaff.DataBaseInit;
-import pharmacy.sqlStaff.StorageData;
-import pharmacy.sqlStaff.UserInfoDataManger;
-import pharmacy.sqlStaff.UserInitData;
+import pharmacy.utils.DataBaseInit;
+import pharmacy.domain.StorageData;
+import pharmacy.domain.UserInfoDataManger;
+import pharmacy.domain.UserInitData;
 
 import java.util.List;
 

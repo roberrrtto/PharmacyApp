@@ -1,6 +1,6 @@
 package pharmacy.gui;
 
-import pharmacy.log.LogPanel;
+import pharmacy.gui.login.LoginPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,17 +20,14 @@ public class MainFrame extends JFrame {
         int posY = height / 2 - getHeight() / 2;
         setLocation(posX, posY);
 
-//        BackgroundPanel backgroundPanel = new BackgroundPanel();
-//        add(backgroundPanel);
-
-        LogPanel logPanel = new LogPanel();
-        add(logPanel);
+        LoginPanel loginPanel = new LoginPanel();
+        add(loginPanel);
 
     }
 
     public void logout() {
         this.getContentPane().removeAll();
-        this.add(new LogPanel());
+        this.add(new LoginPanel());
         this.revalidate();
     }
 

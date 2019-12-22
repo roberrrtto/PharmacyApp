@@ -1,6 +1,4 @@
-package pharmacy.sqlStaff;
-
-import java.util.Arrays;
+package pharmacy.domain;
 
 public class UserInfoData {
 
