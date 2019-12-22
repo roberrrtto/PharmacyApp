@@ -1,6 +1,9 @@
 package pharmacy.service;
 
-import pharmacy.domain.*;
+import pharmacy.domain.UserDataAdminForm;
+import pharmacy.domain.UserInfoData;
+import pharmacy.domain.UserInitData;
+import pharmacy.repository.AdminRepository;
 import pharmacy.utils.DataBaseInit;
 
 import java.util.List;
@@ -8,6 +11,7 @@ import java.util.List;
 public class AdminOperations {
 
     private static UserInitData userInitData;
+    private AdminRepository adminRepository;
     private DataBaseInit dataBaseInit;
     private UserDataAdminForm newUser;
     private UserDataAdminForm updateUser;
@@ -17,6 +21,7 @@ public class AdminOperations {
     public AdminOperations(UserInitData userInitData, DataBaseInit dataBaseInit) {
         this.userInitData = userInitData;
         this.dataBaseInit = dataBaseInit;
+        this.adminRepository = new AdminRepository();
         setUserInfoDataList();
         setEmployeeList();
     }
@@ -26,7 +31,7 @@ public class AdminOperations {
                               String login, String password, String jobTitle, int salary, int pharmacyId) {
         this.newUser = new UserDataAdminForm(firstName, lastName, address, email, phoneNumber, login,
                 password, jobTitle, salary, pharmacyId);
-        getDataBaseInit().createNewUser(newUser);
+        adminRepository.createNewUser(newUser);
     }
 
     public void setUserInfoForUpdate(String firstName, String lastName, String address, String email, String phoneNumber,
@@ -35,7 +40,7 @@ public class AdminOperations {
         this.updateUser = new UserDataAdminForm(firstName, lastName, address, email, phoneNumber, login,
                 password, jobTitle, salary, pharmacyId);
         updateUser.setUserId(userID);
-        getDataBaseInit().updateUser(updateUser);
+        adminRepository.updateUser(updateUser);
     }
 
     public UserDataAdminForm getUserInfoForUpdate() {
@@ -44,7 +49,7 @@ public class AdminOperations {
 
     public void removeUser(int index) {
         int uid = userInfoDataList.get(index).getUserId();
-        getDataBaseInit().removeUser(uid);
+        adminRepository.removeUser(uid);
         updateEmployeeList();
     }
 
@@ -69,8 +74,9 @@ public class AdminOperations {
 
     public void setUpdateUser(int index) {
         int userId = userInfoDataList.get(index).getUserId();
-        this.updateUser = getDataBaseInit().getUserDataForAdminForm(userId);
+        this.updateUser = adminRepository.getUserDataForAdminForm(userId);
     }
+
 
     // =================== Getters/Setters ===================
     public String[] getEmployeeList() {
