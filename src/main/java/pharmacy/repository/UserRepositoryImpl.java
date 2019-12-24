@@ -1,6 +1,7 @@
 package pharmacy.repository;
 
-import pharmacy.domain.UserDataAdminForm;
+import pharmacy.domain.MedicineData;
+import pharmacy.domain.UserData;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,9 +11,10 @@ import java.sql.SQLException;
 import static pharmacy.utils.DataBaseInit.closeDataBaseResources;
 import static pharmacy.utils.DataBaseInit.initializeDataBaseConnection;
 
-public class AdminRepository {
+public class AdminRepositoryImpl extends ParentRepositoryImpl {
 
-    public void createNewUser(UserDataAdminForm userDataAdminForm) {
+    @Override
+    public void createUser(UserData userData) {
 
         final String sqlCreateNewUser1 = "INSERT INTO public.users(\n" +
                 "    first_name, last_name, address, email, phone_number)\n" +
@@ -37,18 +39,18 @@ public class AdminRepository {
             preparedStatement2 = connection.prepareStatement(sqlCreateNewUser2);
             preparedStatement3 = connection.prepareStatement(sqlCreateNewUser3);
 
-            preparedStatement1.setString(1, userDataAdminForm.getFirstName());
-            preparedStatement1.setString(2, userDataAdminForm.getLastName());
-            preparedStatement1.setString(3, userDataAdminForm.getAddress());
-            preparedStatement1.setString(4, userDataAdminForm.getEmail());
-            preparedStatement1.setString(5, userDataAdminForm.getPhoneNumber());
+            preparedStatement1.setString(1, userData.getFirstName());
+            preparedStatement1.setString(2, userData.getLastName());
+            preparedStatement1.setString(3, userData.getAddress());
+            preparedStatement1.setString(4, userData.getEmail());
+            preparedStatement1.setString(5, userData.getPhoneNumber());
 
-            preparedStatement2.setString(1, userDataAdminForm.getLogin());
-            preparedStatement2.setString(2, userDataAdminForm.getPassword());
+            preparedStatement2.setString(1, userData.getLogin());
+            preparedStatement2.setString(2, userData.getPassword());
 
-            preparedStatement3.setString(1, userDataAdminForm.getJobTitle());
-            preparedStatement3.setInt(2, userDataAdminForm.getSalary());
-            preparedStatement3.setInt(3, userDataAdminForm.getPharmacyId());
+            preparedStatement3.setString(1, userData.getJobTitle());
+            preparedStatement3.setInt(2, userData.getSalary());
+            preparedStatement3.setInt(3, userData.getPharmacyId());
 
             preparedStatement1.executeUpdate();
             preparedStatement2.executeUpdate();
@@ -64,7 +66,8 @@ public class AdminRepository {
         }
     }
 
-    public UserDataAdminForm getUserDataForAdminForm(int userId) {
+    @Override
+    public UserData readUser(int userId) {
 
         final String sqlGetData = "SELECT users.user_id, first_name, last_name, address, email,\n" +
                 "       phone_number, login, password, job_title, salary, pharmacy_id FROM users\n" +
@@ -78,7 +81,7 @@ public class AdminRepository {
         Connection connection = initializeDataBaseConnection();
         PreparedStatement preparedStatement = null;
 
-        UserDataAdminForm userDataAdminForm = new UserDataAdminForm();
+        UserData userData = new UserData();
 
         try {
             preparedStatement = connection.prepareStatement(sqlGetData);
@@ -87,17 +90,17 @@ public class AdminRepository {
 
             while (resultSet.next()) {
 
-                userDataAdminForm.setUserId(resultSet.getInt("user_id"));
-                userDataAdminForm.setFirstName(resultSet.getString("first_name"));
-                userDataAdminForm.setLastName(resultSet.getString("last_name"));
-                userDataAdminForm.setAddress(resultSet.getString("address"));
-                userDataAdminForm.setEmail(resultSet.getString("email"));
-                userDataAdminForm.setPhoneNumber(resultSet.getString("phone_number"));
-                userDataAdminForm.setLogin(resultSet.getString("login"));
-                userDataAdminForm.setPassword(resultSet.getString("password"));
-                userDataAdminForm.setJobTitle(resultSet.getString("job_title"));
-                userDataAdminForm.setSalary(resultSet.getInt("salary"));
-                userDataAdminForm.setPharmacyId(resultSet.getInt("pharmacy_id"));
+                userData.setUserId(resultSet.getInt("user_id"));
+                userData.setFirstName(resultSet.getString("first_name"));
+                userData.setLastName(resultSet.getString("last_name"));
+                userData.setAddress(resultSet.getString("address"));
+                userData.setEmail(resultSet.getString("email"));
+                userData.setPhoneNumber(resultSet.getString("phone_number"));
+                userData.setLogin(resultSet.getString("login"));
+                userData.setPassword(resultSet.getString("password"));
+                userData.setJobTitle(resultSet.getString("job_title"));
+                userData.setSalary(resultSet.getInt("salary"));
+                userData.setPharmacyId(resultSet.getInt("pharmacy_id"));
 
             }
         } catch (SQLException e) {
@@ -107,10 +110,11 @@ public class AdminRepository {
             closeDataBaseResources(connection, preparedStatement);
         }
 
-        return userDataAdminForm;
+        return userData;
     }
 
-    public void updateUser(UserDataAdminForm userDataAdminForm) {
+    @Override
+    public void updateUser(UserData userData) {
 
         final String sqlUserUpdate1 = "UPDATE public.users\n" +
                 "    SET first_name=?, last_name=?, address=?, email=?, phone_number=?\n" +
@@ -135,21 +139,21 @@ public class AdminRepository {
             preparedStatement2 = connection.prepareStatement(sqlUserUpdate2);
             preparedStatement3 = connection.prepareStatement(sqlUserUpdate3);
 
-            preparedStatement1.setString(1, userDataAdminForm.getFirstName());
-            preparedStatement1.setString(2, userDataAdminForm.getLastName());
-            preparedStatement1.setString(3, userDataAdminForm.getAddress());
-            preparedStatement1.setString(4, userDataAdminForm.getEmail());
-            preparedStatement1.setString(5, userDataAdminForm.getPhoneNumber());
-            preparedStatement1.setInt(6, userDataAdminForm.getUserId());
+            preparedStatement1.setString(1, userData.getFirstName());
+            preparedStatement1.setString(2, userData.getLastName());
+            preparedStatement1.setString(3, userData.getAddress());
+            preparedStatement1.setString(4, userData.getEmail());
+            preparedStatement1.setString(5, userData.getPhoneNumber());
+            preparedStatement1.setInt(6, userData.getUserId());
 
-            preparedStatement2.setString(1, userDataAdminForm.getLogin());
-            preparedStatement2.setString(2, userDataAdminForm.getPassword());
-            preparedStatement2.setInt(3, userDataAdminForm.getUserId());
+            preparedStatement2.setString(1, userData.getLogin());
+            preparedStatement2.setString(2, userData.getPassword());
+            preparedStatement2.setInt(3, userData.getUserId());
 
-            preparedStatement3.setString(1, userDataAdminForm.getJobTitle());
-            preparedStatement3.setInt(2, userDataAdminForm.getSalary());
-            preparedStatement3.setInt(3, userDataAdminForm.getPharmacyId());
-            preparedStatement3.setInt(4, userDataAdminForm.getUserId());
+            preparedStatement3.setString(1, userData.getJobTitle());
+            preparedStatement3.setInt(2, userData.getSalary());
+            preparedStatement3.setInt(3, userData.getPharmacyId());
+            preparedStatement3.setInt(4, userData.getUserId());
 
             preparedStatement1.executeUpdate();
             preparedStatement2.executeUpdate();
@@ -165,7 +169,8 @@ public class AdminRepository {
         }
     }
 
-    public void removeUser(int userId) {
+    @Override
+    public void deleteUser(int userId) {
 
         final String sqlRemoveUserI = "DELETE FROM public.users\n" +
                 "WHERE user_id =?;";
@@ -200,6 +205,26 @@ public class AdminRepository {
             closeDataBaseResources(connection, preparedStatementII);
             closeDataBaseResources(connection, preparedStatementIII);
         }
+    }
+
+    @Override
+    public void createMedicine(MedicineData medicineData) {
+
+    }
+
+    @Override
+    public MedicineData readMedicine(int medicineId) {
+        return null;
+    }
+
+    @Override
+    public void updateMedicine(MedicineData medicineData) {
+
+    }
+
+    @Override
+    public void deleteMedicine(int medicineId) {
+
     }
 
 }
