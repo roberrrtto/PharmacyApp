@@ -1,7 +1,7 @@
 package pharmacy.gui.manager;
 
 import pharmacy.utils.GetCurrentDate;
-import pharmacy.service.ManagerOperations;
+import pharmacy.service.ManagerService;
 
 import javax.swing.*;
 
@@ -16,14 +16,14 @@ public class ManagerPanel extends JPanel {
     private JScrollPane listScroller;
     private GetCurrentDate getCurrentDate = new GetCurrentDate();
     private ManagerEmployeeDetailsPanel managerEmployeeDetailsPanel;
-    private ManagerOperations managerOperations;
+    private ManagerService managerService;
 
-    public ManagerPanel(ManagerOperations managerOperations){
-        this.managerOperations = managerOperations;
+    public ManagerPanel(ManagerService managerService){
+        this.managerService = managerService;
 
         setLayout(null);
 
-        loggedNameLabel = new JLabel(managerOperations.getUserInitData().getFirstName(), SwingConstants.CENTER);
+        loggedNameLabel = new JLabel(managerService.getUserProfile().getFirstName(), SwingConstants.CENTER);
         loggedNameLabel.setBounds(555, 15, 80, 50);
         loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
 
@@ -49,7 +49,7 @@ public class ManagerPanel extends JPanel {
         employeeLabel.setBounds(100, 115, 500, 50 );
         employeeLabel.setFont(employeeLabel.getFont().deriveFont(15f));
 
-        employeeList = new JList(managerOperations.getNames());
+        employeeList = new JList(managerService.getNames());
         employeeList.setBounds(170, 160, 360, 80);
         employeeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         employeeList.setFont(employeeList.getFont().deriveFont(15f));
@@ -61,8 +61,8 @@ public class ManagerPanel extends JPanel {
             if (employeeList.isSelectionEmpty()) {
                 JOptionPane.showMessageDialog(null,"Pick the user!","Information", 1);
             } else {
-                managerOperations.setUserDetails(employeeList.getSelectedIndex());
-                managerEmployeeDetailsPanel = new ManagerEmployeeDetailsPanel(managerOperations);
+                managerService.setUserDetails(employeeList.getSelectedIndex());
+                managerEmployeeDetailsPanel = new ManagerEmployeeDetailsPanel(managerService);
                 mainFrame.panelSwitchOver(managerEmployeeDetailsPanel);
             }
         });
@@ -71,7 +71,7 @@ public class ManagerPanel extends JPanel {
         availableMedicineLabel.setBounds(100, 270, 500, 50);
         availableMedicineLabel.setFont(availableMedicineLabel.getFont().deriveFont(15f));
 
-        medicineList = new JList(managerOperations.getStorageDetails());
+        medicineList = new JList(managerService.getStorageDetails());
         medicineList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         medicineList.setFont(medicineList.getFont().deriveFont(15f));
 
@@ -110,7 +110,7 @@ public class ManagerPanel extends JPanel {
         getButton.setBounds(410, 490, 90, 40);
         getButton.setFont(getButton.getFont().deriveFont(13f));
         getButton.addActionListener(e -> {
-            double sale = managerOperations.getDataBaseInit().getTotalSale(dateTextField.getText()).getTotalSale();
+            double sale = managerService.getDataBaseInit().getTotalSale(dateTextField.getText()).getTotalSale();
             saleTextField.setText("Total sale for " + dateTextField.getText() + ": " + sale + "$");
         });
 //220 width
@@ -139,8 +139,8 @@ public class ManagerPanel extends JPanel {
             if (quantity < 0) {
                 JOptionPane.showMessageDialog(null,"The value cannot be less than 0","Warning", 2);
             } else
-            managerOperations.storageUpdateForJPanel(quantity, medicineList.getSelectedIndex()+1);
-            medicineList = new JList(managerOperations.getStorageDetails());
+            managerService.storageUpdateForJPanel(quantity, medicineList.getSelectedIndex()+1);
+            medicineList = new JList(managerService.getStorageDetails());
             medicineList.setFont(medicineList.getFont().deriveFont(15f));
             listScroller.setViewportView(medicineList);
         } catch (NumberFormatException nfe) {

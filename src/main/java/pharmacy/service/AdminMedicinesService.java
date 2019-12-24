@@ -1,30 +1,28 @@
 package pharmacy.service;
 
-import pharmacy.domain.UserData;
+import pharmacy.domain.MedicineData;
 
 import java.util.List;
 
-public interface AdminUsersService {
+public interface AdminMedicinesService {
 
-    void addNewUser(String firstName, String lastName, String address, String email, String phoneNumber,
-                    String login, String password, String jobTitle, int salary, int pharmacyId);
+    void addNewMedicine(String medicineName, double price, String medicineDescription);
 
-    void setUserDataForUpdate(String firstName, String lastName, String address, String email, String phoneNumber,
-                              String login, String password, String jobTitle, int salary, int pharmacyId);
+    void setMedicineDataForUpdate(String medicineName, double price, String medicineDescription);
 
-    void removeUser(int index);
+    void removeMedicine(int index);
 
-    UserData readUserData();
+    MedicineData readMedicineData();
 
-    void updateEmployeeList();
+    void updateMedicineList();
 
-    String[] getEmployeeList();
+    String[] getMedicineList();
 
-    void setUserDataList();
+    void setMedicineDataList();
 
-    List<UserData> getUserDataList();
+    List<MedicineData> getMedicineDataList();
 
-    void setUpdateUserData(int index);
+    void setUpdateMedicineData(int index);
 
-    void setEmployeeList();
+    void setMedicineList();
 }

@@ -1,11 +1,11 @@
 package pharmacy.gui.admin;
 
+import pharmacy.service.AdminUsersService;
+import pharmacy.service.UserProfileService;
 import pharmacy.utils.GetCurrentDate;
-import pharmacy.service.AdminOperations;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -14,16 +14,15 @@ import static pharmacy.Main.mainFrame;
 
 public class AdminAddUserPanel extends JPanel {
 
-    private JLabel loggedNameLabel, dateLabel, employeeLabel, firstNameLabel, lastNameLabel, addressLabel,
-            emailLabel, phoneNoLabel, loginLabel, passwordLabel, jobTitleLabel, salaryLabel, pharmacyIdLabel;
+    private JLabel loggedNameLabel, dateLabel, employeeLabel, firstNameLabel, lastNameLabel, addressLabel, emailLabel;
+    private JLabel phoneNoLabel, loginLabel, passwordLabel, jobTitleLabel, salaryLabel, pharmacyIdLabel;
+    private JTextField firstNameTextField, lastNameTextField, addressTextField, emailTextField, phoneNoTextField;
+    private JTextField loginTextField, passwordTextField, jobTitleTextField, salaryTextField, pharmacyIdTextField;
     private JButton goBackButton, submitButton;
-    private JTextField firstNameTextField, lastNameTextField, addressTextField, emailTextField, phoneNoTextField,
-            loginTextField, passwordTextField, jobTitleTextField, salaryTextField, pharmacyIdTextField;
     private GetCurrentDate getCurrentDate = new GetCurrentDate();
-
     private BufferedImage img;
 
-    public AdminAddUserPanel(AdminOperations adminOperations){
+    public AdminAddUserPanel(AdminUsersService adminUsersService){
         setLayout(null);
         try {
             img = ImageIO.read(getClass().getResource("/background.png")
@@ -32,7 +31,7 @@ public class AdminAddUserPanel extends JPanel {
             e.printStackTrace();
         }
 
-        loggedNameLabel = new JLabel(adminOperations.getUserInitData().getFirstName(), SwingConstants.CENTER);
+        loggedNameLabel = new JLabel(UserProfileService.getFirstName(), SwingConstants.CENTER);
         loggedNameLabel.setBounds(555, 15, 80, 50);
         loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
 
@@ -128,19 +127,19 @@ public class AdminAddUserPanel extends JPanel {
         submitButton.setBounds(400, 600, 100, 40);
         submitButton.setFont(submitButton.getFont().deriveFont(13f));
         submitButton.addActionListener(e -> {
-            adminOperations.createNewUser(firstNameTextField.getText(), lastNameTextField.getText(),
+            adminUsersService.addNewUser(firstNameTextField.getText(), lastNameTextField.getText(),
                     addressTextField.getText(), emailTextField.getText(), phoneNoTextField.getText(),
                     loginTextField.getText(), passwordTextField.getText(), jobTitleTextField.getText(),
                     Integer.parseInt(salaryTextField.getText()), Integer.parseInt(pharmacyIdTextField.getText()));
             resetFields();
-            adminOperations.updateEmployeeList();
+            adminUsersService.updateEmployeeList();
         });
 
         goBackButton = new JButton("Go Back");
         goBackButton.setBounds(250, 600, 100, 40);
         goBackButton.setFont(goBackButton.getFont().deriveFont(13f));
         goBackButton.addActionListener(e -> {
-            mainFrame.panelSwitchOver(new AdminShowUsersPanel(adminOperations));
+            mainFrame.panelSwitchOver(new AdminShowUsersPanel());
         });
 
         add(loggedNameLabel);

@@ -1,8 +1,8 @@
 package pharmacy.service;
 
+import pharmacy.domain.UserProfile;
 import pharmacy.utils.DataBaseInit;
 import pharmacy.domain.StorageData;
-import pharmacy.domain.UserInitData;
 
 import java.util.List;
 
@@ -11,12 +11,12 @@ public class PharmacistOperations {
     private int size;
     private String[] storageDetails;
 
-    private UserInitData userInitData;
+    private UserProfile userProfile;
     private DataBaseInit dataBaseInit;
     private List<StorageData> storageDataList;
 
-    public PharmacistOperations(UserInitData userInitData, DataBaseInit dataBaseInit) {
-        this.userInitData = userInitData;
+    public PharmacistOperations(UserProfile userProfile, DataBaseInit dataBaseInit) {
+        this.userProfile = userProfile;
         this.dataBaseInit = dataBaseInit;
         setStorageDataList();
         setSize();
@@ -38,9 +38,9 @@ public class PharmacistOperations {
         }
     }
 
-    public UserInitData getUserInitData() { return userInitData; }
+    public UserProfile getUserProfile() { return userProfile; }
 
-    public void setUserInitData(UserInitData userInitData) { this.userInitData = userInitData; }
+    public void setUserProfile(UserProfile userProfile) { this.userProfile = userProfile; }
 
     public DataBaseInit getDataBaseInit() { return dataBaseInit; }
 
@@ -49,5 +49,5 @@ public class PharmacistOperations {
     public List<StorageData> getStorageDataList() { return storageDataList; }
 
     public void setStorageDataList() {
-        this.storageDataList = getDataBaseInit().getStorageData(getUserInitData().getPharmacyId()); }
+        this.storageDataList = getDataBaseInit().getStorageData(getUserProfile().getPharmacyId()); }
 }

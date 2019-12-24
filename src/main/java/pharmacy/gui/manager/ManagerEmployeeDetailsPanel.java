@@ -1,7 +1,7 @@
 package pharmacy.gui.manager;
 
 import pharmacy.utils.GetCurrentDate;
-import pharmacy.service.ManagerOperations;
+import pharmacy.service.ManagerService;
 
 import javax.swing.*;
 
@@ -15,11 +15,11 @@ public class ManagerEmployeeDetailsPanel extends JPanel {
     private JList<String> employeeList;
     private GetCurrentDate getCurrentDate = new GetCurrentDate();
 
-    public ManagerEmployeeDetailsPanel(ManagerOperations managerOperations){
+    public ManagerEmployeeDetailsPanel(ManagerService managerService){
 
         setLayout(null);
 
-        loggedNameLabel = new JLabel(managerOperations.getUserInitData().getFirstName(), SwingConstants.CENTER);
+        loggedNameLabel = new JLabel(managerService.getUserProfile().getFirstName(), SwingConstants.CENTER);
         loggedNameLabel.setBounds(555, 15, 80, 50);
         loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
 
@@ -31,7 +31,7 @@ public class ManagerEmployeeDetailsPanel extends JPanel {
         employeeLabel.setBounds(100, 50, 500, 50 );
         employeeLabel.setFont(employeeLabel.getFont().deriveFont(15f));
 
-        employeeList = new JList(managerOperations.getUserDetails());
+        employeeList = new JList(managerService.getUserDetails());
         employeeList.setBounds(130, 100, 440, 450);
         employeeList.setFont(employeeList.getFont().deriveFont(15f));
 
@@ -43,7 +43,7 @@ public class ManagerEmployeeDetailsPanel extends JPanel {
         goBackButton.setBounds(300, 600, 100, 40);
         goBackButton.setFont(goBackButton.getFont().deriveFont(13f));
         goBackButton.addActionListener(e -> {
-            mainFrame.panelSwitchOver(new ManagerPanel(managerOperations));
+            mainFrame.panelSwitchOver(new ManagerPanel(managerService));
         });
 
         add(loggedNameLabel);

@@ -93,11 +93,6 @@ SELECT first_name AS firstname, last_name AS lastname, job_title AS role FROM us
 INNER JOIN pharmacy_staff ps
     ON users.user_id = ps.user_id;
 
-------- // aktualizacja uzytkownika
-UPDATE public.users
-    SET first_name='', last_name='', address='', email='', phone_number=''
-    WHERE user_id = 1;
-
 
 DELETE FROM public.users;
 
@@ -153,6 +148,16 @@ VALUES (?, ?, (SELECT MAX(users.user_id) FROM public.users));
 INSERT INTO public.pharmacy_staff(
     user_id, job_title, salary, pharmacy_id)
 VALUES ((SELECT MAX(users.user_id) FROM public.users), ?, ?, ?);
+
+------------------/////// Get ALL Users \\\\\\\------------------
+
+SELECT users.user_id, first_name, last_name, address, email,
+       phone_number, login, job_title, salary, pharmacy_id FROM users
+INNER JOIN pharmacy_staff ps
+           ON users.user_id = ps.user_id
+INNER JOIN user_credentials uc
+           ON users.user_id = uc.user_id
+ORDER BY first_name;
 
 ------------------/////// CRUD User \\\\\\\------------------
 

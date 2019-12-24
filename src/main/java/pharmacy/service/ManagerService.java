@@ -3,24 +3,24 @@ package pharmacy.service;
 import pharmacy.utils.DataBaseInit;
 import pharmacy.domain.StorageData;
 import pharmacy.domain.UserInfoDataManger;
-import pharmacy.domain.UserInitData;
+import pharmacy.domain.UserProfile;
 
 import java.util.List;
 
-public class ManagerOperations {
+public class ManagerService {
 
     private int size;
     private String[] names;
     private String[] userDetails;
     private String[] storageDetails;
 
-    private UserInitData userInitData;
+    private UserProfile userProfile;
     private DataBaseInit dataBaseInit;
     private List<UserInfoDataManger> userInfoDataMangerList;
     private List<StorageData> storageDataList;
 
-    public ManagerOperations(UserInitData userInitData, DataBaseInit dataBaseInit) {
-        this.userInitData = userInitData;
+    public ManagerService(UserProfile userProfile, DataBaseInit dataBaseInit) {
+        this.userProfile = userProfile;
         this.dataBaseInit = dataBaseInit;
         setUserInfoDataMangerList();
         setStorageDataList();
@@ -30,7 +30,7 @@ public class ManagerOperations {
     }
 
     public void storageUpdateForJPanel(int quantity, int medicineId) {
-        getDataBaseInit().updateStorageQuantity(quantity,medicineId,userInitData.getPharmacyId());
+        getDataBaseInit().updateStorageQuantity(quantity,medicineId, userProfile.getPharmacyId());
         setStorageDataList();
         setStorageDetails();
     }
@@ -69,19 +69,19 @@ public class ManagerOperations {
     }
 
     public void setUserInfoDataMangerList() {
-        this.userInfoDataMangerList = getDataBaseInit().getUnitUsersData(getUserInitData().getPharmacyId());
+        this.userInfoDataMangerList = getDataBaseInit().getUnitUsersData(getUserProfile().getPharmacyId());
     }
 
     public void setStorageDataList() {
-        this.storageDataList = getDataBaseInit().getStorageData(getUserInitData().getPharmacyId());
+        this.storageDataList = getDataBaseInit().getStorageData(getUserProfile().getPharmacyId());
     }
 
-    public UserInitData getUserInitData() {
-        return userInitData;
+    public UserProfile getUserProfile() {
+        return userProfile;
     }
 
-    public void setUserInitData(UserInitData userInitData) {
-        this.userInitData = userInitData;
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 
     public DataBaseInit getDataBaseInit() {

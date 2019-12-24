@@ -2,14 +2,20 @@ package pharmacy.domain;
 
 import java.util.Objects;
 
-public class Medicine {
+public class MedicineData {
 
     private int medicineId;
     private String medicineName;
     private double price;
     private String medicineDescription;
 
-    public Medicine() { }
+    public MedicineData() { }
+
+    public MedicineData(String medicineName, double price, String medicineDescription) {
+        this.medicineName = medicineName;
+        this.price = price;
+        this.medicineDescription = medicineDescription;
+    }
 
     public int getMedicineId() {
         return medicineId;
@@ -54,9 +60,9 @@ public class Medicine {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Medicine)) return false;
-        Medicine medicine = (Medicine) o;
-        return getMedicineId() == medicine.getMedicineId();
+        if (!(o instanceof MedicineData)) return false;
+        MedicineData medicineData = (MedicineData) o;
+        return getMedicineId() == medicineData.getMedicineId();
     }
 
     @Override

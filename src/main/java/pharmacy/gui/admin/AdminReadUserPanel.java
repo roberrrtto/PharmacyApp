@@ -1,7 +1,8 @@
 package pharmacy.gui.admin;
 
+import pharmacy.service.AdminUsersService;
+import pharmacy.service.UserProfileService;
 import pharmacy.utils.GetCurrentDate;
-import pharmacy.service.AdminOperations;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,10 +20,10 @@ public class AdminReadUserPanel extends JPanel {
     private JLabel firstNameTextField, lastNameTextField, addressTextField, emailTextField, phoneNoTextField,
             loginTextField, passwordTextField, jobTitleTextField, salaryTextField, pharmacyIdTextField;
     private GetCurrentDate getCurrentDate = new GetCurrentDate();
-    private AdminOperations adminOperations;
+    private AdminUsersService adminUsersService;
     private BufferedImage img;
 
-    public AdminReadUserPanel(AdminOperations adminOperations){
+    public AdminReadUserPanel(AdminUsersService adminUsersService){
         setLayout(null);
         try {
             img = ImageIO.read(getClass().getResource("/background.png")
@@ -30,9 +31,9 @@ public class AdminReadUserPanel extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.adminOperations = adminOperations;
+        this.adminUsersService = adminUsersService;
 
-        loggedNameLabel = new JLabel(adminOperations.getUserInitData().getFirstName(), SwingConstants.CENTER);
+        loggedNameLabel = new JLabel(UserProfileService.getFirstName(), SwingConstants.CENTER);
         loggedNameLabel.setBounds(555, 15, 80, 50);
         loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
 
@@ -148,7 +149,7 @@ public class AdminReadUserPanel extends JPanel {
         goBackButton.setBounds(300, 600, 100, 40);
         goBackButton.setFont(goBackButton.getFont().deriveFont(13f));
         goBackButton.addActionListener(e -> {
-            mainFrame.panelSwitchOver(new AdminShowUsersPanel(adminOperations));
+            mainFrame.panelSwitchOver(new AdminShowUsersPanel());
         });
 
         setFields();
@@ -186,15 +187,15 @@ public class AdminReadUserPanel extends JPanel {
     }
 
     public void setFields() {
-        firstNameTextField.setText(adminOperations.getUserInfoForUpdate().getFirstName()+"");
-        lastNameTextField.setText(adminOperations.getUserInfoForUpdate().getLastName());
-        addressTextField.setText(adminOperations.getUserInfoForUpdate().getAddress());
-        emailTextField.setText(adminOperations.getUserInfoForUpdate().getEmail());
-        phoneNoTextField.setText(adminOperations.getUserInfoForUpdate().getPhoneNumber());
-        loginTextField.setText(adminOperations.getUserInfoForUpdate().getLogin());
-        passwordTextField.setText(adminOperations.getUserInfoForUpdate().getPassword());
-        jobTitleTextField.setText(adminOperations.getUserInfoForUpdate().getJobTitle());
-        salaryTextField.setText(adminOperations.getUserInfoForUpdate().getSalary()+"");
-        pharmacyIdTextField.setText(adminOperations.getUserInfoForUpdate().getPharmacyId()+"");
+        firstNameTextField.setText(adminUsersService.readUserData().getFirstName()+"");
+        lastNameTextField.setText(adminUsersService.readUserData().getLastName());
+        addressTextField.setText(adminUsersService.readUserData().getAddress());
+        emailTextField.setText(adminUsersService.readUserData().getEmail());
+        phoneNoTextField.setText(adminUsersService.readUserData().getPhoneNumber());
+        loginTextField.setText(adminUsersService.readUserData().getLogin());
+        passwordTextField.setText(adminUsersService.readUserData().getPassword());
+        jobTitleTextField.setText(adminUsersService.readUserData().getJobTitle());
+        salaryTextField.setText(adminUsersService.readUserData().getSalary()+"");
+        pharmacyIdTextField.setText(adminUsersService.readUserData().getPharmacyId()+"");
     }
 }

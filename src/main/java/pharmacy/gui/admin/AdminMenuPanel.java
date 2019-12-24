@@ -1,17 +1,12 @@
 package pharmacy.gui.admin;
 
-import pharmacy.service.AdminOperations;
-import pharmacy.utils.DataBaseInit;
-import pharmacy.domain.UserInitData;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import static pharmacy.Main.*;
+import static pharmacy.Main.mainFrame;
 
 public class AdminMenuPanel extends JPanel {
 
@@ -20,7 +15,7 @@ public class AdminMenuPanel extends JPanel {
 
     private BufferedImage img;
 
-    public AdminMenuPanel(UserInitData userInitData, DataBaseInit dataBaseInit) {
+    public AdminMenuPanel() {
         setLayout(null);
         try {
             img = ImageIO.read(getClass().getResource("/background.png")
@@ -37,8 +32,7 @@ public class AdminMenuPanel extends JPanel {
         usersButton.setBounds(225, 190, 250, 50);
         usersButton.setFont(usersButton.getFont().deriveFont(20f));
         usersButton.addActionListener(e -> {
-            AdminOperations adminOperations = new AdminOperations(userInitData, dataBaseInit);
-            AdminShowUsersPanel adminShowUsersPanel = new AdminShowUsersPanel(adminOperations);
+            AdminShowUsersPanel adminShowUsersPanel = new AdminShowUsersPanel();
             mainFrame.panelSwitchOver(adminShowUsersPanel);
         });
 
@@ -46,8 +40,7 @@ public class AdminMenuPanel extends JPanel {
         medicinesButton.setBounds(225, 300, 250, 50);
         medicinesButton.setFont(medicinesButton.getFont().deriveFont(20f));
         medicinesButton.addActionListener(e -> {
-            AdminOperations adminOperations = new AdminOperations(userInitData, dataBaseInit);
-            AdminShowMedicinesPanel adminShowMedicinesPanel = new AdminShowMedicinesPanel(adminOperations);
+            AdminShowMedicinesPanel adminShowMedicinesPanel = new AdminShowMedicinesPanel();
             mainFrame.panelSwitchOver(adminShowMedicinesPanel);
         });
 

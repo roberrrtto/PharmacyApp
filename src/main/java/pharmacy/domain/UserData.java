@@ -1,6 +1,6 @@
 package pharmacy.domain;
 
-public class UserDataAdminForm {
+public class UserData {
 
     private String firstName;
     private String lastName;
@@ -14,10 +14,10 @@ public class UserDataAdminForm {
     private int pharmacyId;
     private int userId;
 
-    public UserDataAdminForm(){ }
+    public UserData(){ }
 
-    public UserDataAdminForm(String firstName, String lastName, String address, String email, String phoneNumber,
-                             String login, String password, String jobTitle, int salary, int pharmacyId) {
+    public UserData(String firstName, String lastName, String address, String email, String phoneNumber,
+                    String login, String password, String jobTitle, int salary, int pharmacyId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -28,6 +28,10 @@ public class UserDataAdminForm {
         this.jobTitle = jobTitle;
         this.salary = salary;
         this.pharmacyId = pharmacyId;
+    }
+
+    public String getName() {
+        return getFirstName() + " " + getLastName();
     }
 
     public String getFirstName() {
@@ -120,7 +124,7 @@ public class UserDataAdminForm {
 
     @Override
     public String toString() {
-        return "UserDataAdminForm{" +
+        return "UserData{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", address='" + address + '\'' +

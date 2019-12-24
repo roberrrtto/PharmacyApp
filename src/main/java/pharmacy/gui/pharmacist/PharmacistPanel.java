@@ -26,7 +26,7 @@ public class PharmacistPanel extends JPanel {
 
         setLayout(null);
 
-        loggedNameLabel = new JLabel(pharmacistOperations.getUserInitData().getFirstName(), SwingConstants.CENTER);
+        loggedNameLabel = new JLabel(pharmacistOperations.getUserProfile().getFirstName(), SwingConstants.CENTER);
         loggedNameLabel.setBounds(580, 15, 70, 50);
         loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
 

@@ -1,17 +1,18 @@
 package pharmacy.repository;
 
-import pharmacy.domain.MedicineData;
 import pharmacy.domain.UserData;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static pharmacy.utils.DataBaseInit.closeDataBaseResources;
 import static pharmacy.utils.DataBaseInit.initializeDataBaseConnection;
 
-public class AdminRepositoryImpl extends ParentRepositoryImpl {
+public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void createUser(UserData userData) {
@@ -208,23 +209,52 @@ public class AdminRepositoryImpl extends ParentRepositoryImpl {
     }
 
     @Override
-    public void createMedicine(MedicineData medicineData) {
+    public List<UserData> getAllUsers() {
+        final String sqlGetAllUsersData = "SELECT users.user_id, first_name, last_name, address, email,\n" +
+                "       phone_number, login, job_title, salary, pharmacy_id FROM users\n" +
+                "INNER JOIN pharmacy_staff ps\n" +
+                "           ON users.user_id = ps.user_id\n" +
+                "INNER JOIN user_credentials uc\n" +
+                "           ON users.user_id = uc.user_id\n" +
+                "ORDER BY first_name;";
 
+        Connection connection = initializeDataBaseConnection();
+        PreparedStatement preparedStatement = null;
+
+        List<UserData> userDataList = new ArrayList<>();
+
+        try {
+            preparedStatement = connection.prepareStatement(sqlGetAllUsersData);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                UserData userData = new UserData();
+
+                userData.setUserId(resultSet.getInt("user_id"));
+                userData.setFirstName(resultSet.getString("first_name"));
+                userData.setLastName(resultSet.getString("last_name"));
+                userData.setAddress(resultSet.getString("address"));
+                userData.setEmail(resultSet.getString("email"));
+                userData.setPhoneNumber(resultSet.getString("phone_number"));
+                userData.setLogin(resultSet.getString("login"));
+                userData.setJobTitle(resultSet.getString("job_title"));
+                userData.setSalary(resultSet.getInt("salary"));
+                userData.setPharmacyId(resultSet.getInt("pharmacy_id"));
+
+                userDataList.add(userData);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error during invoke SQL query: \n" + e.getMessage());
+            throw new RuntimeException("Error during invoke SQL query");
+        } finally {
+            closeDataBaseResources(connection, preparedStatement);
+        }
+
+        return userDataList;
     }
 
     @Override
-    public MedicineData readMedicine(int medicineId) {
+    public List<UserData> getAllUsersByUnit(int pharmacyId) {
         return null;
     }
-
-    @Override
-    public void updateMedicine(MedicineData medicineData) {
-
-    }
-
-    @Override
-    public void deleteMedicine(int medicineId) {
-
-    }
-
 }
