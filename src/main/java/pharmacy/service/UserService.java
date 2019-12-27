@@ -4,7 +4,7 @@ import pharmacy.domain.UserData;
 
 import java.util.List;
 
-public interface AdminUsersService {
+public interface UserService {
 
     void addNewUser(String firstName, String lastName, String address, String email, String phoneNumber,
                     String login, String password, String jobTitle, int salary, int pharmacyId);

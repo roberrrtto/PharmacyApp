@@ -1,14 +1,16 @@
 package pharmacy.gui.admin;
 
-import pharmacy.service.AdminUsersService;
+import pharmacy.service.UserService;
 import pharmacy.service.UserProfileService;
 import pharmacy.utils.GetCurrentDate;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.text.InternationalFormatter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.NumberFormat;
 
 import static pharmacy.Main.mainFrame;
 
@@ -17,12 +19,17 @@ public class AdminAddUserPanel extends JPanel {
     private JLabel loggedNameLabel, dateLabel, employeeLabel, firstNameLabel, lastNameLabel, addressLabel, emailLabel;
     private JLabel phoneNoLabel, loginLabel, passwordLabel, jobTitleLabel, salaryLabel, pharmacyIdLabel;
     private JTextField firstNameTextField, lastNameTextField, addressTextField, emailTextField, phoneNoTextField;
-    private JTextField loginTextField, passwordTextField, jobTitleTextField, salaryTextField, pharmacyIdTextField;
+    private JTextField loginTextField, passwordTextField, jobTitleTextField;
+    private JFormattedTextField salaryFormattedTextField, pharmacyIdFormattedTextField;
+    private InternationalFormatter integerFormatter;
+    private NumberFormat integerFormat;
     private JButton goBackButton, submitButton;
-    private GetCurrentDate getCurrentDate = new GetCurrentDate();
     private BufferedImage img;
 
-    public AdminAddUserPanel(AdminUsersService adminUsersService){
+    private GetCurrentDate getCurrentDate = new GetCurrentDate();
+
+    public AdminAddUserPanel(UserService userService){
+        setIntFormat();
         setLayout(null);
         try {
             img = ImageIO.read(getClass().getResource("/background.png")
@@ -111,28 +118,30 @@ public class AdminAddUserPanel extends JPanel {
         salaryLabel.setBounds(100, 500, 110, 50 );
         salaryLabel.setFont(salaryLabel.getFont().deriveFont(15f));
 
-        salaryTextField = new JTextField();
-        salaryTextField.setBounds(220, 500, 360, 40);
-        salaryTextField.setFont(salaryTextField.getFont().deriveFont(15f));
+        salaryFormattedTextField = new JFormattedTextField(integerFormatter);
+        salaryFormattedTextField.setBounds(220, 500, 360, 40);
+        salaryFormattedTextField.setFont(salaryFormattedTextField.getFont().deriveFont(15f));
+        salaryFormattedTextField.setValue(0);
 
         pharmacyIdLabel = new JLabel("pharmacy ID", SwingConstants.LEFT);
         pharmacyIdLabel.setBounds(100, 550, 110, 50 );
         pharmacyIdLabel.setFont(pharmacyIdLabel.getFont().deriveFont(15f));
 
-        pharmacyIdTextField = new JTextField();
-        pharmacyIdTextField.setBounds(220, 550, 360, 40);
-        pharmacyIdTextField.setFont(pharmacyIdTextField.getFont().deriveFont(15f));
+        pharmacyIdFormattedTextField = new JFormattedTextField(integerFormatter);
+        pharmacyIdFormattedTextField.setBounds(220, 550, 360, 40);
+        pharmacyIdFormattedTextField.setFont(pharmacyIdFormattedTextField.getFont().deriveFont(15f));
+        pharmacyIdFormattedTextField.setValue(0);
 
         submitButton = new JButton("Submit");
         submitButton.setBounds(400, 600, 100, 40);
         submitButton.setFont(submitButton.getFont().deriveFont(13f));
         submitButton.addActionListener(e -> {
-            adminUsersService.addNewUser(firstNameTextField.getText(), lastNameTextField.getText(),
+            userService.addNewUser(firstNameTextField.getText(), lastNameTextField.getText(),
                     addressTextField.getText(), emailTextField.getText(), phoneNoTextField.getText(),
                     loginTextField.getText(), passwordTextField.getText(), jobTitleTextField.getText(),
-                    Integer.parseInt(salaryTextField.getText()), Integer.parseInt(pharmacyIdTextField.getText()));
+                    (Integer) salaryFormattedTextField.getValue(), (Integer) (pharmacyIdFormattedTextField.getValue()));
             resetFields();
-            adminUsersService.updateEmployeeList();
+            userService.updateEmployeeList();
         });
 
         goBackButton = new JButton("Go Back");
@@ -165,8 +174,8 @@ public class AdminAddUserPanel extends JPanel {
         add(loginTextField);
         add(passwordTextField);
         add(jobTitleTextField);
-        add(salaryTextField);
-        add(pharmacyIdTextField);
+        add(salaryFormattedTextField);
+        add(pharmacyIdFormattedTextField);
     }
 
     @Override
@@ -175,7 +184,14 @@ public class AdminAddUserPanel extends JPanel {
         g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
     }
 
-    public void resetFields() {
+    private void setIntFormat() {
+        integerFormat = NumberFormat.getIntegerInstance();
+        integerFormatter = new InternationalFormatter(integerFormat);
+        integerFormatter.setMinimum(0);
+        integerFormatter.setAllowsInvalid(false);
+    }
+
+    private void resetFields() {
         firstNameTextField.setText("");
         lastNameTextField.setText("");
         addressTextField.setText("");
@@ -184,7 +200,7 @@ public class AdminAddUserPanel extends JPanel {
         loginTextField.setText("");
         passwordTextField.setText("");
         jobTitleTextField.setText("");
-        salaryTextField.setText("");
-        pharmacyIdTextField.setText("");
+        salaryFormattedTextField.setValue(0);
+        pharmacyIdFormattedTextField.setValue(0);
     }
 }

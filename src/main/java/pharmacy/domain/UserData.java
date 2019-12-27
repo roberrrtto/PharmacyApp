@@ -1,5 +1,7 @@
 package pharmacy.domain;
 
+import java.util.Objects;
+
 public class UserData {
 
     private String firstName;
@@ -137,5 +139,21 @@ public class UserData {
                 ", pharmacyId=" + pharmacyId +
                 ", userId=" + userId +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserData)) return false;
+        UserData userData = (UserData) o;
+        return getUserId() == userData.getUserId() &&
+                Objects.equals(getFirstName(), userData.getFirstName()) &&
+                Objects.equals(getLastName(), userData.getLastName()) &&
+                Objects.equals(getLogin(), userData.getLogin());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUserId());
     }
 }

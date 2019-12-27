@@ -1,0 +1,47 @@
+package pharmacy.domain;
+
+import java.util.Objects;
+
+public class PharmacyStorageData extends MedicineData {
+
+    private int pharmacyId;
+    private int quantity;
+    private int medicineId;
+
+    @Override
+    public int getMedicineId() {
+        this.medicineId = super.getMedicineId();
+        return this.medicineId;
+    }
+
+    public int getPharmacyId() {
+        return pharmacyId;
+    }
+
+    public void setPharmacyId(int pharmacyId) {
+        this.pharmacyId = pharmacyId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PharmacyStorageData)) return false;
+        if (!super.equals(o)) return false;
+        PharmacyStorageData that = (PharmacyStorageData) o;
+        return getPharmacyId() == that.getPharmacyId() &&
+                getMedicineId() == that.getMedicineId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getPharmacyId(), getMedicineId());
+    }
+}

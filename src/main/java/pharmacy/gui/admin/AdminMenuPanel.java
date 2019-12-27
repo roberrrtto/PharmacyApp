@@ -47,6 +47,10 @@ public class AdminMenuPanel extends JPanel {
         pharmaciesButton = new JButton("PHARMACIES");
         pharmaciesButton.setBounds(225, 245, 250, 50);
         pharmaciesButton.setFont(pharmaciesButton.getFont().deriveFont(20f));
+        pharmaciesButton.addActionListener(e -> {
+            AdminPharmacyPanel adminPharmacyPanel = new AdminPharmacyPanel();
+            mainFrame.panelSwitchOver(adminPharmacyPanel);
+        });
 
         logOutButton = new JButton("LOG OUT");
         logOutButton.setBounds(225, 355, 250, 50);
@@ -57,8 +61,8 @@ public class AdminMenuPanel extends JPanel {
 
         add(menuLabel);
         add(usersButton);
-        add(pharmaciesButton);
         add(medicinesButton);
+        add(pharmaciesButton);
         add(logOutButton);
     }
     @Override

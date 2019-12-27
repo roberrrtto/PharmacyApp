@@ -45,9 +45,6 @@ public class DataBaseInit {
         }
     }
 
-    ////////////// ------------------ check credentials and get initial user-data ------------------ \\\\\\\\\\\\\\
-
-
     ////////////// ------------------ get unit users info for a Manager------------------ \\\\\\\\\\\\\\
     public List<UserInfoDataManger> getUnitUsersData(int pharmacyId) {
 

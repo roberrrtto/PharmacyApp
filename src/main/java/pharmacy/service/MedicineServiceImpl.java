@@ -6,7 +6,7 @@ import pharmacy.repository.MedicineRepositoryImpl;
 
 import java.util.List;
 
-public class AdminMedicinesServiceImpl implements AdminMedicinesService{
+public class MedicineServiceImpl implements MedicineService {
 
     private MedicineRepository medicineRepository;
     private MedicineData newMedicineData;
@@ -14,7 +14,7 @@ public class AdminMedicinesServiceImpl implements AdminMedicinesService{
     private List<MedicineData> medicineDataList;
     private String[] medicineList;
 
-    public AdminMedicinesServiceImpl() {
+    public MedicineServiceImpl() {
         this.medicineRepository = new MedicineRepositoryImpl();
         setMedicineDataList();
         setMedicineList();

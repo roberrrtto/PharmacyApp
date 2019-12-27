@@ -255,6 +255,45 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public List<UserData> getAllUsersByUnit(int pharmacyId) {
-        return null;
+
+        final String sqlGetAllUsersData = "SELECT users.user_id, first_name, last_name,\n" +
+                "    login, job_title, pharmacy_id FROM users\n" +
+                "INNER JOIN pharmacy_staff ps\n" +
+                "    ON users.user_id = ps.user_id\n" +
+                "INNER JOIN user_credentials uc\n" +
+                "    ON users.user_id = uc.user_id\n" +
+                "WHERE pharmacy_id=?\n" +
+                "ORDER BY first_name;";
+
+        Connection connection = initializeDataBaseConnection();
+        PreparedStatement preparedStatement = null;
+
+        List<UserData> userDataList = new ArrayList<>();
+
+        try {
+            preparedStatement = connection.prepareStatement(sqlGetAllUsersData);
+            preparedStatement.setInt(1, pharmacyId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                UserData userData = new UserData();
+
+                userData.setUserId(resultSet.getInt("user_id"));
+                userData.setFirstName(resultSet.getString("first_name"));
+                userData.setLastName(resultSet.getString("last_name"));
+                userData.setLogin(resultSet.getString("login"));
+                userData.setJobTitle(resultSet.getString("job_title"));
+                userData.setPharmacyId(resultSet.getInt("pharmacy_id"));
+
+                userDataList.add(userData);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error during invoke SQL query: \n" + e.getMessage());
+            throw new RuntimeException("Error during invoke SQL query");
+        } finally {
+            closeDataBaseResources(connection, preparedStatement);
+        }
+
+        return userDataList;
     }
 }

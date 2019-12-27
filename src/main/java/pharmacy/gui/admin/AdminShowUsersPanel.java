@@ -1,7 +1,7 @@
 package pharmacy.gui.admin;
 
-import pharmacy.service.AdminUsersService;
-import pharmacy.service.AdminUsersServiceImpl;
+import pharmacy.service.UserService;
+import pharmacy.service.UserServiceImpl;
 import pharmacy.service.UserProfileService;
 import pharmacy.utils.GetCurrentDate;
 
@@ -16,7 +16,7 @@ import static pharmacy.Main.mainFrame;
 public class AdminShowUsersPanel extends JPanel {
 
     private JLabel loggedNameLabel, dateLabel, allEmployeesLabel;
-    private JButton logOutButton, deleteEmpButton, addEmpButton, editEmpButton, readEmpButton;
+    private JButton logOutButton, deleteEmpButton, addEmpButton, editEmpButton, readEmpButton, backToMenu;
     private JList<String> employeeList;
     private JScrollPane employeeListScroller;
     private AdminAddUserPanel adminAddUserPanel;
@@ -25,7 +25,7 @@ public class AdminShowUsersPanel extends JPanel {
     private BufferedImage img;
 
     private GetCurrentDate getCurrentDate = new GetCurrentDate();
-    private AdminUsersService adminUsersService = new AdminUsersServiceImpl();
+    private UserService userService = new UserServiceImpl();
 
     public AdminShowUsersPanel() {
         setLayout(null);
@@ -44,18 +44,25 @@ public class AdminShowUsersPanel extends JPanel {
         dateLabel.setBounds(50, 15, 100, 50);
         dateLabel.setFont(dateLabel.getFont().deriveFont(15f));
 
-        logOutButton = new JButton("Log out");
+        logOutButton = new JButton("LOG OUT");
         logOutButton.setBounds(555, 55, 80, 30);
         logOutButton.setFont(logOutButton.getFont().deriveFont(12f));
         logOutButton.addActionListener(e -> {
             mainFrame.logout();
         });
 
+        backToMenu = new JButton("MENU");
+        backToMenu.setBounds(555, 85, 80, 30);
+        backToMenu.setFont(backToMenu.getFont().deriveFont(12f));
+        backToMenu.addActionListener(e -> {
+            mainFrame.panelSwitchOver(new AdminMenuPanel());
+        });
+
         allEmployeesLabel = new JLabel("USERS: ", SwingConstants.CENTER);
         allEmployeesLabel.setBounds(100, 50, 500, 50);
         allEmployeesLabel.setFont(allEmployeesLabel.getFont().deriveFont(15f));
 
-        employeeList = new JList(adminUsersService.getEmployeeList());
+        employeeList = new JList(userService.getEmployeeList());
         employeeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         employeeList.setFont(employeeList.getFont().deriveFont(15f));
 
@@ -67,7 +74,7 @@ public class AdminShowUsersPanel extends JPanel {
         addEmpButton.setBounds(155, 370, 90, 40);
         addEmpButton.setFont(addEmpButton.getFont().deriveFont(13f));
         addEmpButton.addActionListener(e -> {
-            adminAddUserPanel = new AdminAddUserPanel(adminUsersService);
+            adminAddUserPanel = new AdminAddUserPanel(userService);
             mainFrame.panelSwitchOver(adminAddUserPanel);
         });
 
@@ -75,8 +82,8 @@ public class AdminShowUsersPanel extends JPanel {
         readEmpButton.setBounds(255, 370, 90, 40);
         readEmpButton.setFont(dateLabel.getFont().deriveFont(13f));
         readEmpButton.addActionListener(e -> {
-            adminUsersService.setUpdateUserData(employeeList.getSelectedIndex());
-            adminReadUserPanel = new AdminReadUserPanel(adminUsersService);
+            userService.setUpdateUserData(employeeList.getSelectedIndex());
+            adminReadUserPanel = new AdminReadUserPanel(userService);
             mainFrame.panelSwitchOver(adminReadUserPanel);
         });
 
@@ -84,8 +91,8 @@ public class AdminShowUsersPanel extends JPanel {
         editEmpButton.setBounds(355, 370, 90, 40);
         editEmpButton.setFont(dateLabel.getFont().deriveFont(13f));
         editEmpButton.addActionListener(e -> {
-            adminUsersService.setUpdateUserData(employeeList.getSelectedIndex());
-            adminUpdateUserPanel = new AdminUpdateUserPanel(adminUsersService);
+            userService.setUpdateUserData(employeeList.getSelectedIndex());
+            adminUpdateUserPanel = new AdminUpdateUserPanel(userService);
             mainFrame.panelSwitchOver(adminUpdateUserPanel);
         });
 
@@ -93,8 +100,8 @@ public class AdminShowUsersPanel extends JPanel {
         deleteEmpButton.setBounds(455, 370, 90, 40);
         deleteEmpButton.setFont(dateLabel.getFont().deriveFont(13f));
         deleteEmpButton.addActionListener(e -> {
-            adminUsersService.removeUser(employeeList.getSelectedIndex());
-            employeeList = new JList(adminUsersService.getEmployeeList());
+            userService.removeUser(employeeList.getSelectedIndex());
+            employeeList = new JList(userService.getEmployeeList());
             employeeList.setFont(employeeList.getFont().deriveFont(15f));
             employeeListScroller.setViewportView(employeeList);
         });
@@ -103,6 +110,7 @@ public class AdminShowUsersPanel extends JPanel {
         add(dateLabel);
         add(allEmployeesLabel);
         add(logOutButton);
+        add(backToMenu);
         add(deleteEmpButton);
         add(editEmpButton);
         add(addEmpButton);

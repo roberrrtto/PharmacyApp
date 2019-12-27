@@ -24,8 +24,8 @@ SELECT medicine_id, medicine_name, price
 	FROM public.medicines;
 
 INSERT INTO public.medicines(
-	medicine_name, price)
-	VALUES (?, ?);
+    medicine_name, price, medicine_description)
+VALUES (?, ?, ?);
 
 --------------------------- pharmacies ---------------------------
 DELETE FROM public.pharmacies;

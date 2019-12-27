@@ -4,7 +4,7 @@ import pharmacy.domain.MedicineData;
 
 import java.util.List;
 
-public interface AdminMedicinesService {
+public interface MedicineService {
 
     void addNewMedicine(String medicineName, double price, String medicineDescription);
 

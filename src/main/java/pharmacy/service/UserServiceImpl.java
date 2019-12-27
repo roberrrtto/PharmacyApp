@@ -6,7 +6,7 @@ import pharmacy.repository.UserRepositoryImpl;
 
 import java.util.List;
 
-public class AdminUsersServiceImpl implements AdminUsersService{
+public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private UserData newUserData;
@@ -15,7 +15,7 @@ public class AdminUsersServiceImpl implements AdminUsersService{
     private String[] employeeList;
 
 
-    public AdminUsersServiceImpl() {
+    public UserServiceImpl() {
         this.userRepository = new UserRepositoryImpl();
         setUserDataList();
         setEmployeeList();

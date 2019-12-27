@@ -1,6 +1,6 @@
 package pharmacy.gui.admin;
 
-import pharmacy.service.AdminUsersService;
+import pharmacy.service.UserService;
 import pharmacy.service.UserProfileService;
 import pharmacy.utils.GetCurrentDate;
 
@@ -14,16 +14,17 @@ import static pharmacy.Main.mainFrame;
 
 public class AdminReadUserPanel extends JPanel {
 
-    private JLabel loggedNameLabel, dateLabel, employeeLabel, firstNameLabel, lastNameLabel, addressLabel,
-            emailLabel, phoneNoLabel, loginLabel, passwordLabel, jobTitleLabel, salaryLabel, pharmacyIdLabel;
+    private JLabel loggedNameLabel, dateLabel, employeeLabel, firstNameLabel, lastNameLabel, addressLabel;
+    private JLabel emailLabel, phoneNoLabel, loginLabel, passwordLabel, jobTitleLabel, salaryLabel, pharmacyIdLabel;
+    private JTextField firstNameTextField, lastNameTextField, addressTextField, emailTextField, phoneNoTextField;
+    private JTextField loginTextField, passwordTextField, jobTitleTextField, salaryTextField, pharmacyIdTextField;
+    private UserService userService;
     private JButton goBackButton;
-    private JLabel firstNameTextField, lastNameTextField, addressTextField, emailTextField, phoneNoTextField,
-            loginTextField, passwordTextField, jobTitleTextField, salaryTextField, pharmacyIdTextField;
-    private GetCurrentDate getCurrentDate = new GetCurrentDate();
-    private AdminUsersService adminUsersService;
     private BufferedImage img;
 
-    public AdminReadUserPanel(AdminUsersService adminUsersService){
+    private GetCurrentDate getCurrentDate = new GetCurrentDate();
+
+    public AdminReadUserPanel(UserService userService){
         setLayout(null);
         try {
             img = ImageIO.read(getClass().getResource("/background.png")
@@ -31,7 +32,7 @@ public class AdminReadUserPanel extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.adminUsersService = adminUsersService;
+        this.userService = userService;
 
         loggedNameLabel = new JLabel(UserProfileService.getFirstName(), SwingConstants.CENTER);
         loggedNameLabel.setBounds(555, 15, 80, 50);
@@ -49,101 +50,91 @@ public class AdminReadUserPanel extends JPanel {
         firstNameLabel.setBounds(100, 100, 110, 50 );
         firstNameLabel.setFont(firstNameLabel.getFont().deriveFont(15f));
 
-        firstNameTextField = new JLabel("", SwingConstants.LEFT);
-        firstNameTextField.setBackground(Color.LIGHT_GRAY);
-        firstNameTextField.setBounds(220, 110, 360, 30);
+        firstNameTextField = new JTextField();
+        firstNameTextField.setEditable(false);
+        firstNameTextField.setBounds(220, 100, 360, 40);
         firstNameTextField.setFont(firstNameTextField.getFont().deriveFont(15f));
-        firstNameTextField.setOpaque(true);
 
         lastNameLabel = new JLabel("last name", SwingConstants.LEFT);
         lastNameLabel.setBounds(100, 150, 110, 50 );
         lastNameLabel.setFont(employeeLabel.getFont().deriveFont(15f));
 
-        lastNameTextField = new JLabel("", SwingConstants.LEFT);
-        lastNameTextField.setBackground(Color.LIGHT_GRAY);
-        lastNameTextField.setBounds(220, 160, 360, 30);
-        lastNameTextField.setFont(firstNameTextField.getFont().deriveFont(15f));
-        lastNameTextField.setOpaque(true);
+        lastNameTextField = new JTextField();
+        lastNameTextField.setEditable(false);
+        lastNameTextField.setBounds(220, 150, 360, 40);
+        lastNameTextField.setFont(lastNameTextField.getFont().deriveFont(15f));
 
         addressLabel = new JLabel("home address", SwingConstants.LEFT);
         addressLabel.setBounds(100, 200, 110, 50 );
         addressLabel.setFont(employeeLabel.getFont().deriveFont(15f));
 
-        addressTextField = new JLabel("", SwingConstants.LEFT);
-        addressTextField.setBackground(Color.LIGHT_GRAY);
-        addressTextField.setBounds(220, 210, 360, 30);
+        addressTextField = new JTextField();
+        addressTextField.setEditable(false);
+        addressTextField.setBounds(220, 200, 360, 40);
         addressTextField.setFont(addressTextField.getFont().deriveFont(15f));
-        addressTextField.setOpaque(true);
 
         emailLabel = new JLabel("email", SwingConstants.LEFT);
         emailLabel.setBounds(100, 250, 110, 50 );
         emailLabel.setFont(emailLabel.getFont().deriveFont(15f));
 
-        emailTextField = new JLabel("", SwingConstants.LEFT);
-        emailTextField.setBackground(Color.LIGHT_GRAY);
-        emailTextField.setBounds(220, 260, 360, 30);
+        emailTextField = new JTextField();
+        emailTextField.setEditable(false);
+        emailTextField.setBounds(220, 250, 360, 40);
         emailTextField.setFont(emailTextField.getFont().deriveFont(15f));
-        emailTextField.setOpaque(true);
 
         phoneNoLabel = new JLabel("tel. no.", SwingConstants.LEFT);
         phoneNoLabel.setBounds(100, 300, 110, 50 );
         phoneNoLabel.setFont(phoneNoLabel.getFont().deriveFont(15f));
 
-        phoneNoTextField = new JLabel("", SwingConstants.LEFT);
-        phoneNoTextField.setBackground(Color.LIGHT_GRAY);
-        phoneNoTextField.setBounds(220, 310, 360, 30);
+        phoneNoTextField = new JTextField();
+        phoneNoTextField.setEditable(false);
+        phoneNoTextField.setBounds(220, 300, 360, 40);
         phoneNoTextField.setFont(phoneNoTextField.getFont().deriveFont(15f));
-        phoneNoTextField.setOpaque(true);
 
         loginLabel = new JLabel("login", SwingConstants.LEFT);
         loginLabel.setBounds(100, 350, 110, 50 );
         loginLabel.setFont(loginLabel.getFont().deriveFont(15f));
 
-        loginTextField = new JLabel("", SwingConstants.LEFT);
-        loginTextField.setBackground(Color.LIGHT_GRAY);
-        loginTextField.setBounds(220, 360, 360, 30);
+        loginTextField = new JTextField();
+        loginTextField.setEditable(false);
+        loginTextField.setBounds(220, 350, 360, 40);
         loginTextField.setFont(loginTextField.getFont().deriveFont(15f));
-        loginTextField.setOpaque(true);
 
         passwordLabel = new JLabel("password", SwingConstants.LEFT);
         passwordLabel.setBounds(100, 400, 110, 50 );
         passwordLabel.setFont(passwordLabel.getFont().deriveFont(15f));
 
-        passwordTextField = new JLabel("", SwingConstants.LEFT);
-        passwordTextField.setBackground(Color.LIGHT_GRAY);
-        passwordTextField.setBounds(220, 410, 360, 30);
+        passwordTextField = new JTextField();
+        passwordTextField.setEditable(false);
+        passwordTextField.setBounds(220, 400, 360, 40);
         passwordTextField.setFont(passwordTextField.getFont().deriveFont(15f));
-        passwordTextField.setOpaque(true);
 
         jobTitleLabel = new JLabel("job title", SwingConstants.LEFT);
         jobTitleLabel.setBounds(100, 450, 110, 50 );
         jobTitleLabel.setFont(jobTitleLabel.getFont().deriveFont(15f));
 
-        jobTitleTextField = new JLabel("", SwingConstants.LEFT);
-        jobTitleTextField.setBackground(Color.LIGHT_GRAY);
-        jobTitleTextField.setBounds(220, 460, 360, 30);
+        jobTitleTextField = new JTextField();
+        jobTitleTextField.setEditable(false);
+        jobTitleTextField.setBounds(220, 450, 360, 40);
         jobTitleTextField.setFont(jobTitleTextField.getFont().deriveFont(15f));
-        jobTitleTextField.setOpaque(true);
 
         salaryLabel = new JLabel("salary", SwingConstants.LEFT);
         salaryLabel.setBounds(100, 500, 110, 50 );
         salaryLabel.setFont(salaryLabel.getFont().deriveFont(15f));
 
-        salaryTextField = new JLabel("", SwingConstants.LEFT);
-        salaryTextField.setBackground(Color.LIGHT_GRAY);
-        salaryTextField.setBounds(220, 510, 360, 30);
+        salaryTextField = new JTextField();
+        salaryTextField.setEditable(false);
+        salaryTextField.setBounds(220, 500, 360, 40);
         salaryTextField.setFont(salaryTextField.getFont().deriveFont(15f));
-        salaryTextField.setOpaque(true);
 
         pharmacyIdLabel = new JLabel("pharmacy ID", SwingConstants.LEFT);
         pharmacyIdLabel.setBounds(100, 550, 110, 50 );
         pharmacyIdLabel.setFont(pharmacyIdLabel.getFont().deriveFont(15f));
 
-        pharmacyIdTextField = new JLabel("", SwingConstants.LEFT);
-        pharmacyIdTextField.setBackground(Color.LIGHT_GRAY);
-        pharmacyIdTextField.setBounds(220, 560, 360, 30);
+        pharmacyIdTextField = new JTextField();
+        pharmacyIdTextField.setEditable(false);
+        pharmacyIdTextField.setBounds(220, 550, 360, 40);
         pharmacyIdTextField.setFont(pharmacyIdTextField.getFont().deriveFont(15f));
-        pharmacyIdTextField.setOpaque(true);
 
         goBackButton = new JButton("Go Back");
         goBackButton.setBounds(300, 600, 100, 40);
@@ -187,15 +178,15 @@ public class AdminReadUserPanel extends JPanel {
     }
 
     public void setFields() {
-        firstNameTextField.setText(adminUsersService.readUserData().getFirstName()+"");
-        lastNameTextField.setText(adminUsersService.readUserData().getLastName());
-        addressTextField.setText(adminUsersService.readUserData().getAddress());
-        emailTextField.setText(adminUsersService.readUserData().getEmail());
-        phoneNoTextField.setText(adminUsersService.readUserData().getPhoneNumber());
-        loginTextField.setText(adminUsersService.readUserData().getLogin());
-        passwordTextField.setText(adminUsersService.readUserData().getPassword());
-        jobTitleTextField.setText(adminUsersService.readUserData().getJobTitle());
-        salaryTextField.setText(adminUsersService.readUserData().getSalary()+"");
-        pharmacyIdTextField.setText(adminUsersService.readUserData().getPharmacyId()+"");
+        firstNameTextField.setText(userService.readUserData().getFirstName());
+        lastNameTextField.setText(userService.readUserData().getLastName());
+        addressTextField.setText(userService.readUserData().getAddress());
+        emailTextField.setText(userService.readUserData().getEmail());
+        phoneNoTextField.setText(userService.readUserData().getPhoneNumber());
+        loginTextField.setText(userService.readUserData().getLogin());
+        passwordTextField.setText(userService.readUserData().getPassword());
+        jobTitleTextField.setText(userService.readUserData().getJobTitle());
+        salaryTextField.setText(userService.readUserData().getSalary()+"");
+        pharmacyIdTextField.setText(userService.readUserData().getPharmacyId()+"");
     }
 }

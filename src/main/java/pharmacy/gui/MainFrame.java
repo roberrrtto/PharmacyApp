@@ -26,6 +26,7 @@ public class MainFrame extends JFrame {
     }
 
     public void logout() {
+        this.setTitle("Pharmacy");
         this.getContentPane().removeAll();
         this.add(new LoginPanel());
         this.revalidate();

@@ -15,20 +15,21 @@ import java.text.NumberFormat;
 
 import static pharmacy.Main.mainFrame;
 
-public class AdminAddMedicinePanel extends JPanel {
+public class AdminUpdateMedicinePanel extends JPanel {
 
     private JLabel loggedNameLabel, dateLabel, medicineLabel, medicineNameLabel, priceLabel, medicineDescriptionLabel;
     private JButton goBackButton, submitButton;
-    private JTextField medicineNameTextField;
+    private JTextField medicineNameTextField, priceTextField;
     private JTextArea medicineDescriptionTextField;
     private JFormattedTextField priceFormattedTextField;
     private InternationalFormatter priceFormatter;
     private NumberFormat priceFormat;
+    private MedicineService medicineService;
     private BufferedImage img;
 
     private GetCurrentDate getCurrentDate = new GetCurrentDate();
 
-    public AdminAddMedicinePanel(MedicineService medicineService){
+    public AdminUpdateMedicinePanel(MedicineService medicineService){
         setPriceFormat();
         setLayout(null);
         try {
@@ -37,6 +38,7 @@ public class AdminAddMedicinePanel extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        this.medicineService = medicineService;
 
         loggedNameLabel = new JLabel(UserProfileService.getFirstName(), SwingConstants.CENTER);
         loggedNameLabel.setBounds(555, 15, 80, 50);
@@ -65,7 +67,6 @@ public class AdminAddMedicinePanel extends JPanel {
         priceFormattedTextField = new JFormattedTextField(priceFormatter);
         priceFormattedTextField.setBounds(220, 150, 360, 40);
         priceFormattedTextField.setFont(priceFormattedTextField.getFont().deriveFont(15f));
-        priceFormattedTextField.setValue(0.0);
 
         medicineDescriptionLabel = new JLabel("medicine desc", SwingConstants.RIGHT);
         medicineDescriptionLabel.setBounds(100, 195, 110, 50 );
@@ -81,18 +82,19 @@ public class AdminAddMedicinePanel extends JPanel {
         submitButton.setBounds(400, 600, 100, 40);
         submitButton.setFont(submitButton.getFont().deriveFont(13f));
         submitButton.addActionListener(e -> {
-            medicineService.addNewMedicine(medicineNameTextField.getText(),(Double) priceFormattedTextField.getValue(),
+            medicineService.setMedicineDataForUpdate(medicineNameTextField.getText(),(Double) priceFormattedTextField.getValue(),
                     medicineDescriptionTextField.getText());
-            resetFields();
-            medicineService.updateMedicineList();
         });
 
         goBackButton = new JButton("Go Back");
         goBackButton.setBounds(250, 600, 100, 40);
         goBackButton.setFont(goBackButton.getFont().deriveFont(13f));
         goBackButton.addActionListener(e -> {
+            medicineService.updateMedicineList();
             mainFrame.panelSwitchOver(new AdminShowMedicinesPanel());
         });
+
+        setFields();
 
         add(loggedNameLabel);
         add(dateLabel);
@@ -113,6 +115,12 @@ public class AdminAddMedicinePanel extends JPanel {
         g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
     }
 
+    private void setFields() {
+        medicineNameTextField.setText(medicineService.readMedicineData().getMedicineName());
+        priceFormattedTextField.setValue(medicineService.readMedicineData().getPrice());
+        medicineDescriptionTextField.setText(medicineService.readMedicineData().getMedicineDescription());
+    }
+
     private void setPriceFormat() {
         priceFormat = DecimalFormat.getInstance();
         priceFormat.setMinimumFractionDigits(2);
@@ -120,11 +128,5 @@ public class AdminAddMedicinePanel extends JPanel {
         priceFormatter = new InternationalFormatter(priceFormat);
         priceFormatter.setMinimum(0.0);
         priceFormatter.setAllowsInvalid(false);
-    }
-
-    private void resetFields() {
-        medicineNameTextField.setText("");
-        medicineDescriptionTextField.setText("");
-        priceFormattedTextField.setValue(0.0);
     }
 }

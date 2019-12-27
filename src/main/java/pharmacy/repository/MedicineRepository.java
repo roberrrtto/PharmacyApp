@@ -15,6 +15,4 @@ public interface MedicineRepository {
     void deleteMedicine(int medicineId);
 
     List<MedicineData> getAllMedicines();
-
-    List<MedicineData> getAllMedicinesByUnit(int pharmacyId);
 }
