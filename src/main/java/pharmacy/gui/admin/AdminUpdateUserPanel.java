@@ -1,7 +1,7 @@
 package pharmacy.gui.admin;
 
 import pharmacy.service.UserService;
-import pharmacy.service.UserProfileService;
+import pharmacy.service.UserProfileServiceImpl;
 import pharmacy.utils.GetCurrentDate;
 
 import javax.imageio.ImageIO;
@@ -30,7 +30,6 @@ public class AdminUpdateUserPanel extends JPanel {
     private GetCurrentDate getCurrentDate = new GetCurrentDate();
 
     public AdminUpdateUserPanel(UserService userService){
-        setIntFormat();
         setLayout(null);
         try {
             img = ImageIO.read(getClass().getResource("/background.png")
@@ -38,9 +37,11 @@ public class AdminUpdateUserPanel extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        setIntFormat();
         this.userService = userService;
 
-        loggedNameLabel = new JLabel(UserProfileService.getFirstName(), SwingConstants.CENTER);
+        loggedNameLabel = new JLabel(UserProfileServiceImpl.getFirstName(), SwingConstants.CENTER);
         loggedNameLabel.setBounds(555, 15, 80, 50);
         loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
 
@@ -146,7 +147,7 @@ public class AdminUpdateUserPanel extends JPanel {
         goBackButton.setBounds(250, 600, 100, 40);
         goBackButton.setFont(goBackButton.getFont().deriveFont(13f));
         goBackButton.addActionListener(e -> {
-            userService.updateEmployeeList();
+            userService.updateAllEmployeeList();
             mainFrame.panelSwitchOver(new AdminShowUsersPanel());
         });
 

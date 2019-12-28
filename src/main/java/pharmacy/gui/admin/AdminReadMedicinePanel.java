@@ -1,7 +1,7 @@
 package pharmacy.gui.admin;
 
 import pharmacy.service.MedicineService;
-import pharmacy.service.UserProfileService;
+import pharmacy.service.UserProfileServiceImpl;
 import pharmacy.utils.GetCurrentDate;
 
 import javax.imageio.ImageIO;
@@ -33,7 +33,7 @@ public class AdminReadMedicinePanel extends JPanel {
         }
         this.medicineService = medicineService;
 
-        loggedNameLabel = new JLabel(UserProfileService.getFirstName(), SwingConstants.CENTER);
+        loggedNameLabel = new JLabel(UserProfileServiceImpl.getFirstName(), SwingConstants.CENTER);
         loggedNameLabel.setBounds(555, 15, 80, 50);
         loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
 

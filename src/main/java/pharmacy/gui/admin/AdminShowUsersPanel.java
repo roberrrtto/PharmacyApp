@@ -2,7 +2,7 @@ package pharmacy.gui.admin;
 
 import pharmacy.service.UserService;
 import pharmacy.service.UserServiceImpl;
-import pharmacy.service.UserProfileService;
+import pharmacy.service.UserProfileServiceImpl;
 import pharmacy.utils.GetCurrentDate;
 
 import javax.imageio.ImageIO;
@@ -36,7 +36,7 @@ public class AdminShowUsersPanel extends JPanel {
             e.printStackTrace();
         }
 
-        loggedNameLabel = new JLabel(UserProfileService.getFirstName(), SwingConstants.CENTER);
+        loggedNameLabel = new JLabel(UserProfileServiceImpl.getFirstName(), SwingConstants.CENTER);
         loggedNameLabel.setBounds(555, 15, 80, 50);
         loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
 
@@ -62,7 +62,7 @@ public class AdminShowUsersPanel extends JPanel {
         allEmployeesLabel.setBounds(100, 50, 500, 50);
         allEmployeesLabel.setFont(allEmployeesLabel.getFont().deriveFont(15f));
 
-        employeeList = new JList(userService.getEmployeeList());
+        employeeList = new JList(userService.getAllEmployeeList());
         employeeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         employeeList.setFont(employeeList.getFont().deriveFont(15f));
 
@@ -101,7 +101,7 @@ public class AdminShowUsersPanel extends JPanel {
         deleteEmpButton.setFont(dateLabel.getFont().deriveFont(13f));
         deleteEmpButton.addActionListener(e -> {
             userService.removeUser(employeeList.getSelectedIndex());
-            employeeList = new JList(userService.getEmployeeList());
+            employeeList = new JList(userService.getAllEmployeeList());
             employeeList.setFont(employeeList.getFont().deriveFont(15f));
             employeeListScroller.setViewportView(employeeList);
         });

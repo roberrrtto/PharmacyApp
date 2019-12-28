@@ -1,7 +1,7 @@
-package pharmacy.gui.admin;
+package pharmacy.gui.manager;
 
-import pharmacy.service.UserService;
 import pharmacy.service.UserProfileServiceImpl;
+import pharmacy.service.UserService;
 import pharmacy.utils.GetCurrentDate;
 
 import javax.imageio.ImageIO;
@@ -12,19 +12,19 @@ import java.io.IOException;
 
 import static pharmacy.Main.mainFrame;
 
-public class AdminReadUserPanel extends JPanel {
+public class ManagerReadUserPanel extends JPanel {
 
     private JLabel loggedNameLabel, dateLabel, employeeLabel, firstNameLabel, lastNameLabel, addressLabel;
-    private JLabel emailLabel, phoneNoLabel, loginLabel, passwordLabel, jobTitleLabel, salaryLabel, pharmacyIdLabel;
+    private JLabel emailLabel, phoneNoLabel, loginLabel, jobTitleLabel, salaryLabel;
     private JTextField firstNameTextField, lastNameTextField, addressTextField, emailTextField, phoneNoTextField;
-    private JTextField loginTextField, passwordTextField, jobTitleTextField, salaryTextField, pharmacyIdTextField;
+    private JTextField loginTextField, jobTitleTextField, salaryTextField;
     private UserService userService;
     private JButton goBackButton;
     private BufferedImage img;
 
     private GetCurrentDate getCurrentDate = new GetCurrentDate();
 
-    public AdminReadUserPanel(UserService userService){
+    public ManagerReadUserPanel(UserService userService){
         setLayout(null);
         try {
             img = ImageIO.read(getClass().getResource("/background.png")
@@ -100,14 +100,14 @@ public class AdminReadUserPanel extends JPanel {
         loginTextField.setBounds(220, 350, 360, 40);
         loginTextField.setFont(loginTextField.getFont().deriveFont(15f));
 
-        passwordLabel = new JLabel("password", SwingConstants.LEFT);
-        passwordLabel.setBounds(100, 400, 110, 50 );
-        passwordLabel.setFont(passwordLabel.getFont().deriveFont(15f));
+        salaryLabel = new JLabel("salary", SwingConstants.LEFT);
+        salaryLabel.setBounds(100, 400, 110, 50 );
+        salaryLabel.setFont(salaryLabel.getFont().deriveFont(15f));
 
-        passwordTextField = new JTextField();
-        passwordTextField.setEditable(false);
-        passwordTextField.setBounds(220, 400, 360, 40);
-        passwordTextField.setFont(passwordTextField.getFont().deriveFont(15f));
+        salaryTextField = new JTextField();
+        salaryTextField.setEditable(false);
+        salaryTextField.setBounds(220, 400, 360, 40);
+        salaryTextField.setFont(salaryTextField.getFont().deriveFont(15f));
 
         jobTitleLabel = new JLabel("job title", SwingConstants.LEFT);
         jobTitleLabel.setBounds(100, 450, 110, 50 );
@@ -118,29 +118,11 @@ public class AdminReadUserPanel extends JPanel {
         jobTitleTextField.setBounds(220, 450, 360, 40);
         jobTitleTextField.setFont(jobTitleTextField.getFont().deriveFont(15f));
 
-        salaryLabel = new JLabel("salary", SwingConstants.LEFT);
-        salaryLabel.setBounds(100, 500, 110, 50 );
-        salaryLabel.setFont(salaryLabel.getFont().deriveFont(15f));
-
-        salaryTextField = new JTextField();
-        salaryTextField.setEditable(false);
-        salaryTextField.setBounds(220, 500, 360, 40);
-        salaryTextField.setFont(salaryTextField.getFont().deriveFont(15f));
-
-        pharmacyIdLabel = new JLabel("pharmacy ID", SwingConstants.LEFT);
-        pharmacyIdLabel.setBounds(100, 550, 110, 50 );
-        pharmacyIdLabel.setFont(pharmacyIdLabel.getFont().deriveFont(15f));
-
-        pharmacyIdTextField = new JTextField();
-        pharmacyIdTextField.setEditable(false);
-        pharmacyIdTextField.setBounds(220, 550, 360, 40);
-        pharmacyIdTextField.setFont(pharmacyIdTextField.getFont().deriveFont(15f));
-
         goBackButton = new JButton("Go Back");
-        goBackButton.setBounds(300, 600, 100, 40);
+        goBackButton.setBounds(300, 500, 100, 40);
         goBackButton.setFont(goBackButton.getFont().deriveFont(13f));
         goBackButton.addActionListener(e -> {
-            mainFrame.panelSwitchOver(new AdminShowUsersPanel());
+            mainFrame.panelSwitchOver(new ManagerPanel());
         });
 
         setFields();
@@ -155,20 +137,16 @@ public class AdminReadUserPanel extends JPanel {
         add(emailLabel);
         add(phoneNoLabel);
         add(loginLabel);
-        add(passwordLabel);
         add(jobTitleLabel);
         add(salaryLabel);
-        add(pharmacyIdLabel);
         add(firstNameTextField);
         add(lastNameTextField);
         add(addressTextField);
         add(emailTextField);
         add(phoneNoTextField);
         add(loginTextField);
-        add(passwordTextField);
         add(jobTitleTextField);
         add(salaryTextField);
-        add(pharmacyIdTextField);
     }
 
     @Override
@@ -178,15 +156,13 @@ public class AdminReadUserPanel extends JPanel {
     }
 
     public void setFields() {
-        firstNameTextField.setText(userService.readUserData().getFirstName());
-        lastNameTextField.setText(userService.readUserData().getLastName());
-        addressTextField.setText(userService.readUserData().getAddress());
-        emailTextField.setText(userService.readUserData().getEmail());
-        phoneNoTextField.setText(userService.readUserData().getPhoneNumber());
-        loginTextField.setText(userService.readUserData().getLogin());
-        passwordTextField.setText(userService.readUserData().getPassword());
-        jobTitleTextField.setText(userService.readUserData().getJobTitle());
-        salaryTextField.setText(userService.readUserData().getSalary()+"");
-        pharmacyIdTextField.setText(userService.readUserData().getPharmacyId()+"");
+        firstNameTextField.setText(userService.readUnitUser().getFirstName());
+        lastNameTextField.setText(userService.readUnitUser().getLastName());
+        addressTextField.setText(userService.readUnitUser().getAddress());
+        emailTextField.setText(userService.readUnitUser().getEmail());
+        phoneNoTextField.setText(userService.readUnitUser().getPhoneNumber());
+        loginTextField.setText(userService.readUnitUser().getLogin());
+        jobTitleTextField.setText(userService.readUnitUser().getJobTitle());
+        salaryTextField.setText(userService.readUnitUser().getSalary()+"");
     }
 }

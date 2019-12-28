@@ -256,12 +256,12 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<UserData> getAllUsersByUnit(int pharmacyId) {
 
-        final String sqlGetAllUsersData = "SELECT users.user_id, first_name, last_name,\n" +
-                "    login, job_title, pharmacy_id FROM users\n" +
+        final String sqlGetAllUsersData = "SELECT users.user_id, first_name, last_name, address, email,\n" +
+                "       phone_number, login, job_title, salary FROM users\n" +
                 "INNER JOIN pharmacy_staff ps\n" +
-                "    ON users.user_id = ps.user_id\n" +
+                "           ON users.user_id = ps.user_id\n" +
                 "INNER JOIN user_credentials uc\n" +
-                "    ON users.user_id = uc.user_id\n" +
+                "           ON users.user_id = uc.user_id\n" +
                 "WHERE pharmacy_id=?\n" +
                 "ORDER BY first_name;";
 
@@ -281,9 +281,12 @@ public class UserRepositoryImpl implements UserRepository {
                 userData.setUserId(resultSet.getInt("user_id"));
                 userData.setFirstName(resultSet.getString("first_name"));
                 userData.setLastName(resultSet.getString("last_name"));
+                userData.setAddress(resultSet.getString("address"));
+                userData.setEmail(resultSet.getString("email"));
+                userData.setPhoneNumber(resultSet.getString("phone_number"));
                 userData.setLogin(resultSet.getString("login"));
                 userData.setJobTitle(resultSet.getString("job_title"));
-                userData.setPharmacyId(resultSet.getInt("pharmacy_id"));
+                userData.setSalary(resultSet.getInt("salary"));
 
                 userDataList.add(userData);
             }

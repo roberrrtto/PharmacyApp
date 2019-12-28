@@ -75,7 +75,6 @@ public class PharmacyServiceImpl  implements PharmacyService {
         }
     }
 
-    //////////////////// New Impl /////////////////////
     @Override
     public void setPharmacyUnitManager(int index) {
         int pId = pharmacyDataList.get(index).getPharmacyId();

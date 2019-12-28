@@ -16,9 +16,15 @@ public interface UserService {
 
     UserData readUserData();
 
-    void updateEmployeeList();
+    UserData readUnitUser();
 
-    String[] getEmployeeList();
+    void updateAllEmployeeList();
+
+    void updateUnitEmployeeList();
+
+    String[] getAllEmployeeList();
+
+    String[] getUnitEmployeeList();
 
     void setUserDataList();
 
@@ -26,5 +32,13 @@ public interface UserService {
 
     void setUpdateUserData(int index);
 
-    void setEmployeeList();
+    void setAllEmployeeList();
+
+    void setUnitEmployeeList();
+
+    void setUsersByUnit();
+
+    List<UserData> getUsersByUnit();
+
+    void setUnitUser(int index);
 }

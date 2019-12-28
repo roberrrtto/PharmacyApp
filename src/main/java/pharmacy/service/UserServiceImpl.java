@@ -12,13 +12,23 @@ public class UserServiceImpl implements UserService {
     private UserData newUserData;
     private UserData updateUserData;
     private List<UserData> userDataList;
-    private String[] employeeList;
-
+    private String[] allEmployeeList;
+    private String[] unitEmployeeList;
+    private List<UserData> usersByUnit;
+    private UserData unitUser;
+    private int pharmacyId;
 
     public UserServiceImpl() {
         this.userRepository = new UserRepositoryImpl();
         setUserDataList();
-        setEmployeeList();
+        setAllEmployeeList();
+    }
+
+    public UserServiceImpl(int pharmacyId) {
+        this.userRepository = new UserRepositoryImpl();
+        this.pharmacyId = pharmacyId;
+        setUsersByUnit();
+        setUnitEmployeeList();
     }
 
     // =================== CRUD for the User ===================
@@ -42,9 +52,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void removeUser(int index) {
-        int uid = userDataList.get(index).getUserId();
+        int uid = getUserDataList().get(index).getUserId();
         userRepository.deleteUser(uid);
-        updateEmployeeList();
+        updateAllEmployeeList();
     }
 
     @Override
@@ -53,37 +63,83 @@ public class UserServiceImpl implements UserService {
     }
 
     // =================== Helping methods ===================
+
     @Override
-    public void updateEmployeeList() {
+    public UserData readUnitUser() {
+        return unitUser;
+    }
+
+    @Override
+    public void updateAllEmployeeList() {
         setUserDataList();
-        setEmployeeList();
+        setAllEmployeeList();
+    }
+
+    @Override
+    public void updateUnitEmployeeList() {
+        setUsersByUnit();
+        setUnitEmployeeList();
     }
 
     // =================== Getters/Setters ===================
     @Override
-    public String[] getEmployeeList() {
-        return employeeList;
+    public String[] getAllEmployeeList() {
+        return allEmployeeList;
     }
+
+    @Override
+    public String[] getUnitEmployeeList() {
+        return unitEmployeeList;
+    }
+
     @Override
     public void setUserDataList() {
         this.userDataList = userRepository.getAllUsers();
     }
+
     @Override
     public List<UserData> getUserDataList() {
         return userDataList;
     }
+
     @Override
     public void setUpdateUserData(int index) {
-        int userId = userDataList.get(index).getUserId();
+        int userId = getUserDataList().get(index).getUserId();
         this.updateUserData = userRepository.readUser(userId);
     }
+
     @Override
-    public void setEmployeeList() {
-        this.employeeList = new String[getUserDataList().size()];
+    public void setAllEmployeeList() {
+        this.allEmployeeList = new String[getUserDataList().size()];
         int i = 0;
         for (UserData ud : getUserDataList()) {
-            employeeList[i] = ud.getName();
+            getAllEmployeeList()[i] = ud.getName();
             i++;
         }
+    }
+
+    @Override
+    public void setUnitEmployeeList() {
+        this.unitEmployeeList = new String[getUsersByUnit().size()];
+        int i = 0;
+        for (UserData ud : getUsersByUnit()) {
+            getUnitEmployeeList()[i] = ud.getName();
+            i++;
+        }
+    }
+
+    @Override
+    public void setUsersByUnit() {
+        this.usersByUnit = userRepository.getAllUsersByUnit(pharmacyId);
+    }
+
+    @Override
+    public List<UserData> getUsersByUnit() {
+        return usersByUnit;
+    }
+
+    @Override
+    public void setUnitUser(int index) {
+        this.unitUser = getUsersByUnit().get(index);
     }
 }

@@ -1,97 +1,119 @@
 package pharmacy.gui.manager;
 
+import pharmacy.service.*;
 import pharmacy.utils.GetCurrentDate;
-import pharmacy.service.ManagerService;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.text.InternationalFormatter;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.text.NumberFormat;
 
-import static pharmacy.Main.*;
+import static pharmacy.Main.mainFrame;
 
 public class ManagerPanel extends JPanel {
 
     private JLabel loggedNameLabel, dateLabel, employeeLabel, availableMedicineLabel, saleLabel, medicineQtyUpdateLabel;
-    private JButton logOutButton, switchToSaleButton, updatButton, getButton, userDetailsButton;
-    private JTextField dateTextField, saleTextField, medicineQtyUpdateField;
+    private JButton logOutButton, switchToSaleButton, updateButton, getButton, userDetailsButton;
+    private JTextField dateTextField, saleTextField;
+    private JFormattedTextField medicineQtyUpdateField;
+    private InternationalFormatter integerFormatter;
+    private NumberFormat integerFormat;
     private JList<String> employeeList, medicineList;
-    private JScrollPane listScroller;
+    private JScrollPane storageScroller, teamScroller;
+    private BufferedImage img;
+
+    private ManagerReadUserPanel managerReadUserPanel;
     private GetCurrentDate getCurrentDate = new GetCurrentDate();
-    private ManagerEmployeeDetailsPanel managerEmployeeDetailsPanel;
-    private ManagerService managerService;
+    private PharmacyStorageService pharmacyStorageService = new PharmacyStorageServiceImpl(UserProfileServiceImpl.getPharmacyId());
+    private UserService userService = new UserServiceImpl(UserProfileServiceImpl.getPharmacyId());
 
-    public ManagerPanel(ManagerService managerService){
-        this.managerService = managerService;
 
+    public ManagerPanel(){
         setLayout(null);
+        try {
+            img = ImageIO.read(getClass().getResource("/background.png")
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        setIntFormat();
 
-        loggedNameLabel = new JLabel(managerService.getUserProfile().getFirstName(), SwingConstants.CENTER);
+        loggedNameLabel = new JLabel(UserProfileServiceImpl.getFirstName(), SwingConstants.CENTER);
         loggedNameLabel.setBounds(555, 15, 80, 50);
         loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
 
         dateLabel = new JLabel(getCurrentDate.getCurrentDate());
-        dateLabel.setBounds(50, 15, 100,50);
+        dateLabel.setBounds(50, 15, 100, 50);
         dateLabel.setFont(dateLabel.getFont().deriveFont(15f));
 
-        logOutButton = new JButton("Log out");
+        logOutButton = new JButton("LOG OUT");
         logOutButton.setBounds(555, 55, 80, 30);
         logOutButton.setFont(logOutButton.getFont().deriveFont(12f));
         logOutButton.addActionListener(e -> {
             mainFrame.logout();
         });
 
-        switchToSaleButton = new JButton("SALE");
-        switchToSaleButton.setBounds(555, 95, 80, 30);
-        switchToSaleButton.setFont(dateLabel.getFont().deriveFont(13f));
-        switchToSaleButton.addActionListener(e -> {
-            // >>>> switch to SALE (Pharmacist Panel)
-        });
-
-        employeeLabel = new JLabel("Employees", SwingConstants.CENTER);
-        employeeLabel.setBounds(100, 115, 500, 50 );
+        employeeLabel = new JLabel("YOUR TEAM", SwingConstants.CENTER);
+        employeeLabel.setBounds(145, 115, 100, 50 );
         employeeLabel.setFont(employeeLabel.getFont().deriveFont(15f));
 
-        employeeList = new JList(managerService.getNames());
-        employeeList.setBounds(170, 160, 360, 80);
+        employeeList = new JList(userService.getUnitEmployeeList());
         employeeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         employeeList.setFont(employeeList.getFont().deriveFont(15f));
 
+        teamScroller = new JScrollPane();
+        teamScroller.setViewportView(employeeList);
+        teamScroller.setBounds(70, 160, 250, 120);
+
         userDetailsButton = new JButton("DETAILS");
-        userDetailsButton.setBounds(555, 175, 80, 40 );
-        userDetailsButton.setFont(userDetailsButton.getFont().deriveFont(11f));
+        userDetailsButton.setBounds(155, 293, 80, 36 );
+        userDetailsButton.setFont(userDetailsButton.getFont().deriveFont(13f));
         userDetailsButton.addActionListener(e -> {
             if (employeeList.isSelectionEmpty()) {
                 JOptionPane.showMessageDialog(null,"Pick the user!","Information", 1);
             } else {
-                managerService.setUserDetails(employeeList.getSelectedIndex());
-                managerEmployeeDetailsPanel = new ManagerEmployeeDetailsPanel(managerService);
-                mainFrame.panelSwitchOver(managerEmployeeDetailsPanel);
+                userService.setUnitUser(employeeList.getSelectedIndex());
+                managerReadUserPanel = new ManagerReadUserPanel(userService);
+                mainFrame.panelSwitchOver(managerReadUserPanel);
             }
         });
 
-        availableMedicineLabel = new JLabel("Available medicines: ", SwingConstants.CENTER);
-        availableMedicineLabel.setBounds(100, 270, 500, 50);
+        availableMedicineLabel = new JLabel("STORAGE", SwingConstants.CENTER);
+        availableMedicineLabel.setBounds(455, 115, 100, 50 );
         availableMedicineLabel.setFont(availableMedicineLabel.getFont().deriveFont(15f));
 
-        medicineList = new JList(managerService.getStorageDetails());
+        medicineList = new JList(pharmacyStorageService.getMedicinesInStorageList());
         medicineList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         medicineList.setFont(medicineList.getFont().deriveFont(15f));
 
-        listScroller = new JScrollPane();
-        listScroller.setViewportView(medicineList);
-        listScroller.setBounds(170, 315, 360, 100);
+        storageScroller = new JScrollPane();
+        storageScroller.setViewportView(medicineList);
+        storageScroller.setBounds(380, 160, 250, 120);
 
-        medicineQtyUpdateLabel = new JLabel("Update quantity: ");
-        medicineQtyUpdateLabel.setBounds(200, 430, 150, 40 );
+        medicineQtyUpdateLabel = new JLabel("Qty update");
+        medicineQtyUpdateLabel.setBounds(390, 291, 90, 40 );
         medicineQtyUpdateLabel.setFont(medicineQtyUpdateLabel.getFont().deriveFont(15f));
 
-        medicineQtyUpdateField = new JTextField();
-        medicineQtyUpdateField.setBounds(350, 430, 50, 40);
+        medicineQtyUpdateField = new JFormattedTextField(integerFormatter);
+        medicineQtyUpdateField.setBounds(480, 293, 50, 36);
+        medicineQtyUpdateField.setValue(0);
         medicineQtyUpdateField.setFont(medicineQtyUpdateField.getFont().deriveFont(15f));
 
-        updatButton = new JButton("UPDATE");
-        updatButton.setBounds(410, 430, 90, 40);
-        updatButton.setFont(updatButton.getFont().deriveFont(13f));
-        updatButton.addActionListener(e -> {
-            revalidateStorageQty();
+        updateButton = new JButton("UPDATE");
+        updateButton.setBounds(545, 293, 80, 36);
+        updateButton.setFont(updateButton.getFont().deriveFont(13f));
+        updateButton.addActionListener(e -> {
+            if (medicineList.isSelectionEmpty()) {
+                JOptionPane.showMessageDialog(null,"Pick the medicine!","Information", 1);
+            } else {
+                pharmacyStorageService.setUpdateMedicineInStorageData(medicineList.getSelectedIndex());
+                pharmacyStorageService.setPharmacyStorageDataForUpdate((Integer) medicineQtyUpdateField.getValue());
+                revalidateMedicineList();
+                medicineQtyUpdateField.setValue(0);
+            }
         });
 
         saleLabel = new JLabel("Total sale for: ");
@@ -110,21 +132,20 @@ public class ManagerPanel extends JPanel {
         getButton.setBounds(410, 490, 90, 40);
         getButton.setFont(getButton.getFont().deriveFont(13f));
         getButton.addActionListener(e -> {
-            double sale = managerService.getDataBaseInit().getTotalSale(dateTextField.getText()).getTotalSale();
-            saleTextField.setText("Total sale for " + dateTextField.getText() + ": " + sale + "$");
+//            double sale = managerService.getDataBaseInit().getTotalSale(dateTextField.getText()).getTotalSale();
+            saleTextField.setText("Total sale for " + dateTextField.getText() + ": " + "$");
         });
-//220 width
+
         add(loggedNameLabel);
         add(dateLabel);
         add(employeeLabel);
         add(availableMedicineLabel);
         add(saleLabel);
         add(logOutButton);
-        add(switchToSaleButton);
-        add(updatButton);
+        add(teamScroller);
+        add(updateButton);
         add(userDetailsButton);
-        add(employeeList);
-        add(listScroller);
+        add(storageScroller);
         add(dateTextField);
         add(saleTextField);
         add(medicineQtyUpdateLabel);
@@ -132,19 +153,23 @@ public class ManagerPanel extends JPanel {
         add(getButton);
 
     }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+    }
 
-    private void revalidateStorageQty() {
-        try {
-            int quantity = Integer.parseInt(medicineQtyUpdateField.getText());
-            if (quantity < 0) {
-                JOptionPane.showMessageDialog(null,"The value cannot be less than 0","Warning", 2);
-            } else
-            managerService.storageUpdateForJPanel(quantity, medicineList.getSelectedIndex()+1);
-            medicineList = new JList(managerService.getStorageDetails());
-            medicineList.setFont(medicineList.getFont().deriveFont(15f));
-            listScroller.setViewportView(medicineList);
-        } catch (NumberFormatException nfe) {
-            JOptionPane.showMessageDialog(null,"Invalid data","Error", 0);
-        }
+    private void setIntFormat() {
+        integerFormat = NumberFormat.getIntegerInstance();
+        integerFormatter = new InternationalFormatter(integerFormat);
+        integerFormatter.setMinimum(0);
+        integerFormatter.setAllowsInvalid(false);
+    }
+
+    private void revalidateMedicineList() {
+        pharmacyStorageService.updateMedicinesInStorageList();
+        medicineList = new JList(pharmacyStorageService.getMedicinesInStorageList());
+        medicineList.setFont(medicineList.getFont().deriveFont(15f));
+        storageScroller.setViewportView(medicineList);
     }
 }
