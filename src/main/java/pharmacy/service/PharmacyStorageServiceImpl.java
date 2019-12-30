@@ -29,7 +29,7 @@ public class PharmacyStorageServiceImpl implements PharmacyStorageService {
 
     @Override
     public void setUpdateMedicineInStorageData(int index) {
-        this.pharmacyStorageData = pharmacyStorageDataList.get(index);
+        this.pharmacyStorageData = getPharmacyStorageDataList().get(index);
     }
 
     @Override

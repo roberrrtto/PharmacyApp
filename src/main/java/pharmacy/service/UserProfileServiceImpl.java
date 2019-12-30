@@ -97,7 +97,7 @@ public class UserProfileServiceImpl {
 //        this.pharmacyId = pharmacyId;
 //    }
 
-    public int getUserId() {
+    public static int getUserId() {
         return userProfile.getUserId();
     }
 

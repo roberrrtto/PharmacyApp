@@ -8,6 +8,8 @@ public class PharmacyStorageData extends MedicineData {
     private int quantity;
     private int medicineId;
 
+    public PharmacyStorageData() { }
+
     @Override
     public int getMedicineId() {
         this.medicineId = super.getMedicineId();
@@ -36,12 +38,11 @@ public class PharmacyStorageData extends MedicineData {
         if (!(o instanceof PharmacyStorageData)) return false;
         if (!super.equals(o)) return false;
         PharmacyStorageData that = (PharmacyStorageData) o;
-        return getPharmacyId() == that.getPharmacyId() &&
-                getMedicineId() == that.getMedicineId();
+        return getPharmacyId() == that.getPharmacyId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getPharmacyId(), getMedicineId());
+        return Objects.hash(super.hashCode(), getPharmacyId());
     }
 }

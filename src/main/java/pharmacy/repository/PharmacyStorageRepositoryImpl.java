@@ -41,6 +41,8 @@ public class PharmacyStorageRepositoryImpl implements PharmacyStorageRepository 
                 pharmacyStorageData.setPrice(resultSet.getDouble("price"));
                 pharmacyStorageData.setQuantity(resultSet.getInt("quantity"));
 
+                System.out.println("Quantity of " + pharmacyStorageData.getMedicineName() +" =" +
+                        pharmacyStorageData.getQuantity());
                 pharmacyStorageDataList.add(pharmacyStorageData);
             }
         } catch (SQLException e) {
