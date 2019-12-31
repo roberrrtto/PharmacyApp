@@ -22,7 +22,6 @@ public class MainFrame extends JFrame {
 
         LoginPanel loginPanel = new LoginPanel();
         add(loginPanel);
-
     }
 
     public void logout() {

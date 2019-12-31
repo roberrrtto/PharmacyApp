@@ -12,4 +12,6 @@ public interface ReceiptRepository {
     ReceiptData readReceipt(int receiptId);
 
     List<ReceiptData> getAllReceiptsByUnitAndDate(int pharmacyId, Date date1, Date date2);
+
+    ReceiptData getTotalSale(int pharmacyId, Date date1, Date date2);
 }

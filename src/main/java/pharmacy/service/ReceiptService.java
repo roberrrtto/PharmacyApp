@@ -1,7 +1,9 @@
 package pharmacy.service;
 
 import pharmacy.domain.PharmacyStorageData;
+import pharmacy.domain.ReceiptData;
 
+import java.sql.Date;
 import java.util.List;
 
 public interface ReceiptService extends PharmacyStorageService {
@@ -40,6 +42,18 @@ public interface ReceiptService extends PharmacyStorageService {
     void updateBasket();
 
     String[] getBasket();
+
+    void setReceiptData(int receiptId);
+
+    ReceiptData getReceiptData();
+
+    void setReceiptToString();
+
+    String getReceiptToString();
+
+    void setTotalSale(Date date1, Date date2);
+
+    double getTotalSale();
 
     @Override
     default void setPharmacyStorageDataForUpdate(int quantity) {

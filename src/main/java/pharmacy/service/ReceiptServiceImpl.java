@@ -7,6 +7,9 @@ import pharmacy.repository.PharmacyStorageRepositoryImpl;
 import pharmacy.repository.ReceiptRepository;
 import pharmacy.repository.ReceiptRepositoryImpl;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,13 +19,16 @@ public class ReceiptServiceImpl implements ReceiptService {
     private PharmacyStorageRepository pharmacyStorageRepository;
     private ReceiptRepository receiptRepository;
     private PharmacyStorageData medicineToBasket;
+    private ReceiptData receiptData;
     private List<PharmacyStorageData> pharmacyStorageDataList;
     private List<PharmacyStorageData> basketList;
     private String[] medicinesInStorageList;
     private int pharmacyId;
     private int userId;
     private double total;
+    private double totalSale;
     private String[] basket;
+    private String receiptToString;
 
     public ReceiptServiceImpl() {
         this.pharmacyStorageRepository = new PharmacyStorageRepositoryImpl();
@@ -37,7 +43,8 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @Override
     public void addNewReceipt() {
-        ReceiptData receipt = new ReceiptData(pharmacyId, userId, total, Arrays.toString(basket));
+        setReceiptToString();
+        ReceiptData receipt = new ReceiptData(pharmacyId, userId, total, receiptToString);
         receiptRepository.createReceipt(receipt);
     }
 
@@ -109,7 +116,9 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @Override
     public void updateTotal() {
-        this.total += medicineToBasket.getPrice();
+        total += medicineToBasket.getPrice();
+        BigDecimal bd = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP);
+        setTotal(bd.doubleValue());
     }
 
     @Override
@@ -138,5 +147,37 @@ public class ReceiptServiceImpl implements ReceiptService {
     @Override
     public String[] getBasket() {
         return basket;
+    }
+
+    @Override
+    public void setReceiptData(int receiptId) {
+        this.receiptData = receiptRepository.readReceipt(receiptId);
+    }
+
+    @Override
+    public ReceiptData getReceiptData() {
+        return receiptData;
+    }
+
+    @Override
+    public String getReceiptToString() {
+        return receiptToString;
+    }
+
+    @Override
+    public void setReceiptToString() {
+        receiptToString = Arrays.toString(basket).replaceAll("[\\[\\]]|null|, ","");
+    }
+
+    @Override
+    public void setTotalSale(Date date1, Date date2) {
+        this.totalSale = receiptRepository.getTotalSale(pharmacyId, date1, date2).getTotal();
+    }
+
+    @Override
+    public double getTotalSale() {
+        BigDecimal bd = new BigDecimal(totalSale).setScale(2, RoundingMode.HALF_UP);
+        this.totalSale = bd.doubleValue();
+        return totalSale;
     }
 }

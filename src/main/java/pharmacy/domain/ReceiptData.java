@@ -77,4 +77,15 @@ public class ReceiptData {
     public void setBasket(String basket) {
         this.basket = basket;
     }
+
+    @Override
+    public String toString() {
+        return  "receiptId: " + receiptId +
+                "\npharmacyId: " + pharmacyId +
+                "\nuserId: " + userId +
+                "\ntotal: " + total + "$" +
+                "\ndate: " + date +
+                "\ntime: " + time +
+                "\nbasket: \n" + basket;
+    }
 }

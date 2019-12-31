@@ -115,4 +115,36 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
         }
         return receiptDataList;
     }
+
+    @Override
+    public ReceiptData getTotalSale(int pharmacyId, Date date1, Date date2) {
+
+        final String sqlGetTotal = "SELECT SUM(total) AS total\n" +
+                "    FROM public.receipts\n" +
+                "WHERE pharmacy_id=? AND date BETWEEN ? AND ?;";
+
+        Connection connection = initializeDataBaseConnection();
+        PreparedStatement preparedStatement = null;
+
+        ReceiptData receiptData = new ReceiptData();
+
+        try {
+            preparedStatement = connection.prepareStatement(sqlGetTotal);
+            preparedStatement.setInt(1, pharmacyId);
+            preparedStatement.setDate(2, date1);
+            preparedStatement.setDate(3, date2);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                receiptData.setTotal(resultSet.getDouble("total"));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error during invoke SQL query: \n" + e.getMessage());
+            throw new RuntimeException("Error during invoke SQL query");
+        } finally {
+            closeDataBaseResources(connection, preparedStatement);
+        }
+        return receiptData;
+    }
 }
