@@ -33,6 +33,15 @@ public class PharmacyStorageData extends MedicineData {
     }
 
     @Override
+    public String toString() {
+        return "PharmacyStorageData{" +
+                "pharmacyId=" + pharmacyId +
+                ", quantity=" + quantity +
+                ", medicineId=" + medicineId +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PharmacyStorageData)) return false;

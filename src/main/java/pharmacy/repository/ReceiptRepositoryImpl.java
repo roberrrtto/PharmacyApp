@@ -78,7 +78,7 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
     @Override
     public List<ReceiptData> getAllReceiptsByUnitAndDate(int pharmacyId, Date date1, Date date2) {
 
-        final String sqlReadReceipt = "SELECT receipt_id, pharmacy_id, user_id, total, date, time, basket\n" +
+        final String sqlReadReceipts = "SELECT receipt_id, pharmacy_id, user_id, total, date, time, basket\n" +
                 "    FROM public.receipts\n" +
                 "WHERE pharmacy_id=? AND date BETWEEN ? AND ?;";
 
@@ -88,7 +88,7 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
         List<ReceiptData> receiptDataList = new ArrayList<>();
 
         try {
-            preparedStatement = connection.prepareStatement(sqlReadReceipt);
+            preparedStatement = connection.prepareStatement(sqlReadReceipts);
             preparedStatement.setInt(1, pharmacyId);
             preparedStatement.setDate(2, date1);
             preparedStatement.setDate(3, date2);

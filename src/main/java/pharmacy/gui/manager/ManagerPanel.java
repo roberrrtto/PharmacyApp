@@ -1,27 +1,30 @@
 package pharmacy.gui.manager;
 
 import pharmacy.service.*;
-import pharmacy.utils.GetCurrentDate;
+import pharmacy.utils.CurrentDate;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.InternationalFormatter;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.NumberFormat;
+import java.text.ParseException;
 
 import static pharmacy.Main.mainFrame;
 
 public class ManagerPanel extends JPanel {
 
-    private JLabel loggedNameLabel, dateLabel, employeeLabel, availableMedicineLabel, receiptLabel, medicineQtyUpdateLabel, receiptIdLabel;
-    private JLabel saleLabel, totalSaleLabel, formatDateLabel, fromLabel, toLabel;
-    private JButton logOutButton, switchToSaleButton, updateButton, getButton, userDetailsButton, getReceiptButton;
-    private JTextField totalSaleTF, date1yyyy, date1mm, date1dd, date2yyyy, date2mm, date2dd;
+    private JLabel userNameLabel, dateLabel, employeeLabel, availableMedicineLabel, receiptLabel, medicineQtyUpdateLabel,
+            receiptIdLabel, saleLabel, totalSaleLabel, formatDateLabel, fromLabel, toLabel;
+    private JButton logOutButton, updateButton, getButton, userDetailsButton, getReceiptButton;
+    private JTextField totalSaleTF;
     private JTextArea receiptTextArea;
-    private JFormattedTextField medicineQtyUpdateField, receiptId;
+    private JFormattedTextField medicineQtyUpdateField, receiptId, date1yyyy, date1mm, date1dd, date2yyyy, date2mm, date2dd;
+    private MaskFormatter formatYYYY, formatMM, formatDD;
     private InternationalFormatter integerFormatter;
     private NumberFormat integerFormat;
     private JList<String> employeeList, medicineList;
@@ -30,13 +33,13 @@ public class ManagerPanel extends JPanel {
     private Date dateFrom, dateTo;
 
     private ManagerReadUserPanel managerReadUserPanel;
-    private GetCurrentDate getCurrentDate = new GetCurrentDate();
-    private PharmacyStorageService pharmacyStorageService = new PharmacyStorageServiceImpl(UserProfileServiceImpl.getPharmacyId());
-    private UserService userService = new UserServiceImpl(UserProfileServiceImpl.getPharmacyId());
+    private CurrentDate currentDate = new CurrentDate();
+    private PharmacyStorageService pharmacyStorageService = new PharmacyStorageServiceImpl(UserProfileService.getPharmacyId());
+    private UserService userService = new UserServiceImpl(UserProfileService.getPharmacyId());
     private ReceiptService receiptService = new ReceiptServiceImpl();
 
 
-    public ManagerPanel(){
+    public ManagerPanel() {
         setLayout(null);
         try {
             img = ImageIO.read(getClass().getResource("/background.png")
@@ -44,13 +47,19 @@ public class ManagerPanel extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         setIntFormat();
+        try {
+            setFormatForDate();
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
 
-        loggedNameLabel = new JLabel(UserProfileServiceImpl.getFirstName(), SwingConstants.CENTER);
-        loggedNameLabel.setBounds(555, 15, 80, 50);
-        loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
+        userNameLabel = new JLabel(UserProfileService.getFirstName(), SwingConstants.CENTER);
+        userNameLabel.setBounds(555, 15, 80, 50);
+        userNameLabel.setFont(userNameLabel.getFont().deriveFont(15f));
 
-        dateLabel = new JLabel(getCurrentDate.getCurrentDate());
+        dateLabel = new JLabel(currentDate.getCurrentDate());
         dateLabel.setBounds(50, 15, 100, 50);
         dateLabel.setFont(dateLabel.getFont().deriveFont(15f));
 
@@ -78,7 +87,7 @@ public class ManagerPanel extends JPanel {
         userDetailsButton.setFont(userDetailsButton.getFont().deriveFont(13f));
         userDetailsButton.addActionListener(e -> {
             if (employeeList.isSelectionEmpty()) {
-                JOptionPane.showMessageDialog(null,"Pick the user!","Information", 1);
+                JOptionPane.showMessageDialog(this,"Nothing is selected!");
             } else {
                 userService.setUnitUser(employeeList.getSelectedIndex());
                 managerReadUserPanel = new ManagerReadUserPanel(userService);
@@ -90,7 +99,7 @@ public class ManagerPanel extends JPanel {
         availableMedicineLabel.setBounds(455, 110, 100, 50 );
         availableMedicineLabel.setFont(availableMedicineLabel.getFont().deriveFont(15f));
 
-        medicineList = new JList(pharmacyStorageService.getMedicinesInStorageList());
+        medicineList = new JList(pharmacyStorageService.getMedicinesWithQtyDisplayList());
         medicineList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         medicineList.setFont(medicineList.getFont().deriveFont(15f));
 
@@ -112,10 +121,10 @@ public class ManagerPanel extends JPanel {
         updateButton.setFont(updateButton.getFont().deriveFont(13f));
         updateButton.addActionListener(e -> {
             if (medicineList.isSelectionEmpty()) {
-                JOptionPane.showMessageDialog(null,"Pick the medicine!","Information", 1);
+                JOptionPane.showMessageDialog(this,"Nothing is selected!");
             } else {
-                pharmacyStorageService.setUpdateMedicineInStorageData(medicineList.getSelectedIndex());
-                pharmacyStorageService.setPharmacyStorageDataForUpdate((Integer) medicineQtyUpdateField.getValue());
+                pharmacyStorageService.readMedicineDetails(medicineList.getSelectedIndex());
+                pharmacyStorageService.updatePharmacyStorageQuantityData((Integer) medicineQtyUpdateField.getValue());
                 revalidateMedicineList();
                 medicineQtyUpdateField.setValue(0);
             }
@@ -135,7 +144,6 @@ public class ManagerPanel extends JPanel {
         receiptId.setFont(receiptId.getFont().deriveFont(15f));
 
         receiptTextArea = new JTextArea();
-//        receiptTextArea.setBounds(70, 450, 250, 200);
         receiptTextArea.setEditable(false);
         receiptTextArea.setFont(receiptTextArea.getFont().deriveFont(15f));
 
@@ -148,8 +156,12 @@ public class ManagerPanel extends JPanel {
         getReceiptButton.setFont(getReceiptButton.getFont().deriveFont(13f));
         getReceiptButton.addActionListener(e -> {
             receiptService.setReceiptData((Integer) receiptId.getValue());
-            receiptTextArea.setText(receiptService.getReceiptData().toString());
-            receiptScroller.setViewportView(receiptTextArea);
+            if (receiptService.getReceiptData().getReceiptId() != 0) {
+                receiptTextArea.setText(receiptService.getReceiptData().toString());
+                receiptScroller.setViewportView(receiptTextArea);
+            } else {
+                JOptionPane.showMessageDialog(this, "There is no receipt with the given ID");
+            }
         });
 
         saleLabel = new JLabel("SALES", SwingConstants.CENTER);
@@ -164,27 +176,33 @@ public class ManagerPanel extends JPanel {
         fromLabel.setBounds(380, 390, 60, 40);
         fromLabel.setFont(fromLabel.getFont().deriveFont(15f));
 
-        date1yyyy = new JTextField();
+        date1yyyy = new JFormattedTextField(formatYYYY);
+        date1yyyy.setColumns(4);
         date1yyyy.setBounds(450, 390, 50, 35);
         date1yyyy.setFont(date1yyyy.getFont().deriveFont(15f));
 
-        date1mm = new JTextField();
+        date1mm = new JFormattedTextField(formatMM);
+        date1mm.setColumns(2);
         date1mm.setBounds(505, 390, 30, 35);
         date1mm.setFont(date1mm.getFont().deriveFont(15f));
 
-        date1dd = new JTextField();
+        date1dd = new JFormattedTextField(formatDD);
+        date1dd.setColumns(2);
         date1dd.setBounds(540, 390, 30, 35);
         date1dd.setFont(date1dd.getFont().deriveFont(15f));
 
-        date2yyyy = new JTextField();
+        date2yyyy = new JFormattedTextField(formatYYYY);
+        date2yyyy.setColumns(4);
         date2yyyy.setBounds(450, 435, 50, 35);
         date2yyyy.setFont(date2yyyy.getFont().deriveFont(15f));
 
-        date2mm = new JTextField();
+        date2mm = new JFormattedTextField(formatMM);
+        date2mm.setColumns(2);
         date2mm.setBounds(505, 435, 30, 35);
         date2mm.setFont(date2mm.getFont().deriveFont(15f));
 
-        date2dd = new JTextField();
+        date2dd = new JFormattedTextField(formatDD);
+        date2dd.setColumns(2);
         date2dd.setBounds(540, 435, 30, 35);
         date2dd.setFont(date2dd.getFont().deriveFont(15f));
 
@@ -210,7 +228,7 @@ public class ManagerPanel extends JPanel {
         totalSaleTF.setBounds(460, 540, 90, 35);
         totalSaleTF.setFont(totalSaleTF.getFont().deriveFont(15f));
 
-        add(loggedNameLabel);
+        add(userNameLabel);
         add(dateLabel);
         add(employeeLabel);
         add(availableMedicineLabel);
@@ -248,10 +266,18 @@ public class ManagerPanel extends JPanel {
     }
 
     private void setDate() {
-        String date1 = date1yyyy.getText() + "-" + date1mm.getText() + "-" + date1dd.getText();
-        dateFrom = Date.valueOf(date1);
-        String date2 = date2yyyy.getText() + "-" + date2mm.getText() + "-" + date2dd.getText();
-        dateTo = Date.valueOf(date2);
+        try {
+            if (Integer.parseInt(date1yyyy.getText()) > 2000) {
+                String date1 = date1yyyy.getText() + "-" + date1mm.getText() + "-" + date1dd.getText();
+                String date2 = date2yyyy.getText() + "-" + date2mm.getText() + "-" + date2dd.getText();
+                dateFrom = Date.valueOf(date1);
+                dateTo = Date.valueOf(date2);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Check your inputs (incorrect year)","Warning",2);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, "Check your inputs (incorrect month or day)","Warning",2);
+        }
     }
 
     private void setIntFormat() {
@@ -262,9 +288,15 @@ public class ManagerPanel extends JPanel {
     }
 
     private void revalidateMedicineList() {
-        pharmacyStorageService.updateMedicinesInStorageList();
-        medicineList = new JList(pharmacyStorageService.getMedicinesInStorageList());
+        pharmacyStorageService.updateMedicinesWithQtyDisplayList();
+        medicineList = new JList(pharmacyStorageService.getMedicinesWithQtyDisplayList());
         medicineList.setFont(medicineList.getFont().deriveFont(15f));
         storageScroller.setViewportView(medicineList);
+    }
+
+    private void setFormatForDate() throws ParseException {
+        formatYYYY = new MaskFormatter("####");
+        formatMM = new MaskFormatter("##");
+        formatDD = new MaskFormatter("##");
     }
 }

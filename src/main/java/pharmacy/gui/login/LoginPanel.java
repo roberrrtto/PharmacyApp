@@ -1,6 +1,6 @@
 package pharmacy.gui.login;
 
-import pharmacy.Main;
+import pharmacy.PharmacyApp;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -15,8 +15,9 @@ public class LoginPanel extends JPanel {
     private JCheckBox checkPasswordBox;
     private JTextField usernameTextField;
     private JPasswordField passwordTextField;
-
     private BufferedImage img;
+
+    private PharmacyApp pharmacyApp = new PharmacyApp();
 
     public LoginPanel(){
         setLayout(null);
@@ -61,7 +62,7 @@ public class LoginPanel extends JPanel {
         loginButton.setBounds(275, 500, 150, 50);
         loginButton.setFont(loginButton.getFont().deriveFont(20f));
         loginButton.addActionListener(e -> {
-            if (!Main.pharmacyApp.logging(usernameTextField.getText(), String.valueOf(passwordTextField.getPassword()))) {
+            if (!pharmacyApp.login(usernameTextField.getText(), String.valueOf(passwordTextField.getPassword()))) {
                 JOptionPane.showMessageDialog(null,"Incorrect credentials","Incorrect credentials", 2);
             }
             usernameTextField.setText("");
@@ -81,53 +82,5 @@ public class LoginPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
-    }
-
-    public JLabel getPharmacyName() {
-        return pharmacyName;
-    }
-
-    public void setPharmacyName(JLabel pharmacyName) {
-        this.pharmacyName = pharmacyName;
-    }
-
-    public JLabel getUsernameLabel() {
-        return usernameLabel;
-    }
-
-    public void setUsernameLabel(JLabel usernameLabel) {
-        this.usernameLabel = usernameLabel;
-    }
-
-    public JLabel getPasswordLabel() {
-        return passwordLabel;
-    }
-
-    public void setPasswordLabel(JLabel passwordLabel) {
-        this.passwordLabel = passwordLabel;
-    }
-
-    public JButton getLoginButton() {
-        return loginButton;
-    }
-
-    public void setLoginButton(JButton loginButton) {
-        this.loginButton = loginButton;
-    }
-
-    public JTextField getUsernameTextField() {
-        return usernameTextField;
-    }
-
-    public void setUsernameTextField(JTextField usernameTextField) {
-        this.usernameTextField = usernameTextField;
-    }
-
-    public JTextField getPasswordTextField() {
-        return passwordTextField;
-    }
-
-    public void setPasswordTextField(JPasswordField passwordTextField) {
-        this.passwordTextField = passwordTextField;
     }
 }

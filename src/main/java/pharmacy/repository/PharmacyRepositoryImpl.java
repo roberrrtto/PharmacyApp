@@ -65,6 +65,7 @@ public class PharmacyRepositoryImpl implements PharmacyRepository {
             preparedStatement.setInt(4, pharmacyData.getPharmacyId());
 
             preparedStatement.executeUpdate();
+
         } catch (SQLException e) {
             System.out.println("Error during invoke SQL query: \n" + e.getMessage());
             throw new RuntimeException("Error during invoke SQL query");

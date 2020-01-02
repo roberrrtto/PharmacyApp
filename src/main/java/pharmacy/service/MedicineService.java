@@ -8,21 +8,21 @@ public interface MedicineService {
 
     void addNewMedicine(String medicineName, double price, String medicineDescription);
 
-    void setMedicineDataForUpdate(String medicineName, double price, String medicineDescription);
+    void updateMedicineData(String medicineName, double price, String medicineDescription);
 
     void removeMedicine(int index);
 
     MedicineData readMedicineData();
 
-    void updateMedicineList();
+    void updateMedicineNameList();
 
-    String[] getMedicineList();
+    String[] getMedicineNameList();
 
     void setMedicineDataList();
 
     List<MedicineData> getMedicineDataList();
 
-    void setUpdateMedicineData(int index);
+    void setMedicineData(int index);
 
-    void setMedicineList();
+    void setMedicineNameList();
 }

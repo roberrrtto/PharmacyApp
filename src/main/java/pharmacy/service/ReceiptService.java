@@ -6,30 +6,25 @@ import pharmacy.domain.ReceiptData;
 import java.sql.Date;
 import java.util.List;
 
-public interface ReceiptService extends PharmacyStorageService {
+public interface ReceiptService {
 
     void addNewReceipt();
 
-    void setPharmacyStorageDataForUpdate();
+    void updatePharmacyStorageQuantityData();
 
-    @Override
-    void setUpdateMedicineInStorageData(int index);
+    void updateMedicineQty(int index);
 
-    void setBasketList();
+    void setBasketData();
 
-    void updateBasketList(int index);
+    void updateBasketData(int index);
 
-    @Override
-    String[] getMedicinesInStorageList();
+    String[] getMedicineAndPriceDisplayList();
 
-    @Override
     void setPharmacyStorageDataList();
 
-    @Override
     List<PharmacyStorageData> getPharmacyStorageDataList();
 
-    @Override
-    void setMedicinesInStorageList();
+    void setMedicineAndPriceDisplayList();
 
     void setTotal(double total);
 
@@ -37,9 +32,9 @@ public interface ReceiptService extends PharmacyStorageService {
 
     double getTotal();
 
-    void setBasket();
+    void addMedicineToBasket();
 
-    void updateBasket();
+    void setBasket();
 
     String[] getBasket();
 
@@ -47,21 +42,11 @@ public interface ReceiptService extends PharmacyStorageService {
 
     ReceiptData getReceiptData();
 
-    void setReceiptToString();
+    void setBasketToString();
 
-    String getReceiptToString();
+    String getBasketToString();
 
     void setTotalSale(Date date1, Date date2);
 
     double getTotalSale();
-
-    @Override
-    default void setPharmacyStorageDataForUpdate(int quantity) {
-        // not implemented
-    }
-
-    @Override
-    default void updateMedicinesInStorageList() {
-        // not implemented
-    }
 }

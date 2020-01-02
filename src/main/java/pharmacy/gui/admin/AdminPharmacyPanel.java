@@ -2,8 +2,8 @@ package pharmacy.gui.admin;
 
 import pharmacy.service.PharmacyService;
 import pharmacy.service.PharmacyServiceImpl;
-import pharmacy.service.UserProfileServiceImpl;
-import pharmacy.utils.GetCurrentDate;
+import pharmacy.service.UserProfileService;
+import pharmacy.utils.CurrentDate;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -15,14 +15,14 @@ import static pharmacy.Main.mainFrame;
 
 public class AdminPharmacyPanel extends JPanel {
 
-    private JLabel pharmacyNameLabel, addressLabel, emailLabel, phoneNumberLabel, unitMangerLabel;
-    private JLabel loggedNameLabel, dateLabel, pharmacyLabel;
+    private JLabel pharmacyNameLabel, addressLabel, emailLabel, phoneNumberLabel,
+            unitMangerLabel, loggedNameLabel, dateLabel, pharmacyLabel;
     private JTextField pharmacyNameTF, addressTF, emailTF, phoneNumberTF, unitMangerTF;
     private JButton logOutButton, backToMenu, editModeButton, readModeButton, submitButton;
     private JComboBox pharmacyList;
     private BufferedImage img;
 
-    private GetCurrentDate getCurrentDate = new GetCurrentDate();
+    private CurrentDate currentDate = new CurrentDate();
     private PharmacyService pharmacyService = new PharmacyServiceImpl();
 
     public AdminPharmacyPanel() {
@@ -34,11 +34,11 @@ public class AdminPharmacyPanel extends JPanel {
             e.printStackTrace();
         }
 
-        loggedNameLabel = new JLabel(UserProfileServiceImpl.getFirstName(), SwingConstants.CENTER);
+        loggedNameLabel = new JLabel(UserProfileService.getFirstName(), SwingConstants.CENTER);
         loggedNameLabel.setBounds(555, 15, 80, 50);
         loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
 
-        dateLabel = new JLabel(getCurrentDate.getCurrentDate());
+        dateLabel = new JLabel(currentDate.getCurrentDate());
         dateLabel.setBounds(50, 15, 100, 50);
         dateLabel.setFont(dateLabel.getFont().deriveFont(15f));
 
@@ -62,19 +62,17 @@ public class AdminPharmacyPanel extends JPanel {
 
         pharmacyList = new JComboBox();
         pharmacyList.addItem("----------");
-        for (int i = 0; i < pharmacyService.getPharmacyList().length; i++) {
-            pharmacyList.addItem(pharmacyService.getPharmacyList()[i]);
-        }
         pharmacyList.setBounds(240, 100, 220, 50);
         pharmacyList.setFont(pharmacyList.getFont().deriveFont(15f));
         pharmacyList.addItemListener(e -> {
             if (pharmacyList.getSelectedIndex() > 0) {
-                pharmacyService.setUpdatePharmacyData(pharmacyList.getSelectedIndex()-1);
+                pharmacyService.setPharmacyData(pharmacyList.getSelectedIndex()-1);
                 setFields();
             } else {
                 resetFields();
             }
         });
+        setPharmacyListItems();
 
         pharmacyNameLabel = new JLabel("pharmacy name", SwingConstants.RIGHT);
         pharmacyNameLabel.setBounds(90, 150, 120, 50 );
@@ -134,16 +132,21 @@ public class AdminPharmacyPanel extends JPanel {
         editModeButton.setBounds(300, 410, 100, 40);
         editModeButton.setFont(editModeButton.getFont().deriveFont(13f));
         editModeButton.addActionListener(e -> {
-            setEditMode();
+            if (pharmacyList.getSelectedIndex() != 0) {
+                setEditMode();
+            }
         });
 
         submitButton = new JButton("SUBMIT");
         submitButton.setBounds(400, 410, 100, 40);
         submitButton.setFont(submitButton.getFont().deriveFont(13f));
         submitButton.addActionListener(e -> {
-            pharmacyService.setPharmacyDataForUpdate(addressTF.getText(), emailTF.getText(), phoneNumberTF.getText());
-            pharmacyList.setSelectedIndex(0);
-            resetFields();
+            if (submitCheck()) {
+                pharmacyService.updatePharmacyData(addressTF.getText(), emailTF.getText(), phoneNumberTF.getText());
+                pharmacyList.setSelectedIndex(0);
+                resetFields();
+                JOptionPane.showMessageDialog(this, "Submitted successfully!");
+            }
         });
         submitButton.setEnabled(false);
         submitButton.setVisible(false);
@@ -173,6 +176,12 @@ public class AdminPharmacyPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+    }
+
+    private void setPharmacyListItems() {
+        for (int i = 0; i < pharmacyService.getPharmacyNameList().length; i++) {
+            pharmacyList.addItem(pharmacyService.getPharmacyNameList()[i]);
+        }
     }
 
     private void setFields() {
@@ -213,5 +222,14 @@ public class AdminPharmacyPanel extends JPanel {
         addressTF.setEditable(false);
         emailTF.setEditable(false);
         phoneNumberTF.setEditable(false);
+    }
+
+    private boolean submitCheck() {
+        if (addressTF.getText().trim().isEmpty() || emailTF.getText().trim().isEmpty() || phoneNumberTF.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "  Submission failed!\n"+ "Some fields are empty");
+            return false;
+        } else {
+            return true;
+        }
     }
 }

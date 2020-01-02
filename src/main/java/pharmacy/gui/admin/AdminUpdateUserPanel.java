@@ -1,8 +1,9 @@
 package pharmacy.gui.admin;
 
+import pharmacy.service.UserProfileService;
 import pharmacy.service.UserService;
-import pharmacy.service.UserProfileServiceImpl;
-import pharmacy.utils.GetCurrentDate;
+import pharmacy.utils.CurrentDate;
+import pharmacy.utils.PasswordGenerator;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,21 +17,24 @@ import static pharmacy.Main.mainFrame;
 
 public class AdminUpdateUserPanel extends JPanel {
 
-    private JLabel loggedNameLabel, dateLabel, employeeLabel, firstNameLabel, lastNameLabel, addressLabel;
-    private JLabel emailLabel, phoneNoLabel, loginLabel, passwordLabel, jobTitleLabel, salaryLabel, pharmacyIdLabel;
-    private JButton goBackButton, submitButton;
-    private JTextField firstNameTextField, lastNameTextField, addressTextField, emailTextField, phoneNoTextField;
-    private JTextField loginTextField, passwordTextField, jobTitleTextField, salaryTextField, pharmacyIdTextField;
+    private JLabel userNameLabel, dateLabel, employeeLabel, firstNameLabel, lastNameLabel, addressLabel, emailLabel,
+            phoneNoLabel, loginLabel, passwordLabel, jobTitleLabel, salaryLabel, pharmacyIdLabel;
+    private JButton goBackButton, submitButton, passwordGeneratorButton;
+    private JTextField firstNameTextField, lastNameTextField, addressTextField, emailTextField,
+            phoneNoTextField, loginTextField, passwordTextField, jobTitleTextField;
     private JFormattedTextField salaryFormattedTextField, pharmacyIdFormattedTextField;
     private InternationalFormatter integerFormatter;
     private NumberFormat integerFormat;
     private UserService userService;
     private BufferedImage img;
+    private Icon icon;
 
-    private GetCurrentDate getCurrentDate = new GetCurrentDate();
+    private CurrentDate currentDate = new CurrentDate();
+    private PasswordGenerator passwordGenerator = new PasswordGenerator();
 
     public AdminUpdateUserPanel(UserService userService){
         setLayout(null);
+        icon = new ImageIcon(getClass().getResource("/icons8-gear-16.png"));
         try {
             img = ImageIO.read(getClass().getResource("/background.png")
             );
@@ -41,11 +45,11 @@ public class AdminUpdateUserPanel extends JPanel {
         setIntFormat();
         this.userService = userService;
 
-        loggedNameLabel = new JLabel(UserProfileServiceImpl.getFirstName(), SwingConstants.CENTER);
-        loggedNameLabel.setBounds(555, 15, 80, 50);
-        loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
+        userNameLabel = new JLabel(UserProfileService.getFirstName(), SwingConstants.CENTER);
+        userNameLabel.setBounds(555, 15, 80, 50);
+        userNameLabel.setFont(userNameLabel.getFont().deriveFont(15f));
 
-        dateLabel = new JLabel(getCurrentDate.getCurrentDate());
+        dateLabel = new JLabel(currentDate.getCurrentDate());
         dateLabel.setBounds(50, 15, 100,50);
         dateLabel.setFont(dateLabel.getFont().deriveFont(15f));
 
@@ -109,6 +113,13 @@ public class AdminUpdateUserPanel extends JPanel {
         passwordTextField.setBounds(220, 400, 360, 40);
         passwordTextField.setFont(passwordTextField.getFont().deriveFont(15f));
 
+        passwordGeneratorButton = new JButton(icon);
+        passwordGeneratorButton.setBounds(585,405,30,30);
+        passwordGeneratorButton.addActionListener(e -> {
+            passwordGenerator.setPassword();
+            passwordTextField.setText(passwordGenerator.getPassword());
+        });
+
         jobTitleLabel = new JLabel("job title", SwingConstants.LEFT);
         jobTitleLabel.setBounds(100, 450, 110, 50 );
         jobTitleLabel.setFont(jobTitleLabel.getFont().deriveFont(15f));
@@ -137,10 +148,13 @@ public class AdminUpdateUserPanel extends JPanel {
         submitButton.setBounds(400, 600, 100, 40);
         submitButton.setFont(submitButton.getFont().deriveFont(13f));
         submitButton.addActionListener(e -> {
-            userService.setUserDataForUpdate(firstNameTextField.getText(), lastNameTextField.getText(),
-                    addressTextField.getText(), emailTextField.getText(), phoneNoTextField.getText(),
-                    loginTextField.getText(), passwordTextField.getText(), jobTitleTextField.getText(),
-                    (Integer) salaryFormattedTextField.getValue(), (Integer) (pharmacyIdFormattedTextField.getValue()));
+            if (submitCheck()) {
+                userService.updateUserData(firstNameTextField.getText(), lastNameTextField.getText(),
+                        addressTextField.getText(), emailTextField.getText(), phoneNoTextField.getText(),
+                        loginTextField.getText(), passwordTextField.getText(), jobTitleTextField.getText(),
+                        (Integer) salaryFormattedTextField.getValue(), (Integer) (pharmacyIdFormattedTextField.getValue()));
+                JOptionPane.showMessageDialog(this, "Submitted successfully!");
+            }
         });
 
         goBackButton = new JButton("Go Back");
@@ -153,11 +167,12 @@ public class AdminUpdateUserPanel extends JPanel {
 
         setFields();
 
-        add(loggedNameLabel);
+        add(userNameLabel);
         add(dateLabel);
         add(employeeLabel);
         add(goBackButton);
         add(submitButton);
+        add(passwordGeneratorButton);
         add(firstNameLabel);
         add(lastNameLabel);
         add(addressLabel);
@@ -204,5 +219,22 @@ public class AdminUpdateUserPanel extends JPanel {
         jobTitleTextField.setText(userService.readUserData().getJobTitle());
         salaryFormattedTextField.setValue(userService.readUserData().getSalary());
         pharmacyIdFormattedTextField.setValue(userService.readUserData().getPharmacyId());
+    }
+
+    private boolean submitCheck() {
+        if (firstNameTextField.getText().trim().isEmpty()
+                || lastNameTextField.getText().trim().isEmpty()
+                || addressTextField.getText().trim().isEmpty()
+                || emailTextField.getText().trim().isEmpty()
+                || phoneNoTextField.getText().trim().isEmpty()
+                || loginTextField.getText().trim().isEmpty()
+                || passwordTextField.getText().trim().isEmpty()
+                || jobTitleTextField.getText().trim().isEmpty()) {
+
+            JOptionPane.showMessageDialog(this, "  Submission failed!\n"+ "Some fields are empty");
+            return false;
+        } else {
+            return true;
+        }
     }
 }

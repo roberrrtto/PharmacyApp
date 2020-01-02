@@ -51,7 +51,9 @@ public class MedicineData {
 
     @Override
     public String toString() {
-        return "medicineName='" + medicineName + '\'' +
+        return "MedicineData{" +
+                "medicineId=" + medicineId +
+                ", medicineName='" + medicineName + '\'' +
                 ", price=" + price +
                 ", medicineDescription='" + medicineDescription + '\'' +
                 '}';

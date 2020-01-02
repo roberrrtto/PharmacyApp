@@ -2,8 +2,8 @@ package pharmacy.gui.admin;
 
 import pharmacy.service.MedicineService;
 import pharmacy.service.MedicineServiceImpl;
-import pharmacy.service.UserProfileServiceImpl;
-import pharmacy.utils.GetCurrentDate;
+import pharmacy.service.UserProfileService;
+import pharmacy.utils.CurrentDate;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -15,7 +15,7 @@ import static pharmacy.Main.mainFrame;
 
 public class AdminShowMedicinesPanel extends JPanel {
 
-    private JLabel loggedNameLabel, dateLabel, allMedicinesLabel;
+    private JLabel userNameLabel, dateLabel, allMedicinesLabel;
     private JButton logOutButton, deleteMedButton, addMedButton, editMedButton, readMedButton, backToMenu;
     private JList<String> medicineList;
     private JScrollPane medicineListScroller;
@@ -24,7 +24,7 @@ public class AdminShowMedicinesPanel extends JPanel {
     private AdminUpdateMedicinePanel adminUpdateMedicinePanel;
     private BufferedImage img;
 
-    private GetCurrentDate getCurrentDate = new GetCurrentDate();
+    private CurrentDate currentDate = new CurrentDate();
     private MedicineService medicineService = new MedicineServiceImpl();
 
     public AdminShowMedicinesPanel() {
@@ -36,11 +36,11 @@ public class AdminShowMedicinesPanel extends JPanel {
             e.printStackTrace();
         }
 
-        loggedNameLabel = new JLabel(UserProfileServiceImpl.getFirstName(), SwingConstants.CENTER);
-        loggedNameLabel.setBounds(555, 15, 80, 50);
-        loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
+        userNameLabel = new JLabel(UserProfileService.getFirstName(), SwingConstants.CENTER);
+        userNameLabel.setBounds(555, 15, 80, 50);
+        userNameLabel.setFont(userNameLabel.getFont().deriveFont(15f));
 
-        dateLabel = new JLabel(getCurrentDate.getCurrentDate());
+        dateLabel = new JLabel(currentDate.getCurrentDate());
         dateLabel.setBounds(50, 15, 100, 50);
         dateLabel.setFont(dateLabel.getFont().deriveFont(15f));
 
@@ -62,7 +62,7 @@ public class AdminShowMedicinesPanel extends JPanel {
         allMedicinesLabel.setBounds(100, 50, 500, 50);
         allMedicinesLabel.setFont(allMedicinesLabel.getFont().deriveFont(15f));
 
-        medicineList = new JList(medicineService.getMedicineList());
+        medicineList = new JList(medicineService.getMedicineNameList());
         medicineList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         medicineList.setFont(medicineList.getFont().deriveFont(15f));
 
@@ -82,31 +82,43 @@ public class AdminShowMedicinesPanel extends JPanel {
         readMedButton.setBounds(255, 370, 90, 40);
         readMedButton.setFont(dateLabel.getFont().deriveFont(13f));
         readMedButton.addActionListener(e -> {
-            medicineService.setUpdateMedicineData(medicineList.getSelectedIndex());
-            adminReadMedicinePanel = new AdminReadMedicinePanel(medicineService);
-            mainFrame.panelSwitchOver(adminReadMedicinePanel);
+            if (medicineList.isSelectionEmpty()) {
+                JOptionPane.showMessageDialog(null,"Nothing is selected!","Information", 1);
+            } else {
+                medicineService.setMedicineData(medicineList.getSelectedIndex());
+                adminReadMedicinePanel = new AdminReadMedicinePanel(medicineService);
+                mainFrame.panelSwitchOver(adminReadMedicinePanel);
+            }
         });
 
         editMedButton = new JButton("EDIT");
         editMedButton.setBounds(355, 370, 90, 40);
         editMedButton.setFont(dateLabel.getFont().deriveFont(13f));
         editMedButton.addActionListener(e -> {
-            medicineService.setUpdateMedicineData(medicineList.getSelectedIndex());
-            adminUpdateMedicinePanel = new AdminUpdateMedicinePanel(medicineService);
-            mainFrame.panelSwitchOver(adminUpdateMedicinePanel);
+            if (medicineList.isSelectionEmpty()) {
+                JOptionPane.showMessageDialog(null,"Nothing is selected!","Information", 1);
+            } else {
+                medicineService.setMedicineData(medicineList.getSelectedIndex());
+                adminUpdateMedicinePanel = new AdminUpdateMedicinePanel(medicineService);
+                mainFrame.panelSwitchOver(adminUpdateMedicinePanel);
+            }
         });
 
         deleteMedButton = new JButton("DELETE");
         deleteMedButton.setBounds(455, 370, 90, 40);
         deleteMedButton.setFont(dateLabel.getFont().deriveFont(13f));
         deleteMedButton.addActionListener(e -> {
-            medicineService.removeMedicine(medicineList.getSelectedIndex());
-            medicineList = new JList(medicineService.getMedicineList());
-            medicineList.setFont(medicineList.getFont().deriveFont(15f));
-            medicineListScroller.setViewportView(medicineList);
+            if (medicineList.isSelectionEmpty()) {
+                JOptionPane.showMessageDialog(null,"Nothing is selected!","Information", 1);
+            } else {
+                medicineService.removeMedicine(medicineList.getSelectedIndex());
+                medicineList = new JList(medicineService.getMedicineNameList());
+                medicineList.setFont(medicineList.getFont().deriveFont(15f));
+                medicineListScroller.setViewportView(medicineList);
+            }
         });
 
-        add(loggedNameLabel);
+        add(userNameLabel);
         add(dateLabel);
         add(allMedicinesLabel);
         add(logOutButton);

@@ -2,13 +2,13 @@ package pharmacy.domain;
 
 public class UserProfile extends UserData{
 
-    private boolean correct;
+    private boolean correctCredentials;
 
-    public boolean isCorrect() {
-        return correct;
+    public boolean isCorrectCredentials() {
+        return correctCredentials;
     }
 
-    public void setCorrect(boolean correct) {
-        this.correct = correct;
+    public void setCorrectCredentials(boolean correctCredentials) {
+        this.correctCredentials = correctCredentials;
     }
 }

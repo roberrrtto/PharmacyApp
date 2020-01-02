@@ -14,18 +14,18 @@ public class PharmacyServiceImpl  implements PharmacyService {
     private UserRepository userRepository;
     private PharmacyData pharmacyData;
     private List<PharmacyData> pharmacyDataList;
-    private String[] pharmacyList;
+    private String[] pharmacyNameList;
     private String pharmacyUnitManager;
 
     public PharmacyServiceImpl() {
         this.pharmacyRepository = new PharmacyRepositoryImpl();
         this.userRepository = new UserRepositoryImpl();
         setPharmacyDataList();
-        setPharmacyList();
+        setPharmacyNameList();
     }
 
     @Override
-    public void setPharmacyDataForUpdate(String address, String email, String phoneNumber) {
+    public void updatePharmacyData(String address, String email, String phoneNumber) {
         int pId = pharmacyData.getPharmacyId();
         this.pharmacyData = new PharmacyData(address, email, phoneNumber);
         pharmacyData.setPharmacyId(pId);
@@ -38,14 +38,14 @@ public class PharmacyServiceImpl  implements PharmacyService {
     }
 
     @Override
-    public void updatePharmacyList() {
+    public void updatePharmacyNameList() {
         setPharmacyDataList();
-        setPharmacyList();
+        setPharmacyNameList();
     }
 
     @Override
-    public String[] getPharmacyList() {
-        return pharmacyList;
+    public String[] getPharmacyNameList() {
+        return pharmacyNameList;
     }
 
     @Override
@@ -59,18 +59,18 @@ public class PharmacyServiceImpl  implements PharmacyService {
     }
 
     @Override
-    public void setUpdatePharmacyData(int index) {
+    public void setPharmacyData(int index) {
         int pId = pharmacyDataList.get(index).getPharmacyId();
         this.pharmacyData = pharmacyRepository.readPharmacy(pId);
         setPharmacyUnitManager(index);
     }
 
     @Override
-    public void setPharmacyList() {
-        this.pharmacyList = new String[getPharmacyDataList().size()];
+    public void setPharmacyNameList() {
+        this.pharmacyNameList = new String[getPharmacyDataList().size()];
         int i = 0;
         for (PharmacyData pd : getPharmacyDataList()) {
-            pharmacyList[i] = "PhID " + pd.getPharmacyId() + " " + pd.getPharmacyName();
+            pharmacyNameList[i] = "PhID " + pd.getPharmacyId() + " " + pd.getPharmacyName();
             i++;
         }
     }
@@ -81,7 +81,6 @@ public class PharmacyServiceImpl  implements PharmacyService {
         for (UserData ud : userRepository.getAllUsersByUnit(pId)) {
             if (ud.getJobTitle().equals("Unit Manager")) {
                 this.pharmacyUnitManager = ud.getFirstName() + " " + ud.getLastName();
-                break;
             }
         }
     }

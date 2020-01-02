@@ -9,8 +9,8 @@ public interface UserService {
     void addNewUser(String firstName, String lastName, String address, String email, String phoneNumber,
                     String login, String password, String jobTitle, int salary, int pharmacyId);
 
-    void setUserDataForUpdate(String firstName, String lastName, String address, String email, String phoneNumber,
-                              String login, String password, String jobTitle, int salary, int pharmacyId);
+    void updateUserData(String firstName, String lastName, String address, String email, String phoneNumber,
+                        String login, String password, String jobTitle, int salary, int pharmacyId);
 
     void removeUser(int index);
 
@@ -30,7 +30,7 @@ public interface UserService {
 
     List<UserData> getUserDataList();
 
-    void setUpdateUserData(int index);
+    void setUserData(int index);
 
     void setAllEmployeeList();
 

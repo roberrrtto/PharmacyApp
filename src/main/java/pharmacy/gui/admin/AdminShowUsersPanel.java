@@ -1,9 +1,9 @@
 package pharmacy.gui.admin;
 
+import pharmacy.service.UserProfileService;
 import pharmacy.service.UserService;
 import pharmacy.service.UserServiceImpl;
-import pharmacy.service.UserProfileServiceImpl;
-import pharmacy.utils.GetCurrentDate;
+import pharmacy.utils.CurrentDate;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -15,7 +15,7 @@ import static pharmacy.Main.mainFrame;
 
 public class AdminShowUsersPanel extends JPanel {
 
-    private JLabel loggedNameLabel, dateLabel, allEmployeesLabel;
+    private JLabel userNameLabel, dateLabel, allEmployeesLabel;
     private JButton logOutButton, deleteEmpButton, addEmpButton, editEmpButton, readEmpButton, backToMenu;
     private JList<String> employeeList;
     private JScrollPane employeeListScroller;
@@ -24,7 +24,7 @@ public class AdminShowUsersPanel extends JPanel {
     private AdminUpdateUserPanel adminUpdateUserPanel;
     private BufferedImage img;
 
-    private GetCurrentDate getCurrentDate = new GetCurrentDate();
+    private CurrentDate currentDate = new CurrentDate();
     private UserService userService = new UserServiceImpl();
 
     public AdminShowUsersPanel() {
@@ -36,11 +36,11 @@ public class AdminShowUsersPanel extends JPanel {
             e.printStackTrace();
         }
 
-        loggedNameLabel = new JLabel(UserProfileServiceImpl.getFirstName(), SwingConstants.CENTER);
-        loggedNameLabel.setBounds(555, 15, 80, 50);
-        loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
+        userNameLabel = new JLabel(UserProfileService.getFirstName(), SwingConstants.CENTER);
+        userNameLabel.setBounds(555, 15, 80, 50);
+        userNameLabel.setFont(userNameLabel.getFont().deriveFont(15f));
 
-        dateLabel = new JLabel(getCurrentDate.getCurrentDate());
+        dateLabel = new JLabel(currentDate.getCurrentDate());
         dateLabel.setBounds(50, 15, 100, 50);
         dateLabel.setFont(dateLabel.getFont().deriveFont(15f));
 
@@ -82,31 +82,43 @@ public class AdminShowUsersPanel extends JPanel {
         readEmpButton.setBounds(255, 370, 90, 40);
         readEmpButton.setFont(dateLabel.getFont().deriveFont(13f));
         readEmpButton.addActionListener(e -> {
-            userService.setUpdateUserData(employeeList.getSelectedIndex());
-            adminReadUserPanel = new AdminReadUserPanel(userService);
-            mainFrame.panelSwitchOver(adminReadUserPanel);
+            if (employeeList.isSelectionEmpty()) {
+                JOptionPane.showMessageDialog(null,"Nothing is selected!","Information", 1);
+            } else {
+                userService.setUserData(employeeList.getSelectedIndex());
+                adminReadUserPanel = new AdminReadUserPanel(userService);
+                mainFrame.panelSwitchOver(adminReadUserPanel);
+            }
         });
 
         editEmpButton = new JButton("EDIT");
         editEmpButton.setBounds(355, 370, 90, 40);
         editEmpButton.setFont(dateLabel.getFont().deriveFont(13f));
         editEmpButton.addActionListener(e -> {
-            userService.setUpdateUserData(employeeList.getSelectedIndex());
-            adminUpdateUserPanel = new AdminUpdateUserPanel(userService);
-            mainFrame.panelSwitchOver(adminUpdateUserPanel);
+            if (employeeList.isSelectionEmpty()) {
+                JOptionPane.showMessageDialog(null,"Nothing is selected!","Information", 1);
+            } else {
+                userService.setUserData(employeeList.getSelectedIndex());
+                adminUpdateUserPanel = new AdminUpdateUserPanel(userService);
+                mainFrame.panelSwitchOver(adminUpdateUserPanel);
+            }
         });
 
         deleteEmpButton = new JButton("DELETE");
         deleteEmpButton.setBounds(455, 370, 90, 40);
         deleteEmpButton.setFont(dateLabel.getFont().deriveFont(13f));
         deleteEmpButton.addActionListener(e -> {
-            userService.removeUser(employeeList.getSelectedIndex());
-            employeeList = new JList(userService.getAllEmployeeList());
-            employeeList.setFont(employeeList.getFont().deriveFont(15f));
-            employeeListScroller.setViewportView(employeeList);
+            if (employeeList.isSelectionEmpty()) {
+                JOptionPane.showMessageDialog(null,"Nothing is selected!","Information", 1);
+            } else {
+                userService.removeUser(employeeList.getSelectedIndex());
+                employeeList = new JList(userService.getAllEmployeeList());
+                employeeList.setFont(employeeList.getFont().deriveFont(15f));
+                employeeListScroller.setViewportView(employeeList);
+            }
         });
 
-        add(loggedNameLabel);
+        add(userNameLabel);
         add(dateLabel);
         add(allEmployeesLabel);
         add(logOutButton);

@@ -78,7 +78,6 @@ public class UserRepositoryImpl implements UserRepository {
                 "    ON users.user_id = uc.user_id\n" +
                 "WHERE users.user_id=?;";
 
-
         Connection connection = initializeDataBaseConnection();
         PreparedStatement preparedStatement = null;
 
@@ -110,7 +109,6 @@ public class UserRepositoryImpl implements UserRepository {
         } finally {
             closeDataBaseResources(connection, preparedStatement);
         }
-
         return userData;
     }
 

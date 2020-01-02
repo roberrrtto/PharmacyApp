@@ -21,56 +21,60 @@ public class ReceiptServiceImpl implements ReceiptService {
     private PharmacyStorageData medicineToBasket;
     private ReceiptData receiptData;
     private List<PharmacyStorageData> pharmacyStorageDataList;
-    private List<PharmacyStorageData> basketList;
+    private List<PharmacyStorageData> basketData;
     private String[] medicinesInStorageList;
     private int pharmacyId;
     private int userId;
     private double total;
     private double totalSale;
     private String[] basket;
-    private String receiptToString;
+    private String basketToString;
 
     public ReceiptServiceImpl() {
         this.pharmacyStorageRepository = new PharmacyStorageRepositoryImpl();
         this.receiptRepository = new ReceiptRepositoryImpl();
-        this.pharmacyId = UserProfileServiceImpl.getPharmacyId();
-        this.userId = UserProfileServiceImpl.getUserId();
+        this.pharmacyId = UserProfileService.getPharmacyId();
+        this.userId = UserProfileService.getUserId();
         setPharmacyStorageDataList();
-        setMedicinesInStorageList();
-        setBasketList();
+        setMedicineAndPriceDisplayList();
+        setBasketData();
         this.basket = new String[medicinesInStorageList.length];
     }
 
     @Override
     public void addNewReceipt() {
-        setReceiptToString();
-        ReceiptData receipt = new ReceiptData(pharmacyId, userId, total, receiptToString);
+        setBasketToString();
+        ReceiptData receipt = new ReceiptData(pharmacyId, userId, total, basketToString);
         receiptRepository.createReceipt(receipt);
     }
 
     @Override
-    public void setPharmacyStorageDataForUpdate() {
+    public void updatePharmacyStorageQuantityData() {
         for (PharmacyStorageData psd : getPharmacyStorageDataList()) {
             pharmacyStorageRepository.updatePharmacyStorageQuantity(psd);
         }
     }
 
     @Override
-    public void setUpdateMedicineInStorageData(int index) {
+    public void updateMedicineQty(int index) {
         getPharmacyStorageDataList().get(index).setQuantity(getPharmacyStorageDataList().get(index).getQuantity() - 1);
     }
 
     @Override
-    public void setBasketList() {
-        this.basketList = new ArrayList<>();
+    public void setBasketData() {
+        this.basketData = new ArrayList<>();
     }
 
+    /* method that checks if the medicine had already been added to the basket
+    if YES updates the quantity
+    if NO creates a copy of the medicine and adds it to the basket
+     */
     @Override
-    public void updateBasketList(int index) {
+    public void updateBasketData(int index) {
         medicineToBasket = getPharmacyStorageDataList().get(index);
-        if (basketList.contains(medicineToBasket)) {
-            int index1 = basketList.indexOf(medicineToBasket);
-            basketList.get(index1).setQuantity(basketList.get(index1).getQuantity() + 1);
+        if (basketData.contains(medicineToBasket)) {
+            int index1 = basketData.indexOf(medicineToBasket);
+            basketData.get(index1).setQuantity(basketData.get(index1).getQuantity() + 1);
         } else {
             PharmacyStorageData newMedicineToBasket = new PharmacyStorageData();
             newMedicineToBasket.setPharmacyId(medicineToBasket.getPharmacyId());
@@ -78,15 +82,10 @@ public class ReceiptServiceImpl implements ReceiptService {
             newMedicineToBasket.setMedicineName(medicineToBasket.getMedicineName());
             newMedicineToBasket.setPrice(medicineToBasket.getPrice());
             newMedicineToBasket.setQuantity(1);
-            basketList.add(newMedicineToBasket);
+            basketData.add(newMedicineToBasket);
         }
         updateTotal();
-        updateBasket();
-    }
-
-    @Override
-    public String[] getMedicinesInStorageList() {
-        return medicinesInStorageList;
+        addMedicineToBasket();
     }
 
     @Override
@@ -100,18 +99,28 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
-    public void setMedicinesInStorageList() {
+    public void setMedicineAndPriceDisplayList() {
         this.medicinesInStorageList = new String[getPharmacyStorageDataList().size()];
         int i = 0;
         for (PharmacyStorageData psd : getPharmacyStorageDataList()) {
-            getMedicinesInStorageList()[i] = psd.getMedicineName() + ", price: " + psd.getPrice() + "$";
+            getMedicineAndPriceDisplayList()[i] = psd.getMedicineName() + ", price: " + psd.getPrice() + "$";
             i++;
         }
     }
 
     @Override
+    public String[] getMedicineAndPriceDisplayList() {
+        return medicinesInStorageList;
+    }
+
+    @Override
     public void setTotal(double total) {
         this.total = total;
+    }
+
+    @Override
+    public double getTotal() {
+        return total;
     }
 
     @Override
@@ -121,10 +130,6 @@ public class ReceiptServiceImpl implements ReceiptService {
         setTotal(bd.doubleValue());
     }
 
-    @Override
-    public double getTotal() {
-        return total;
-    }
 
     @Override
     public void setBasket() {
@@ -132,10 +137,15 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
-    public void updateBasket() {
+    public String[] getBasket() {
+        return basket;
+    }
+
+    @Override
+    public void addMedicineToBasket() {
         int i = 1;
         int y = 0;
-        for (PharmacyStorageData psd : basketList) {
+        for (PharmacyStorageData psd : basketData) {
             String sb = i + ". " + psd.getMedicineName() + " " +
                     psd.getQuantity() + " * " + psd.getPrice() + "$\n";
             basket[y] = sb;
@@ -145,30 +155,17 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
-    public String[] getBasket() {
-        return basket;
+    public String getBasketToString() {
+        return basketToString;
     }
 
     @Override
-    public void setReceiptData(int receiptId) {
-        this.receiptData = receiptRepository.readReceipt(receiptId);
+    public void setBasketToString() {
+        basketToString = Arrays.toString(basket).replaceAll("[\\[\\]]|null|, ","");
     }
 
-    @Override
-    public ReceiptData getReceiptData() {
-        return receiptData;
-    }
 
-    @Override
-    public String getReceiptToString() {
-        return receiptToString;
-    }
-
-    @Override
-    public void setReceiptToString() {
-        receiptToString = Arrays.toString(basket).replaceAll("[\\[\\]]|null|, ","");
-    }
-
+    /* methods for a manager to display Total Sale and to check receipts */
     @Override
     public void setTotalSale(Date date1, Date date2) {
         this.totalSale = receiptRepository.getTotalSale(pharmacyId, date1, date2).getTotal();
@@ -179,5 +176,15 @@ public class ReceiptServiceImpl implements ReceiptService {
         BigDecimal bd = new BigDecimal(totalSale).setScale(2, RoundingMode.HALF_UP);
         this.totalSale = bd.doubleValue();
         return totalSale;
+    }
+
+    @Override
+    public void setReceiptData(int receiptId) {
+        this.receiptData = receiptRepository.readReceipt(receiptId);
+    }
+
+    @Override
+    public ReceiptData getReceiptData() {
+        return receiptData;
     }
 }

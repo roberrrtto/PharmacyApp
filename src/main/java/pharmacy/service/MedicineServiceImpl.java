@@ -10,14 +10,14 @@ public class MedicineServiceImpl implements MedicineService {
 
     private MedicineRepository medicineRepository;
     private MedicineData newMedicineData;
-    private MedicineData updateMedicineData;
+    private MedicineData medicineData;
     private List<MedicineData> medicineDataList;
-    private String[] medicineList;
+    private String[] medicineNameList;
 
     public MedicineServiceImpl() {
         this.medicineRepository = new MedicineRepositoryImpl();
         setMedicineDataList();
-        setMedicineList();
+        setMedicineNameList();
     }
 
     // =================== CRUD for the Medicine ===================
@@ -28,36 +28,36 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
-    public void setMedicineDataForUpdate(String medicineName, double price, String medicineDescription) {
-        int mId = updateMedicineData.getMedicineId();
-        this.updateMedicineData = new MedicineData(medicineName, price, medicineDescription);
-        updateMedicineData.setMedicineId(mId);
-        medicineRepository.updateMedicine(updateMedicineData);
+    public void updateMedicineData(String medicineName, double price, String medicineDescription) {
+        int mId = medicineData.getMedicineId();
+        this.medicineData = new MedicineData(medicineName, price, medicineDescription);
+        medicineData.setMedicineId(mId);
+        medicineRepository.updateMedicine(medicineData);
     }
 
     @Override
     public void removeMedicine(int index) {
         int mId = medicineDataList.get(index).getMedicineId();
         medicineRepository.deleteMedicine(mId);
-        updateMedicineList();
+        updateMedicineNameList();
     }
 
     @Override
     public MedicineData readMedicineData() {
-        return updateMedicineData;
+        return medicineData;
     }
 
     // =================== Helping methods ===================
     @Override
-    public void updateMedicineList() {
+    public void updateMedicineNameList() {
         setMedicineDataList();
-        setMedicineList();
+        setMedicineNameList();
     }
 
     // =================== Getters/Setters ===================
     @Override
-    public String[] getMedicineList() {
-        return medicineList;
+    public String[] getMedicineNameList() {
+        return medicineNameList;
     }
 
     @Override
@@ -71,17 +71,17 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
-    public void setUpdateMedicineData(int index) {
+    public void setMedicineData(int index) {
         int mId = medicineDataList.get(index).getMedicineId();
-        this.updateMedicineData = medicineRepository.readMedicine(mId);
+        this.medicineData = medicineRepository.readMedicine(mId);
     }
 
     @Override
-    public void setMedicineList() {
-        this.medicineList = new String[getMedicineDataList().size()];
+    public void setMedicineNameList() {
+        this.medicineNameList = new String[getMedicineDataList().size()];
         int i = 0;
         for (MedicineData md : getMedicineDataList()) {
-            medicineList[i] = md.getMedicineName();
+            medicineNameList[i] = md.getMedicineName();
             i++;
         }
     }

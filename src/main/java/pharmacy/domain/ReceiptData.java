@@ -2,6 +2,7 @@ package pharmacy.domain;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Objects;
 
 public class ReceiptData {
 
@@ -87,5 +88,19 @@ public class ReceiptData {
                 "\ndate: " + date +
                 "\ntime: " + time +
                 "\nbasket: \n" + basket;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ReceiptData)) return false;
+        ReceiptData that = (ReceiptData) o;
+        return getReceiptId() == that.getReceiptId() &&
+                getPharmacyId() == that.getPharmacyId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getReceiptId(), getPharmacyId());
     }
 }

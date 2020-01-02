@@ -3,7 +3,7 @@ package pharmacy;
 import pharmacy.gui.admin.AdminMenuPanel;
 import pharmacy.gui.manager.ManagerPanel;
 import pharmacy.gui.pharmacist.PharmacistPanel;
-import pharmacy.service.UserProfileServiceImpl;
+import pharmacy.service.UserProfileService;
 
 import static pharmacy.Main.mainFrame;
 
@@ -17,16 +17,16 @@ public class PharmacyApp {
     private AdminMenuPanel adminMenuPanel;
     private ManagerPanel managerPanel;
 
-    public boolean logging(String userLogin, String userPassword) {
-        UserProfileServiceImpl.initializeUserProfile(userLogin, userPassword);
-        if (UserProfileServiceImpl.isCorrect()) {
-            if (UserProfileServiceImpl.getJobTitle().equals(PHARMACIST)) {
+    public boolean login(String userLogin, String userPassword) {
+        UserProfileService.initializeUserProfile(userLogin, userPassword);
+        if (UserProfileService.isCorrect()) {
+            if (UserProfileService.getJobTitle().equals(PHARMACIST)) {
                 pharmacistPanel = new PharmacistPanel();
                 mainFrame.panelSwitchOver(pharmacistPanel);
-            } else if (UserProfileServiceImpl.getJobTitle().equals(UNIT_MANAGER)) {
+            } else if (UserProfileService.getJobTitle().equals(UNIT_MANAGER)) {
                 managerPanel = new ManagerPanel();
                 mainFrame.panelSwitchOver(managerPanel);
-            } else if (UserProfileServiceImpl.getJobTitle().equals(ADMIN)) {
+            } else if (UserProfileService.getJobTitle().equals(ADMIN)) {
                 adminMenuPanel = new AdminMenuPanel();
                 mainFrame.panelSwitchOver(adminMenuPanel);
             }

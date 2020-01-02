@@ -6,21 +6,21 @@ import java.util.List;
 
 public interface PharmacyService {
 
-    void setPharmacyDataForUpdate(String address, String email, String phoneNumber);
+    void updatePharmacyData(String address, String email, String phoneNumber);
 
     PharmacyData readPharmacyData();
 
-    void updatePharmacyList();
+    void updatePharmacyNameList();
 
-    String[] getPharmacyList();
+    String[] getPharmacyNameList();
 
     void setPharmacyDataList();
 
     List<PharmacyData> getPharmacyDataList();
 
-    void setUpdatePharmacyData(int index);
+    void setPharmacyData(int index);
 
-    void setPharmacyList();
+    void setPharmacyNameList();
 
     void setPharmacyUnitManager(int index);
 

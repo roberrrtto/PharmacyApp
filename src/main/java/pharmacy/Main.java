@@ -6,7 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Main {
-    public static PharmacyApp pharmacyApp = new PharmacyApp();
     public static MainFrame mainFrame = new MainFrame();
 
     public static void main(String[] args) {
@@ -15,6 +14,5 @@ public class Main {
             mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             mainFrame.setVisible(true);
         });
-
     }
 }

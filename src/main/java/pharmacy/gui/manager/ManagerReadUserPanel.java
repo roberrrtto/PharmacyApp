@@ -1,8 +1,8 @@
 package pharmacy.gui.manager;
 
-import pharmacy.service.UserProfileServiceImpl;
+import pharmacy.service.UserProfileService;
 import pharmacy.service.UserService;
-import pharmacy.utils.GetCurrentDate;
+import pharmacy.utils.CurrentDate;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,7 +14,7 @@ import static pharmacy.Main.mainFrame;
 
 public class ManagerReadUserPanel extends JPanel {
 
-    private JLabel loggedNameLabel, dateLabel, employeeLabel, firstNameLabel, lastNameLabel, addressLabel;
+    private JLabel userNameLabel, dateLabel, employeeLabel, firstNameLabel, lastNameLabel, addressLabel;
     private JLabel emailLabel, phoneNoLabel, loginLabel, jobTitleLabel, salaryLabel;
     private JTextField firstNameTextField, lastNameTextField, addressTextField, emailTextField, phoneNoTextField;
     private JTextField loginTextField, jobTitleTextField, salaryTextField;
@@ -22,7 +22,7 @@ public class ManagerReadUserPanel extends JPanel {
     private JButton goBackButton;
     private BufferedImage img;
 
-    private GetCurrentDate getCurrentDate = new GetCurrentDate();
+    private CurrentDate currentDate = new CurrentDate();
 
     public ManagerReadUserPanel(UserService userService){
         setLayout(null);
@@ -34,11 +34,11 @@ public class ManagerReadUserPanel extends JPanel {
         }
         this.userService = userService;
 
-        loggedNameLabel = new JLabel(UserProfileServiceImpl.getFirstName(), SwingConstants.CENTER);
-        loggedNameLabel.setBounds(555, 15, 80, 50);
-        loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
+        userNameLabel = new JLabel(UserProfileService.getFirstName(), SwingConstants.CENTER);
+        userNameLabel.setBounds(555, 15, 80, 50);
+        userNameLabel.setFont(userNameLabel.getFont().deriveFont(15f));
 
-        dateLabel = new JLabel(getCurrentDate.getCurrentDate());
+        dateLabel = new JLabel(currentDate.getCurrentDate());
         dateLabel.setBounds(50, 15, 100,50);
         dateLabel.setFont(dateLabel.getFont().deriveFont(15f));
 
@@ -127,7 +127,7 @@ public class ManagerReadUserPanel extends JPanel {
 
         setFields();
 
-        add(loggedNameLabel);
+        add(userNameLabel);
         add(dateLabel);
         add(employeeLabel);
         add(goBackButton);

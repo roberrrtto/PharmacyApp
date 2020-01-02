@@ -10,7 +10,7 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private UserData newUserData;
-    private UserData updateUserData;
+    private UserData userData;
     private List<UserData> userDataList;
     private String[] allEmployeeList;
     private String[] unitEmployeeList;
@@ -41,13 +41,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void setUserDataForUpdate(String firstName, String lastName, String address, String email, String phoneNumber,
-                                     String login, String password, String jobTitle, int salary, int pharmacyId) {
-        int userId = updateUserData.getUserId();
-        this.updateUserData = new UserData(firstName, lastName, address, email, phoneNumber, login,
+    public void updateUserData(String firstName, String lastName, String address, String email, String phoneNumber,
+                               String login, String password, String jobTitle, int salary, int pharmacyId) {
+        int userId = userData.getUserId();
+        this.userData = new UserData(firstName, lastName, address, email, phoneNumber, login,
                 password, jobTitle, salary, pharmacyId);
-        updateUserData.setUserId(userId);
-        userRepository.updateUser(updateUserData);
+        userData.setUserId(userId);
+        userRepository.updateUser(userData);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserData readUserData() {
-        return updateUserData;
+        return userData;
     }
 
     // =================== Helping methods ===================
@@ -103,9 +103,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void setUpdateUserData(int index) {
+    public void setUserData(int index) {
         int userId = getUserDataList().get(index).getUserId();
-        this.updateUserData = userRepository.readUser(userId);
+        this.userData = userRepository.readUser(userId);
     }
 
     @Override

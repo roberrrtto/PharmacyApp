@@ -11,38 +11,39 @@ public class PharmacyStorageServiceImpl implements PharmacyStorageService {
     private PharmacyStorageRepository pharmacyStorageRepository;
     private PharmacyStorageData pharmacyStorageData;
     private List<PharmacyStorageData> pharmacyStorageDataList;
-    private String[] medicinesInStorageList;
+    private String[] medicinesWithQtyDisplayList;
     private int pharmacyId;
 
     public PharmacyStorageServiceImpl(int pharmacyId) {
         this.pharmacyStorageRepository = new PharmacyStorageRepositoryImpl();
         this.pharmacyId = pharmacyId;
         setPharmacyStorageDataList();
-        setMedicinesInStorageList();
+        setMedicinesWithQtyDisplayList();
     }
 
     @Override
-    public void setPharmacyStorageDataForUpdate(int quantity) {
+    public void updatePharmacyStorageQuantityData(int quantity) {
         this.pharmacyStorageData.setQuantity(quantity);
         pharmacyStorageRepository.updatePharmacyStorageQuantity(pharmacyStorageData);
     }
 
     @Override
-    public void setUpdateMedicineInStorageData(int index) {
+    public void readMedicineDetails(int index) {
         this.pharmacyStorageData = getPharmacyStorageDataList().get(index);
     }
 
     @Override
-    public void updateMedicinesInStorageList() {
+    public void updateMedicinesWithQtyDisplayList() {
         setPharmacyStorageDataList();
-        setMedicinesInStorageList();
+        setMedicinesWithQtyDisplayList();
     }
 
     @Override
-    public String[] getMedicinesInStorageList() {
-        return medicinesInStorageList;
+    public String[] getMedicinesWithQtyDisplayList() {
+        return medicinesWithQtyDisplayList;
     }
 
+    /* Pulls data of the particular Pharmacy-Storage */
     @Override
     public void setPharmacyStorageDataList() {
         this.pharmacyStorageDataList = pharmacyStorageRepository.readPharmacyStorageData(pharmacyId);
@@ -54,11 +55,11 @@ public class PharmacyStorageServiceImpl implements PharmacyStorageService {
     }
 
     @Override
-    public void setMedicinesInStorageList() {
-        this.medicinesInStorageList = new String[getPharmacyStorageDataList().size()];
+    public void setMedicinesWithQtyDisplayList() {
+        this.medicinesWithQtyDisplayList = new String[getPharmacyStorageDataList().size()];
         int i = 0;
         for (PharmacyStorageData psd : getPharmacyStorageDataList()) {
-            getMedicinesInStorageList()[i] = psd.getMedicineName() + ", qty: " + psd.getQuantity();
+            getMedicinesWithQtyDisplayList()[i] = psd.getMedicineName() + ", qty: " + psd.getQuantity();
             i++;
         }
     }

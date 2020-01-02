@@ -1,8 +1,8 @@
 package pharmacy.gui.admin;
 
 import pharmacy.service.MedicineService;
-import pharmacy.service.UserProfileServiceImpl;
-import pharmacy.utils.GetCurrentDate;
+import pharmacy.service.UserProfileService;
+import pharmacy.utils.CurrentDate;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,14 +14,14 @@ import static pharmacy.Main.mainFrame;
 
 public class AdminReadMedicinePanel extends JPanel {
 
-    private JLabel loggedNameLabel, dateLabel, medicineLabel, medicineNameLabel, priceLabel, medicineDescriptionLabel;
+    private JLabel userNameLabel, dateLabel, medicineLabel, medicineNameLabel, priceLabel, medicineDescriptionLabel;
     private JTextField medicineNameTextField, priceTextField;
     private JTextArea medicineDescriptionTextField;
     private MedicineService medicineService;
     private JButton goBackButton;
     private BufferedImage img;
 
-    private GetCurrentDate getCurrentDate = new GetCurrentDate();
+    private CurrentDate currentDate = new CurrentDate();
 
     public AdminReadMedicinePanel(MedicineService medicineService){
         setLayout(null);
@@ -33,11 +33,11 @@ public class AdminReadMedicinePanel extends JPanel {
         }
         this.medicineService = medicineService;
 
-        loggedNameLabel = new JLabel(UserProfileServiceImpl.getFirstName(), SwingConstants.CENTER);
-        loggedNameLabel.setBounds(555, 15, 80, 50);
-        loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
+        userNameLabel = new JLabel(UserProfileService.getFirstName(), SwingConstants.CENTER);
+        userNameLabel.setBounds(555, 15, 80, 50);
+        userNameLabel.setFont(userNameLabel.getFont().deriveFont(15f));
 
-        dateLabel = new JLabel(getCurrentDate.getCurrentDate());
+        dateLabel = new JLabel(currentDate.getCurrentDate());
         dateLabel.setBounds(50, 15, 100,50);
         dateLabel.setFont(dateLabel.getFont().deriveFont(15f));
 
@@ -74,7 +74,6 @@ public class AdminReadMedicinePanel extends JPanel {
         medicineDescriptionTextField.setEditable(false);
         medicineDescriptionTextField.setFont(medicineDescriptionTextField.getFont().deriveFont(15f));
 
-
         goBackButton = new JButton("Go Back");
         goBackButton.setBounds(300, 600, 100, 40);
         goBackButton.setFont(goBackButton.getFont().deriveFont(13f));
@@ -84,7 +83,7 @@ public class AdminReadMedicinePanel extends JPanel {
 
         setFields();
 
-        add(loggedNameLabel);
+        add(userNameLabel);
         add(dateLabel);
         add(medicineLabel);
         add(goBackButton);

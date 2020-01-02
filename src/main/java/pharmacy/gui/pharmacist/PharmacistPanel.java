@@ -2,8 +2,8 @@ package pharmacy.gui.pharmacist;
 
 import pharmacy.service.ReceiptService;
 import pharmacy.service.ReceiptServiceImpl;
-import pharmacy.service.UserProfileServiceImpl;
-import pharmacy.utils.GetCurrentDate;
+import pharmacy.service.UserProfileService;
+import pharmacy.utils.CurrentDate;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,14 +17,14 @@ import static pharmacy.Main.mainFrame;
 
 public class PharmacistPanel extends JPanel {
 
-    private JLabel loggedNameLabel, dateLabel, saleLabel, medicineListLabel, basketListLabel, totalLabel;
+    private JLabel userNameLabel, dateLabel, saleLabel, medicineListLabel, basketListLabel, totalLabel;
     private JButton logOutButton, payButton, cashButton, cardButton;
     private JScrollPane medicineListScroller, basketListScroller;
     private JList<String> medicineList, basketList;
-    private JTextField totalDisplay, paymentProcessing;
+    private JTextField totalDisplayTF, paymentProcessingTF;
     private BufferedImage img;
 
-    private GetCurrentDate getCurrentDate = new GetCurrentDate();
+    private CurrentDate currentDate = new CurrentDate();
     private ReceiptService receiptService = new ReceiptServiceImpl();
 
     public PharmacistPanel() {
@@ -36,11 +36,11 @@ public class PharmacistPanel extends JPanel {
             e.printStackTrace();
         }
 
-        loggedNameLabel = new JLabel(UserProfileServiceImpl.getFirstName(), SwingConstants.CENTER);
-        loggedNameLabel.setBounds(555, 15, 80, 50);
-        loggedNameLabel.setFont(loggedNameLabel.getFont().deriveFont(15f));
+        userNameLabel = new JLabel(UserProfileService.getFirstName(), SwingConstants.CENTER);
+        userNameLabel.setBounds(555, 15, 80, 50);
+        userNameLabel.setFont(userNameLabel.getFont().deriveFont(15f));
 
-        dateLabel = new JLabel(getCurrentDate.getCurrentDate());
+        dateLabel = new JLabel(currentDate.getCurrentDate());
         dateLabel.setBounds(50, 15, 100, 50);
         dateLabel.setFont(dateLabel.getFont().deriveFont(15f));
 
@@ -59,7 +59,7 @@ public class PharmacistPanel extends JPanel {
         medicineListLabel.setBounds(145, 115, 100, 50 );
         medicineListLabel.setFont(medicineListLabel.getFont().deriveFont(15f));
 
-        medicineList = new JList(receiptService.getMedicinesInStorageList());
+        medicineList = new JList(receiptService.getMedicineAndPriceDisplayList());
         medicineList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         medicineList.setFont(medicineList.getFont().deriveFont(15f));
         medicineList.addMouseListener(new MouseAdapter() {
@@ -68,9 +68,9 @@ public class PharmacistPanel extends JPanel {
                 JList list = (JList) evt.getSource();
                 if (evt.getClickCount() == 2) {
                     int index = list.locationToIndex(evt.getPoint());
-                    receiptService.setUpdateMedicineInStorageData(index);
-                    receiptService.updateBasketList(index);
-                    addMedicineToBasket();
+                    receiptService.updateMedicineQty(index);
+                    receiptService.updateBasketData(index);
+                    updateBasketList();
                 }
             }
         });
@@ -95,17 +95,21 @@ public class PharmacistPanel extends JPanel {
         totalLabel.setBounds(380,410,80,50);
         totalLabel.setFont(totalLabel.getFont().deriveFont(15f));
 
-        totalDisplay = new JTextField(receiptService.getTotal() + "$");
-        totalDisplay.setFont(totalDisplay.getFont().deriveFont(15f));
-        totalDisplay.setBounds(460,410,80,50);
-        totalDisplay.setEditable(false);
+        totalDisplayTF = new JTextField(receiptService.getTotal() + "$");
+        totalDisplayTF.setFont(totalDisplayTF.getFont().deriveFont(15f));
+        totalDisplayTF.setBounds(460,410,80,50);
+        totalDisplayTF.setEditable(false);
 
         payButton = new JButton("PAY");
         payButton.setBounds(155, 410, 80, 50 );
         payButton.setFont(payButton.getFont().deriveFont(15f));
         payButton.addActionListener(e -> {
-            enableCashAndCardButton();
-            paymentProcessing.setVisible(true);
+            if (receiptService.getBasket()[0] == null) {
+                JOptionPane.showMessageDialog(this, "EMPTY BASKET");
+            } else {
+                enableCashAndCardButton();
+                paymentProcessingTF.setVisible(true);
+            }
         });
 
         cashButton = new JButton("CASH");
@@ -116,6 +120,7 @@ public class PharmacistPanel extends JPanel {
         cashButton.addActionListener(e -> {
             paymentProcessing();
             enablePayButton();
+            paymentProcessingTF.setVisible(false);
         });
 
         cardButton = new JButton("CARD");
@@ -126,18 +131,18 @@ public class PharmacistPanel extends JPanel {
         cardButton.addActionListener(e -> {
             paymentProcessing();
             enablePayButton();
-            paymentProcessing.setVisible(false);
+            paymentProcessingTF.setVisible(false);
         });
 
-        paymentProcessing = new JTextField("Payment processing..",SwingConstants.CENTER);
-        paymentProcessing.setBounds(250, 500, 200, 70);
-        paymentProcessing.setFont(paymentProcessing.getFont().deriveFont(17f));
-        paymentProcessing.setEditable(false);
-        paymentProcessing.setVisible(false);
-        paymentProcessing.setOpaque(true);
-        paymentProcessing.setBackground(Color.ORANGE);
+        paymentProcessingTF = new JTextField("Payment processing..",SwingConstants.CENTER);
+        paymentProcessingTF.setBounds(250, 500, 200, 70);
+        paymentProcessingTF.setFont(paymentProcessingTF.getFont().deriveFont(17f));
+        paymentProcessingTF.setEditable(false);
+        paymentProcessingTF.setVisible(false);
+        paymentProcessingTF.setOpaque(true);
+        paymentProcessingTF.setBackground(Color.ORANGE);
 
-        add(loggedNameLabel);
+        add(userNameLabel);
         add(dateLabel);
         add(logOutButton);
         add(saleLabel);
@@ -146,11 +151,11 @@ public class PharmacistPanel extends JPanel {
         add(basketListLabel);
         add(basketListScroller);
         add(totalLabel);
-        add(totalDisplay);
+        add(totalDisplayTF);
         add(payButton);
         add(cashButton);
         add(cardButton);
-        add(paymentProcessing);
+        add(paymentProcessingTF);
     }
     @Override
     protected void paintComponent(Graphics g) {
@@ -158,6 +163,8 @@ public class PharmacistPanel extends JPanel {
         g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
     }
 
+
+    /* Disables Cash and Card Button and enables Pay Button instead */
     private void enablePayButton() {
         cashButton.setEnabled(false);
         cashButton.setVisible(false);
@@ -177,22 +184,22 @@ public class PharmacistPanel extends JPanel {
     }
 
     private void paymentProcessing() {
-        paymentProcessing.setVisible(true);
-        receiptService.setPharmacyStorageDataForUpdate();
+        paymentProcessingTF.setVisible(true);
+        receiptService.updatePharmacyStorageQuantityData();
         receiptService.addNewReceipt();
         receiptService.setTotal(0);
         receiptService.setBasket();
-        receiptService.setBasketList();
-        addMedicineToBasket();
-        paymentProcessing.setVisible(false);
+        receiptService.setBasketData();
+        updateBasketList();
+        paymentProcessingTF.setVisible(false);
         JOptionPane.showMessageDialog(null, "Payment accepted","Success",1);
     }
 
-    private void addMedicineToBasket() {
+    private void updateBasketList() {
         basketList = new JList(receiptService.getBasket());
         basketList.setFont(basketList.getFont().deriveFont(15f));
         basketListScroller.setViewportView(basketList);
-        totalDisplay.setText(receiptService.getTotal() + "$");
-        totalDisplay.setFont(totalDisplay.getFont().deriveFont(15f));
+        totalDisplayTF.setText(receiptService.getTotal() + "$");
+        totalDisplayTF.setFont(totalDisplayTF.getFont().deriveFont(15f));
     }
 }

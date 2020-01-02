@@ -1,0 +1,10 @@
+pharmacy
+pharmacy.domain
+pharmacy.gui
+pharmacy.gui.admin
+pharmacy.gui.login
+pharmacy.gui.manager
+pharmacy.gui.pharmacist
+pharmacy.repository
+pharmacy.service
+pharmacy.utils

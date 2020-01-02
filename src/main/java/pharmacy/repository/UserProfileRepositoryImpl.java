@@ -57,13 +57,13 @@ public class UserProfileRepositoryImpl implements UserProfileRepository {
 
         try {
             if (userProfile.getLogin().equals(userLogin) && userProfile.getPassword().equals(userPassword)) {
-                userProfile.setCorrect(true);
+                userProfile.setCorrectCredentials(true);
                 return userProfile;
             }
         } catch (NullPointerException ex) {
             System.out.println("Login or password is incorrect");
         }
-        userProfile.setCorrect(false);
+        userProfile.setCorrectCredentials(false);
         return userProfile;
     }
 }

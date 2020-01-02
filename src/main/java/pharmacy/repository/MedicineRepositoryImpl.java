@@ -13,6 +13,7 @@ import static pharmacy.utils.DataBaseInit.closeDataBaseResources;
 import static pharmacy.utils.DataBaseInit.initializeDataBaseConnection;
 
 public class MedicineRepositoryImpl implements MedicineRepository {
+
     @Override
     public void createMedicine(MedicineData medicineData) {
         final String sqlAddMedicine1 = "INSERT INTO public.medicines(\n" +
@@ -99,6 +100,7 @@ public class MedicineRepositoryImpl implements MedicineRepository {
             preparedStatement.setInt(4, medicineData.getMedicineId());
 
             preparedStatement.executeUpdate();
+
         } catch (SQLException e) {
             System.out.println("Error during invoke SQL query: \n" + e.getMessage());
             throw new RuntimeException("Error during invoke SQL query");

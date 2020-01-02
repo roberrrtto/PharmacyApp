@@ -6,17 +6,17 @@ import java.util.List;
 
 public interface PharmacyStorageService {
 
-    void setPharmacyStorageDataForUpdate(int quantity);
+    void updatePharmacyStorageQuantityData(int quantity);
 
-    void setUpdateMedicineInStorageData(int index);
+    void readMedicineDetails(int index);
 
-    void updateMedicinesInStorageList();
+    void updateMedicinesWithQtyDisplayList();
 
-    String[] getMedicinesInStorageList();
+    String[] getMedicinesWithQtyDisplayList();
 
     void setPharmacyStorageDataList();
 
     List<PharmacyStorageData> getPharmacyStorageDataList();
 
-    void setMedicinesInStorageList();
+    void setMedicinesWithQtyDisplayList();
 }
