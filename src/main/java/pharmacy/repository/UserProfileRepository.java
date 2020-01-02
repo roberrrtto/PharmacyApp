@@ -1,8 +1,8 @@
 package pharmacy.repository;
 
-import pharmacy.domain.UserProfile;
+import pharmacy.domain.UserProfileData;
 
 public interface UserProfileRepository {
 
-    UserProfile initializeUserProfile(String userLogin, String userPassword);
+    UserProfileData initializeUserProfile(String userLogin, String userPassword);
 }

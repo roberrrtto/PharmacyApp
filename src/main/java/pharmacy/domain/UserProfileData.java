@@ -1,6 +1,6 @@
 package pharmacy.domain;
 
-public class UserProfile extends UserData{
+public class UserProfileData extends UserData{
 
     private boolean correctCredentials;
 

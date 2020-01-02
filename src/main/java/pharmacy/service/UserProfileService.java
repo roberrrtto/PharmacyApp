@@ -1,24 +1,24 @@
 package pharmacy.service;
 
-import pharmacy.domain.UserProfile;
+import pharmacy.domain.UserProfileData;
 import pharmacy.repository.UserProfileRepository;
 import pharmacy.repository.UserProfileRepositoryImpl;
 
 public class UserProfileService {
 
     private static UserProfileRepository userProfileRepository = new UserProfileRepositoryImpl();
-    private static UserProfile userProfile;
+    private static UserProfileData userProfileData;
     
     public static void initializeUserProfile(String userLogin, String userPassword) {
-        userProfile = userProfileRepository.initializeUserProfile(userLogin,userPassword);
+        userProfileData = userProfileRepository.initializeUserProfile(userLogin,userPassword);
     }
 
     public static String getName() {
-        return userProfile.getName();
+        return userProfileData.getName();
     }
 
     public static String getFirstName() {
-        return userProfile.getFirstName();
+        return userProfileData.getFirstName();
     }
 
 //    public void setFirstName(String firstName) {
@@ -26,7 +26,7 @@ public class UserProfileService {
 //    }
 
     public String getLastName() {
-        return userProfile.getLastName();
+        return userProfileData.getLastName();
     }
 
 //    public void setLastName(String lastName) {
@@ -34,7 +34,7 @@ public class UserProfileService {
 //    }
 
     public String getAddress() {
-        return userProfile.getAddress();
+        return userProfileData.getAddress();
     }
 
 //    public void setAddress(String address) {
@@ -42,7 +42,7 @@ public class UserProfileService {
 //    }
 
     public String getEmail() {
-        return userProfile.getEmail();
+        return userProfileData.getEmail();
     }
 
 //    public void setEmail(String email) {
@@ -50,7 +50,7 @@ public class UserProfileService {
 //    }
 
     public String getPhoneNumber() {
-        return userProfile.getPhoneNumber();
+        return userProfileData.getPhoneNumber();
     }
 
 //    public void setPhoneNumber(String phoneNumber) {
@@ -58,7 +58,7 @@ public class UserProfileService {
 //    }
 
     public String getLogin() {
-        return userProfile.getLogin();
+        return userProfileData.getLogin();
     }
 
 //    public void setLogin(String login) {
@@ -66,7 +66,7 @@ public class UserProfileService {
 //    }
 
     public String getPassword() {
-        return userProfile.getPassword();
+        return userProfileData.getPassword();
     }
 
 //    public void setPassword(String password) {
@@ -74,7 +74,7 @@ public class UserProfileService {
 //    }
 
     public static String getJobTitle() {
-        return userProfile.getJobTitle();
+        return userProfileData.getJobTitle();
     }
 
 //    public void setJobTitle(String jobTitle) {
@@ -82,7 +82,7 @@ public class UserProfileService {
 //    }
 
     public int getSalary() {
-        return userProfile.getSalary();
+        return userProfileData.getSalary();
     }
 
 //    public void setSalary(int salary) {
@@ -90,7 +90,7 @@ public class UserProfileService {
 //    }
 
     public static int getPharmacyId() {
-        return userProfile.getPharmacyId();
+        return userProfileData.getPharmacyId();
     }
 
 //    public void setPharmacyId(int pharmacyId) {
@@ -98,13 +98,13 @@ public class UserProfileService {
 //    }
 
     public static int getUserId() {
-        return userProfile.getUserId();
+        return userProfileData.getUserId();
     }
 
 //    public void setUserId(int userId) {
 //        this.userId = userId;
 //    }
     public static boolean isCorrect() {
-        return userProfile.isCorrectCredentials();
+        return userProfileData.isCorrectCredentials();
     }
 }
